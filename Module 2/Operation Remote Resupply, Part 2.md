@@ -8,9 +8,9 @@
 
 In the first lab, you build a Xamarin Forms Drone Lander application that achieved 100% sharing of code (C#) and UI (XAML). In the real world, it's rarely that simple. Almost every application requires some platform-specific code in order to customize the UI for individual platforms or leverage features of those platforms that aren't exposed through Xamarin. 
 
-Xamarin Forms applications can choose from several techniques for implementing per-platform features. [Dependency services](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/dependency-service/) allow platform-specific services such as location APIs and text-to-speech APIs to be called through a common interface defined in shared code. [Custom renderers](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/custom-renderer/) allow deep customization of Xamarin Forms controls. [Effects](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/effects/) also facilitate control customization, but without many of the complications of custom renderers.
+Xamarin Forms supports several techniques for implementing per-platform features. [Dependency services](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/dependency-service/) allow platform-specific services such as location APIs and text-to-speech APIs to be called through a common interface defined in shared code. [Custom renderers](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/custom-renderer/) allow deep customization of Xamarin Forms controls. [Effects](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/effects/) also facilitate control customization, but without many of the complications of custom renderers.
 
-In this lab, you will modify the app you built in Lab 1 by customizing the ```ProgressBar``` control that represents the fuel gauge and the ```Slider``` control used for the throttle. You will also add sounds to the app so users receive audible feedback as they attempt to land the drone. Along the way, you will get a first-hand look at dependency services, custom renderers, and effects, and learn how to write them as well as when to apply them.
+In this lab, you will modify the app you built in Lab 1 by customizing the ```ProgressBar``` control that represents the fuel gauge and the ```Slider``` control used for the throttle. You will also add sounds to the app so users receive audible feedback as they attempt to land the drone. Along the way, you will get a first-hand look at dependency services, custom renderers, and custom effects, and learn how to write them as well as when to apply them.
 
 <a name="Objectives"></a>
 ### Objectives ###
@@ -53,13 +53,11 @@ One of the remarkable aspects of Xamarin Forms is that you declare controls in X
 
 Each control in Xamarin Forms is accompanied by a renderer whose job is to "project" the control into the UI by instantiating a native control. You can change the look and behavior of these controls by replacing the built-in renderers with renderers of your own, known as *custom renderers*. For a great overview of how custom renderers work and how they're written, see [Supercharging Xamarin Forms with Custom Renderers](http://www.wintellect.com/devcenter/jprosise/supercharging-xamarin-forms-with-custom-renderers-part-1).
 
-In this exercise, you will use custom renderers to customize the fuel gauge and the throttle control. Such customizations are common in Xamarin Forms applications and knowing how to perform them is a crucial step in becoming an ace Xamarin Forms developer.
+In this exercise, you will use custom renderers to customize the fuel gauge and the throttle control. Such customizations are common in Xamarin Forms applications and knowing how to perform them is a crucial step in becoming an enterprise Xamarin Forms developer.
 
 1. In Visual Studio 2017, open the **Drone Lander** solution created in the previous lab.
 
-1. In Solution Explorer, right-click the **DroneLander.Android** project and use the **Add** > **New Folder** command to add a folder named "Renderers" to the project.
- 
-	> Although custom renderers are platform-specific, a custom renderer is not necessarily required for every project in a solution. You can implement a custom renderer in the Android project, for example, but still allow the default renderers to be used in the iOS and Windows projects. In this exercise, however, you will add custom renderers to all three projects.
+1. Right-click the **DroneLander.Android** project in Solution Explorer and use the **Add** > **New Folder** command to add a folder named "Renderers" to the project.
 
 1. Right-click the "Renderers" folder and use the **Add** > **Class** command to add a class file named "FuelControlRenderer.cs." Then replace the contents of the file with the following code:
  
@@ -243,7 +241,7 @@ In this exercise, you will use custom renderers to customize the fuel gauge and 
 
 1. Right-click the "Resources" folder in the **DroneLander.iOS** project and use the **Add** > **Existing Item...** command to import **throttle_thumb.png** from the lab's "Resources\Renderers" folder. This completes the modifications for the iOS version of the app.
 
-1. Now let's update the Windows project to use custom renderers. In Solution Explorer, right-click the **DroneLander.UWP (Universal Windows)** project and use the **Add** > **New Folder** command to add a folder named "Renderers" to the project.
+1. Now let's update the Windows project to use custom renderers. In Solution Explorer, right-click the **DroneLander.UWP** project and use the **Add** > **New Folder** command to add a folder named "Renderers" to the project.
 
 1. Right-click the "Renderers" folder and use the **Add** > **Class** command to add a class file named "FuelControlRenderer.cs." Then replace the contents of the file with the following code:
 
@@ -308,9 +306,9 @@ In this exercise, you will use custom renderers to customize the fuel gauge and 
 	}
 	```
 
-1. Right-click the "Assets" folder in the **DroneLander.UWP (Universal Windows)** project and use the **Add** > **Existing Item...** command to import **throttle_thumb.png** from the lab's "Resources\Renderers" folder.
+1. Right-click the "Assets" folder in the **DroneLander.UWP** project and use the **Add** > **Existing Item...** command to import **throttle_thumb.png** from the lab's "Resources\Renderers" folder.
 
-1. Still in the **DroneLander.UWP (Universal Windows)** project, open **App.xaml** and replace the contents of the file with the following XAML to define the color, brush, and style resources used by the throttle control:
+1. Still in the **DroneLander.UWP** project, open **App.xaml** and replace the contents of the file with the following XAML to define the color, brush, and style resources used by the throttle control:
 
 	```Xaml
 	<Application
@@ -544,7 +542,7 @@ In this exercise, you will use custom renderers to customize the fuel gauge and 
 
     _The UWP app with customized controls_
 
-The app has now been updated to use custom renderers for Android, iOS and Windows. Custom renderers are one mechanism for customizing the appearance and behavior of controls, but they often require a lot of code. If you simply need to tweak the properties of the native controls that the default renderers produce, there is a simpler way to do it.
+The app has now been updated to use custom renderers for Android, iOS and Windows. Custom renderers are one mechanism for customizing the appearance of controls, but they often require a lot of code. If you simply need to tweak the properties of the native controls that the default renderers produce, there is a simpler way to do it. That "simpler way" is custom effects.
 
 <a name="Exercise2"></a>
 ## Exercise 2: Add a custom effect ##
@@ -717,7 +715,7 @@ In this exercise, you will update the ```Label``` controls that display altitude
     </Style>
 	```
 
-	The main purpose of this style is to set the ```FontFamily``` property of the controls to which it is applied on iOS and Windows to use the font in **Digital.ttf**. It also ensures that the margins and spacing look great on all three platforms. Note the use of ```OnPlatform```, which is a simple yet powerful way to assign per-platform values to controls and "tweak" the UI for each different operating system.
+	The main purpose of this style is to set the ```FontFamily``` property of the controls to which it is applied on iOS and Windows to use the font in **Digital.ttf**. It also ensures that the margins and spacing look great on all three platforms. Note the use of ```OnPlatform```, which is a simple yet powerful way to assign per-platform values to control properties and "tweak" the UI for each different operating system.
 
 1. Launch the Windows version of the app and confirm that the same changes you saw in Android app appear in the Windows version, too.
 
@@ -726,15 +724,13 @@ The primary purpose of custom renderers and custom effects is to change the appe
 <a name="Exercise3"></a>
 ## Exercise 3: Add a dependency service ##
 
-Xamarin lets you write native apps for iOS, Android, and Windows in C# using a common API that is already familiar to .NET developers. But not all features of these platforms are exposed through Xamarin. A classic example is location services — APIs for detecting a user's current location or tracking movement. iOS, Android, and Windows all include location APIs, but because Xamarin doesn't wrap them, an app that wants to use these APIs must call them directly.
+Xamarin lets you write native apps for iOS, Android, and Windows in C# using a common API that feels familiar to .NET developers. But not all features of these platforms are exposed through Xamarin. A classic example is location services — APIs for detecting a user's current location or tracking movement. iOS, Android, and Windows all include location APIs, but because Xamarin doesn't wrap them, an app that wants to use these APIs must call them directly.
 
 The primary mechanism that Xamarin Forms apps use to call platform-specific APIs is *dependency services*. Dependency services permit Xamarin Forms apps to define an interface in shared code and provide per-platform implementations of that interface in the platform-specific projects. Through the magic of dependency injection, a method called from shared code executes code that is specific to the host operating system. 
 
-In this exercise, you will write a dependency service that enables the Drone Lander app to produce sound. In [Exercise 4](#Exercise4), you will use the dependency service to play engine noises while the lander is descending. 
+In this exercise, you will write a dependency service that enables the Drone Lander app to produce sound. In [Exercise 4](#Exercise4), you will modify the app to use the dependency service to play engine noises while the lander is descending. 
 
-1. Right-click the **DroneLander (Portable)** project and use the **Add** > **New Folder** command to add a folder named "Services" to the project.
- 
-1. Right-click the "Services" folder and use the **Add** > **Class** command to add a class file named "IAudioService.cs." Then replace the contents of the file with the following code:
+1. Add a folder named "Services" to the **DroneLander (Portable)** project. Right-click the "Services" folder and use the **Add** > **Class** command to add a class file named "IAudioService.cs." Then replace the contents of the file with the following code:
 
 	```C#
 	using System;
@@ -758,9 +754,7 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	
 	This code defines an interface named ```IAudioService``` that can be called from shared code but implemented differently in each platform-specific project.
 
-1. Right-click the **DroneLander.Android** project and use the **Add** > **New Folder** command to add a folder named "Services" to the project.
-
-1. Right-click the "Services" folder and use the **Add** > **Class** command to add a class file named "AudioServices.cs." Then replace the contents of the file with the following code, which implements the ```IAudioService``` interface in a way that is specific to Android:
+1. Add a folder named "Services" to the **DroneLander.Android** project. Right-click the "Services" folder and use the **Add** > **Class** command to add a class file named "AudioServices.cs." Then replace the contents of the file with the following code, which implements the ```IAudioService``` interface in a way that is specific to Android:
 
 	```C#
 	using System;
@@ -795,9 +789,7 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	        public void AdjustVolume(double level)
 	        {
 	            float volume = (float)(level / 100.0);
-	
 	            if (volume == 0.0) volume = 0.1f;
-	
 	            _mediaPlayer.SetVolume(volume, volume);
 	        }
 	
@@ -812,13 +804,11 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	            {
 	                _mediaPlayer.Completion -= OnMediaCompleted;
 	                _mediaPlayer.Stop();
-	
 	                _mediaPlayer = null;
 	            }
 	            else
 	            {
 	                var fullPath = "Sounds/engine.m4a";
-	
 	                Android.Content.Res.AssetFileDescriptor afd = null;
 	
 	                try
@@ -843,7 +833,6 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	
 	                    _mediaPlayer.Reset();
 	                    _mediaPlayer.SetVolume(0.1f, 0.1f);
-	
 	                    _mediaPlayer.SetDataSource(afd.FileDescriptor, afd.StartOffset, afd.Length);
 	                    _mediaPlayer.PrepareAsync();
 	                }
@@ -859,13 +848,9 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 
 	```
 
-1. Right-click the "Assets" folder in the **DroneLander.Android** project and use the **Add** > **New Folder** command to add a subfolder named "Sounds."
+1. Add a subfolder named "Sounds" to the "Assets" folder in the **DroneLander.Android** project. Right-click the "Sounds" folder and use the **Add** > **Existing Item...** command to import **engine.m4a** from the lab's "Resources\Sounds" folder. This file contains the engine noise that the app will play.
 
-1. Right-click the "Sounds" folder and use the **Add** > **Existing Item...** command to import **engine.m4a** from the lab's "Resources\Sounds" folder. This file contains the engine noise that the app will play.
-
-1. Right-click the **DroneLander.iOS** project and use the **Add** > **New Folder** command to add a folder named "Services" to the project.
-
-1. Right-click the "Services" folder and use the **Add** > **Class** command to add a class file named "AudioServices.cs." Then replace the contents of the file with the following code. This is the iOS implementation of ```IAudioService```:
+1. Add a folder named "Services" to the **DroneLander.iOS** project. Right-click the "Services" folder and use the **Add** > **Class** command to add a class file named "AudioServices.cs." Then replace the contents of the file with the following code. This is the iOS implementation of ```IAudioService```:
 
 	```C#
 	using System;
@@ -939,13 +924,9 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	}
 	```
 
-1. Right-click the "Resources" folder in the **DroneLander.iOS** project and use the **Add** > **New Folder** command to add a subfolder named "Sounds."
+1. Add a subfolder named "Sounds" to the "Resources" folder in the **DroneLander.iOS** project. Right-click the "Sounds" folder and use the **Add** > **Existing Item...** command to import **engine.m4a** from the lab's "Resources\Sounds" folder.	
 
-1. Right-click the "Sounds" folder and use the **Add** > **Existing Item...** command to import **engine.m4a** from the lab's "Resources\Sounds" folder.	
-
-1. Right-click the **DroneLander.UWP (Universal Windows)** project and use the **Add** > **New Folder** command to add a folder named "Services" to the project.
-
-1. Right-click the "Services" folder and use the **Add** > **Class** command to add a class file named "AudioServices.cs." Then replace the contents of the file with the following code:
+1. Add a folder named "Services" to the **DroneLander.UWP** project. Right-click the "Services" folder and use the **Add** > **Class** command to add a class file named "AudioServices.cs." Then replace the contents of the file with the following code:
 
 	```C#
 	using DroneLander.UWP.DependencyServices;
@@ -1019,9 +1000,7 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 
 	```
 
-1. Right-click the "Assets" folder in the **DroneLander.UWP** project and use the **Add** > **New Folder** command to add a subfolder named "Sounds."
-
-1. Right-click the "Sounds" folder and use the **Add** > **Existing Item...** command to import **engine.m4a** from the lab's "Resources\Sounds" folder.	
+1. Add a subfolder named "Sounds" to the "Assets" folder in the **DroneLander.UWP** project. Right-click the "Sounds" folder and use the **Add** > **Existing Item...** command to import **engine.m4a** from the lab's "Resources\Sounds" folder.	
 
 With the infrastructure in place for generating sounds, the next step is to modify the app to use it.
 
@@ -1030,9 +1009,7 @@ With the infrastructure in place for generating sounds, the next step is to modi
 
 The final piece of the puzzle is to call the ```IAudioService``` methods that you added in the previous exercise to make engine noises when the drone is descending, and to vary the volume as the throttle setting increases and decreases. Remember that because you're calling a dependency service, you make the calls from shared code, but execute platform-specific code.
 
-1. Right-click the **DroneLander (Portable)** project and use the **Add** > **New Folder** command to add a folder named "Helpers" to the project.
-
-1. Right-click the "Helpers" folder and use the **Add** > **Class** command to add a class file named "AudioHelper.cs." Then replace the contents of the file with the following code: 
+1. Add a folder named "Helpers" to the **DroneLander (Portable)** project. Right-click the "Helpers" folder and use the **Add** > **Class** command to add a class file named "AudioHelper.cs." Then replace the contents of the file with the following code: 
 
 	```C#
 	using DroneLander.Services;
@@ -1071,7 +1048,7 @@ The final piece of the puzzle is to call the ```IAudioService``` methods that yo
 
 	Notice the call to ```Xamarin.Forms.DependencyService.Get```. This is how shared code retrieves a reference to an object that provides a platform-specific implementation of the specified interface.
 
-1. Open **MainViewModel.cs** in the "ViewModels" folder and locate the ```StartLanding``` method, then replace the **entire** ```StartLanding``` method with the following code:
+1. Open **MainViewModel.cs** in the "ViewModels" folder and replace the ```StartLanding``` method with the one below:
 
 	```C#
 	public void StartLanding()
@@ -1124,9 +1101,9 @@ The final piece of the puzzle is to call the ```IAudioService``` methods that yo
 	}
 	```
  
-	This will ensure that the engine audio starts playing when the **Start** button is tapped, and the engine audio stops if a lander runs out of fuel.
+	This will ensure that the engine audio starts playing when the **Start** button is tapped, and the engine audio stops if the lander runs out of fuel.
 	 
-1. Still in **MainViewModel.cs**, add the following single line of code to the ```ResetLanding``` method, making it the first statement in that method:
+1. Still in **MainViewModel.cs**, add the following line of code to the ```ResetLanding``` method, making it the first statement in that method:
 
 	```C#
 	Helpers.AudioHelper.ToggleEngine();
@@ -1160,7 +1137,7 @@ The lander will fly no differently than before, but the UI has changed and you s
 
 Remember, you begin a descent 5,000 meters above the Mars surface. When you click **Start**, the supply drone begins falling. (The gravity on Mars is weaker than the gravity on Earth, but there is gravity nonetheless.) The goal is still to touch down on the surface with a downward velocity of 5 meters per second or less.
 
-1. Launch the app in the Android emulator and click **Start**. Increase the throttle a bit and confirm that you hear the engine. It should be low but audible. If you don't hear anything, make sure the volume isn't muted on your PC.
+1. Launch the app in the Android emulator and click **Start**. Increase the throttle a bit and confirm that you hear the engine. It should be low but audible. If you don't hear anything, make sure the volume is turned up on your PC.
  
     ![Starting a descent](Images/app-click-start.png)
 
@@ -1172,11 +1149,9 @@ Remember, you begin a descent 5,000 meters above the Mars surface. When you clic
 
     _Adjusting the drone's throttle_
  
-Continue flying the mission until you reach the surface. If you have time left over, practice landing the drone successfully to prepare yourself for Lab 4.
+Continue flying the mission until you reach the surface. If you have time left over, practice landing the drone a few times to prepare yourself for Lab 4.
 
 <a name="Summary"></a>
 ## Summary ##
 
-Not only does the app runs on multiple platforms, but now takes advantage of platform-specific code to display a great, consistent user interface across platforms, as well as more challenging aspects of a user experience such as audio playback. Even though most of the code you wrote in this session was platform-specific, Xamarin Forms apps are always compiled into native code for each platform you run on. and is virtually indistinguishable from a native iOS, Android, or UWP app.
-
-That's it for Part 2 of Operation Remote Resupply. In Part 3, you will switch gears a bit and work in Visual Studio Mobile Center, and then modify the app to take advantage of its build, deployment, and analytics features.
+Dependency services, custom renderers, and custom effects are important tools in a Xamarin Forms developer's toolbox because virtually every real-world Xamarin Forms app requires some per-platform customizations. The Drone Lander app is now basically complete, and in Part 3 of Operation Remote Resupply, you will switch gears and learn about the great features of Visual Studio Mobile Center.
