@@ -748,10 +748,12 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	    public interface IAudioService
 	    {
 	        void AdjustVolume(double volume);
-	        void ToggleEngine();        
+	        void KillEngine();
+	        void ToggleEngine();
 	        Action OnFinishedPlaying { get; set; }
 	    }
 	}
+
 	```
 	
 	This code defines an interface named ```IAudioService``` that can be called from shared code but implemented differently in each platform-specific project.
@@ -797,6 +799,11 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	            if (volume == 0.0) volume = 0.1f;
 	
 	            _mediaPlayer.SetVolume(volume, volume);
+	        }
+	
+	        public void KillEngine()
+	        {    
+	            _mediaPlayer?.SetVolume(0.0f, 0.0f);
 	        }
 	
 	        public void ToggleEngine()
@@ -846,9 +853,10 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	        void OnMediaCompleted(object sender, EventArgs e)
 	        {
 	            OnFinishedPlaying?.Invoke();
-	        }
+	        }	
 	    }
 	}
+
 	```
 
 1. Right-click the "Assets" folder in the **DroneLander.Android** project and use the **Add** > **New Folder** command to add a subfolder named "Sounds."
@@ -898,6 +906,11 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	            _audioPlayer.SetVolume(volume, 0);
 	        }
 	
+	        public void KillEngine()
+	        {
+	            _audioPlayer.SetVolume(0.0f, 0);
+	        }
+	
 	        public void ToggleEngine()
 	        {
 	            if (_audioPlayer != null)
@@ -908,11 +921,13 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	            }
 	            else
 	            {
+	
 	                string localUrl = "Sounds/engine.m4a";
 	                _audioPlayer = AVAudioPlayer.FromUrl(NSUrl.FromFilename(localUrl));
 	                _audioPlayer.SetVolume(0.1f, 0);
 	                _audioPlayer.FinishedPlaying += OnMediaCompleted;
 	                _audioPlayer.Play();
+	
 	            }
 	        }
 	
@@ -959,7 +974,12 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	        public void AdjustVolume(double level)
 	        {
 	            float volume = (float)(level / 100.0);
+	
 	            _mediaPlayer.Volume = volume;
+	        }
+	        public void KillEngine()
+	        {
+	            _mediaPlayer.Volume = 0.0;
 	        }
 	
 	        public void ToggleEngine()
@@ -986,15 +1006,17 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	                _mediaPlayer.Source = Windows.Media.Core.MediaSource.CreateFromUri(pathUri);
 	
 	                _mediaPlayer.Play();
-	            }
+	            }	
 	        }
 	
 	        private void OnMediaEnded(MediaPlayer sender, object args)
 	        {
 	            OnFinishedPlaying?.Invoke();
 	        }
+	
 	    }
 	}
+
 	```
 
 1. Right-click the "Assets" folder in the **DroneLander.UWP** project and use the **Add** > **New Folder** command to add a subfolder named "Sounds."
@@ -1027,32 +1049,84 @@ The final piece of the puzzle is to call the ```IAudioService``` methods that yo
 	        public static IAudioService AudioPlayer;
 	        public static void ToggleEngine()
 	        {
-	            AudioPlayer = Xamarin.Forms.DependencyService.Get<IAudioService>();
+	            AudioPlayer = Xamarin.Forms.DependencyService.Get<IAudioService>();	
 	            AudioPlayer.ToggleEngine();
 	        }
 	
 	        public static void AdjustVolume(double volume)
 	        {
-	            AudioPlayer = Xamarin.Forms.DependencyService.Get<IAudioService>();
+	            AudioPlayer = Xamarin.Forms.DependencyService.Get<IAudioService>();	
 	            AudioPlayer.AdjustVolume(volume);
+	        }
+	
+	        public static void KillEngine()
+	        {
+	            AudioPlayer = Xamarin.Forms.DependencyService.Get<IAudioService>();	
+	            AudioPlayer.KillEngine();
 	        }
 	    }
 	}
+
 	```
 
 	Notice the call to ```Xamarin.Forms.DependencyService.Get```. This is how shared code retrieves a reference to an object that provides a platform-specific implementation of the specified interface.
 
-1. Open **MainViewModel.cs** in the "ViewModels" folder and add the following statement to ```StartLanding``` method, making it the first statement in that method. This will ensure that the engine audio starts playing when the **Start** button is tapped.
+1. Open **MainViewModel.cs** in the "ViewModels" folder and locate the ```StartLanding``` method, then replace the **entire** ```StartLanding``` method with the following code:
 
 	```C#
-	Helpers.AudioHelper.ToggleEngine();
+	public void StartLanding()
+	{
+	    Helpers.AudioHelper.ToggleEngine();
+	
+	    Device.StartTimer(TimeSpan.FromMilliseconds(Common.CoreConstants.PollingIncrement), () =>
+	    {
+	        UpdateFlightParameters();
+	                         
+	        if (this.ActiveLandingParameters.Altitude > 0.0)
+	        {
+	            Device.BeginInvokeOnMainThread(() =>
+	            {
+	                this.Altitude = this.ActiveLandingParameters.Altitude;
+	                this.DescentRate = this.ActiveLandingParameters.Velocity;
+	                this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
+	                this.Thrust = this.ActiveLandingParameters.Thrust;
+	            });
+	
+	            if (this.FuelRemaining == 0.0) Helpers.AudioHelper.KillEngine();
+	
+	            return this.IsActive;
+	        }                
+	        else
+	        {
+	            this.ActiveLandingParameters.Altitude = 0.0;
+	            this.IsActive = false;
+	
+	            Device.BeginInvokeOnMainThread(() =>
+	            {
+	                this.Altitude = this.ActiveLandingParameters.Altitude;
+	                this.DescentRate = this.ActiveLandingParameters.Velocity;
+	                this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
+	                this.Thrust = this.ActiveLandingParameters.Thrust;
+	            });
+	
+	            if (this.ActiveLandingParameters.Velocity > -5.0)
+	            {
+	                MessagingCenter.Send(this.ActivityPage, "ActivityUpdate", LandingResultType.Landed);
+	            }
+	            else
+	            {
+	                MessagingCenter.Send(this.ActivityPage, "ActivityUpdate", LandingResultType.Kaboom);
+	            }
+	
+	            return false;
+	        }
+	    });
+	}
 	```
-
-    ![The updated StartLanding method](Images/vs-updated-start-landing.png)
-
-    _The updated StartLanding method_
-
-1. Still in **MainViewModel.cs**, add the same line of code to the ```ResetLanding``` method, once more making it the first statement in that method:
+ 
+	This will ensure that the engine audio starts playing when the **Start** button is tapped, and the engine audio stops if a lander runs out of fuel.
+	 
+1. Still in **MainViewModel.cs**, add the following single line of code to the ```ResetLanding``` method, making it the first statement in that method:
 
 	```C#
 	Helpers.AudioHelper.ToggleEngine();
@@ -1072,7 +1146,7 @@ The final piece of the puzzle is to call the ```IAudioService``` methods that yo
         set
         {
             this.SetProperty(ref this._throttle, value);
-            if (this.IsActive) Helpers.AudioHelper.AdjustVolume(value);
+            if (this.IsActive && this.FuelRemaining > 0.0) Helpers.AudioHelper.AdjustVolume(value);
         }
     }
 	```
@@ -1084,9 +1158,9 @@ Now let's make sure that it works. Time to make a descent!
 
 The lander will fly no differently than before, but the UI has changed and you should hear the engine now when you use the throttle to control your descent. In this exercise, you will practice flying supply missions (remember, it gets real in Lab 4!) and ensure that all the code you added works.
 
-Remember, you begin a descent 5,000 meters above the Mars surface. When you click **Start**, the supply drone begins falling. (The gravity on Mars is weaker than the gravity on Earth, but there is gravity nonetheless.) The goal is still to touch down on the surface with a downward velocity of 5 meters per second or less. Anything faster, and you dig another crater on the surface of Mars.
+Remember, you begin a descent 5,000 meters above the Mars surface. When you click **Start**, the supply drone begins falling. (The gravity on Mars is weaker than the gravity on Earth, but there is gravity nonetheless.) The goal is still to touch down on the surface with a downward velocity of 5 meters per second or less.
 
-1. Launch the app in the Android emulator and click **Start**. Increase the throttle a bit and confirm that you hear the engine. It should be low but audible.
+1. Launch the app in the Android emulator and click **Start**. Increase the throttle a bit and confirm that you hear the engine. It should be low but audible. If you don't hear anything, make sure the volume isn't muted on your PC.
  
     ![Starting a descent](Images/app-click-start.png)
 

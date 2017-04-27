@@ -191,7 +191,7 @@ The next step in building your Xamarin Forms app is to add shared and platform-s
 	  </Resources>
 	  <Applications>
 	    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="DroneLander.UWP.App">
-	      <uap:VisualElements DisplayName="Drone Lander" Square150x150Logo="Assets\DroneLander_150x150.png" Square44x44Logo="Assets\DroneLander_44x44.png" Description="Drone Lander for Windows" BackgroundColor="#000000">
+	      <uap:VisualElements DisplayName="Drone Lander" Square150x150Logo="Assets\DroneLander_150x150.png" Square44x44Logo="Assets\DroneLander_44x44.png" Description="Drone Lander for Windows" BackgroundColor="#212121">
 	        <uap:DefaultTile Wide310x150Logo="Assets\DroneLander_310x150.png" Square310x310Logo="Assets\DroneLander_310x310.png" Square71x71Logo="Assets\DroneLander_71x71.png">
 	          <uap:ShowNameOnTiles>
 	            <uap:ShowOn Tile="square150x150Logo" />
@@ -199,7 +199,7 @@ The next step in building your Xamarin Forms app is to add shared and platform-s
 	            <uap:ShowOn Tile="square310x310Logo" />
 	          </uap:ShowNameOnTiles>
 	        </uap:DefaultTile>
-	        <uap:SplashScreen Image="Assets\DroneLander_splash.png" BackgroundColor="#000000" />
+	        <uap:SplashScreen Image="Assets\DroneLander_splash.png" BackgroundColor="#212121" />
 	      </uap:VisualElements>
 	    </Application>
 	  </Applications>
@@ -279,7 +279,6 @@ A common design pattern used in Xamarin Forms solutions is the [Model-View-ViewM
 	        public double Velocity;
 	        public double Fuel;
 	        public double Thrust;
-	
 	    }
 	}
 	```
@@ -300,14 +299,14 @@ A common design pattern used in Xamarin Forms solutions is the [Model-View-ViewM
 	    public class MainViewModel : Common.ObservableBase
 	    {
 	        public MainViewModel(MainPage activityPage)
-	        {
+        	{
 	            this.ActivityPage = activityPage;
-	            this.ActiveLandingParameters = new LandingParameters();
-	
+	            this.ActiveLandingParameters = new LandingParameters();	
 	            this.Altitude = this.ActiveLandingParameters.Altitude;
 	            this.Velocity = this.ActiveLandingParameters.Velocity;
 	            this.Fuel = this.ActiveLandingParameters.Fuel;
 	            this.Thrust = this.ActiveLandingParameters.Thrust;
+	            this.FuelRemaining = CoreConstants.StartingFuel;
 	            this.IsActive = false;
 	        }
 	
@@ -509,7 +508,6 @@ A common design pattern used in Xamarin Forms solutions is the [Model-View-ViewM
 	            this.Thrust = 0.0;
 	            this.DescentRate = 0.0;
 	            this.Throttle = 0.0;
-	
 	        }
 	    }
 	}
@@ -555,7 +553,6 @@ In this exercise, you will add a view to the Portable project and bind it to the
 	                <Setter Property="BackgroundColor" Value="Transparent" />
 	                <Setter Property="HeightRequest" Value="64" />
 	            </Style>
-	            
 	        </ResourceDictionary>	
 		</Application.Resources>
 	</Application>
@@ -571,7 +568,7 @@ In this exercise, you will add a view to the Portable project and bind it to the
 
 	_Updating the App.xaml.cs file_
  
-1. In the ```App``` constructor, replace the statement that initiallizes the ```MainPage``` property with the following statement: 
+1. In the ```App``` constructor, replace the statement that initializes the ```MainPage``` property with the following statement: 
 
 	```C#
 	MainPage = new NavigationPage(new DroneLander.MainPage());
@@ -686,7 +683,9 @@ You control the descent by adjusting the throttle, which is represented by a ```
 
     _Adjusting the drone's throttle_
 
-1. Continue adjusting the throttle to control your descent. Since fuel is a limited resource, you need to practice with the throttle and find a mission profile that enables you to land without running out of fuel. Get it right and you'll be notified that the Eagle has landed. Remember: when altitude reaches zero, you **must have a descent rate of 5 meters per second or less** or else you will crash. 
+1. Continue adjusting the throttle to control your descent. Since fuel is a limited resource, you need to practice with the throttle and find a mission profile that enables you to land without running out of fuel. Get it right and you'll be notified that the Eagle has landed. Remember: when altitude reaches zero, you **must have a descent rate of 5 meters per second or less** or else you will crash.
+
+	> Observe that when you crash, the background scenery shakes. That is accomplished using [Xamarin Forms animations](https://blog.xamarin.com/creating-animations-with-xamarin-forms/). Check out the ```ShakeLandscapeAsync``` method added to the solution in Exercise 4, Step 4 to see how it works.
 
     ![Success!](Images/app-landed.png)
 
