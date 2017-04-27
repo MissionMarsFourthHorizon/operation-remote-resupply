@@ -18,7 +18,7 @@ In this lab, you will modify the app you built in Lab 1 by customizing the ```Pr
 In this lab, you will learn how to:
 
 - Use custom renderers to customize Xamarin Forms controls
-- Use custom fonts in Xamarin Forms apps
+- Use custom effects to apply custom fonts to Xamarin Forms controls
 - Use a dependency service to play audio in Xamarin Forms apps
 
 <a name="Prerequisites"></a>
@@ -549,7 +549,9 @@ The app has now been updated to use custom renderers for Android, iOS and Window
 <a name="Exercise2"></a>
 ## Exercise 2: Add a custom effect ##
 
-On iOS and Windows, you can employ custom fonts simply by adding font files to the projects and referencing them in the controls' ```FontFamily``` properties. On Android, more is required, and a custom effect is the perfect tool for the job. Effects allow you to customize controls on a per-platform basis without writing full-blown renderers. They are typically simpler than custom renderers, and they can accept parameters as well. In this exercise, you will update the ```Label``` controls that display altitude, descent rate, and thrust to use a digital font that resembles characters on an LCD display.
+On iOS and Windows, you can employ custom fonts in ```Label``` controls simply by adding font files to the projects and referencing them in the controls' ```FontFamily``` properties. On Android, it's not that simple. Code is required to load the font, create a ```Typeface``` object from it, and assign it to the control's ```Typeface``` property. A custom effect is the perfect tool for accomplishing this. Effects allow you to customize controls on a per-platform basis without writing full-blown renderers. They are typically simpler than custom renderers, and they can accept parameters as well.
+
+In this exercise, you will update the ```Label``` controls that display altitude, descent rate, and thrust to use a digital font that resembles characters on an LCD display. And to ensure that it works on Android, you will write a custom effect.
 
 1. In Solution Explorer, right-click the **DroneLander (Portable)** project and use the **Add** > **New Folder** command to add a folder named "Effects" to the project.
 
@@ -1080,32 +1082,23 @@ Now let's make sure that it works. Time to make a descent!
 <a name="Exercise5"></a>
 ## Exercise 5: Test the updated app ##
 
-In this exercise, you will continue to practice flying supply missions to Mars, but now your app will have a cool, updated user interface, as well as engine sound to help you gauge your throttle. 
+The lander will fly no differently than before, but the UI has changed and you should hear the engine now when you use the throttle to control your descent. In this exercise, you will practice flying supply missions (remember, it gets real in Lab 4!) and ensure that all the code you added works.
 
 Remember, you begin a descent 5,000 meters above the Mars surface. When you click **Start**, the supply drone begins falling. (The gravity on Mars is weaker than the gravity on Earth, but there is gravity nonetheless.) The goal is still to touch down on the surface with a downward velocity of 5 meters per second or less. Anything faster, and you dig another crater on the surface of Mars.
 
-1. Launch the app in the Android emulator and click **Start**. Observe that your drone engine is now audible, but minimal as your drone descents with out the aid of additional thrust.
+1. Launch the app in the Android emulator and click **Start**. Increase the throttle a bit and confirm that you hear the engine. It should be low but audible.
  
-    ![Starting a descent in Drone Lander](Images/app-click-start.png)
+    ![Starting a descent](Images/app-click-start.png)
 
-    _Starting a descent in Drone Lander_
+    _Starting a descent_
  
-1. To control the descent rate, apply upward thrust by adjusting the throttle and observe the increase in engine volume appropriate to your rate of thrust.
-
+1. Increase the throttle and confirm that the audio increases in volume.
 
     ![Adjusting the drone's throttle](Images/app-adjust-throttle.png)
 
     _Adjusting the drone's throttle_
  
-1. Continue adjusting the throttle to control your descent. Remember, since fuel is a limited resource, you need to practice with the throttle and find a mission profile that enables you to land without running out of fuel. Get it right and you'll be notified that the Eagle has landed. Remember: when altitude reaches zero, you **must have a descent rate of 5 meters per second or less** or else you will crash. 
- 
-    ![Success!](Images/app-landed.png)
-
-    _Success!_
-
-1. Repeat Steps 1 through 3 for the UWP app and observe how the user experience differs on that platform.
-
-Landing the supply drone is hard. Chances are you have experienced multiple crash landing at this point. Keep practice landing until you can do so successfully most of the time, as later on, you will fly **real** supply missions, and every descent will count because there are astronauts depending on your skill to resupply the Mars bases.
+Continue flying the mission until you reach the surface. If you have time left over, practice landing the drone successfully to prepare yourself for Lab 4.
 
 <a name="Summary"></a>
 ## Summary ##
