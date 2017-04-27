@@ -53,7 +53,7 @@ One of the remarkable aspects of Xamarin Forms is that you declare controls in X
 
 Each control in Xamarin Forms is accompanied by a renderer whose job is to "project" the control into the UI by instantiating a native control. You can change the look and behavior of these controls by replacing the built-in renderers with renderers of your own, known as *custom renderers*. For a great overview of how custom renderers work and how they're written, see [Supercharging Xamarin Forms with Custom Renderers](http://www.wintellect.com/devcenter/jprosise/supercharging-xamarin-forms-with-custom-renderers-part-1).
 
-In this exercise, you will use custom renderers to customize the fuel gauge and the throttle control. Such customizations are common in Xamarin Forms applications and knowing how to perform them is a crucial step in becoming an enterprise Xamarin Forms developer.
+In this exercise, you will use custom renderers to customize the fuel gauge and the throttle control. Such customizations are common in Xamarin Forms applications and knowing how to perform them is a crucial step in becoming a skilled Xamarin Forms developer.
 
 1. In Visual Studio 2017, open the **Drone Lander** solution created in the previous lab.
 
