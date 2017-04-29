@@ -693,26 +693,26 @@ In this exercise, you will update the ```Label``` controls that display altitude
 
 	```Xaml
 	<Style x:Key="DisplayLabelStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="White" />
-        <Setter Property="Margin">
-            <Setter.Value>
-                <OnPlatform x:TypeArguments="Thickness"
-                    iOS="0,5,0,0"
-                    Android="0,-5,0,0"
-                    WinPhone="0,-5,0,0" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="FontSize" Value="48" />
-        <Setter Property="FontFamily">
-            <Setter.Value>                      
-                <OnPlatform x:TypeArguments="x:String">
-                    <OnPlatform.iOS>Digital</OnPlatform.iOS>
-                    <OnPlatform.Android></OnPlatform.Android>
-                 	<OnPlatform.WinPhone>/Assets/Fonts/Digital.ttf#Digital-7 Mono</OnPlatform.WinPhone>
-                </OnPlatform>                        
-            </Setter.Value>
-        </Setter>
-    </Style>
+	    <Setter Property="TextColor" Value="White" />
+	    <Setter Property="Margin">
+	        <Setter.Value>
+	            <OnPlatform x:TypeArguments="Thickness"
+	                iOS="0,-10,0,0"
+	                Android="0,-5,0,0"
+	                WinPhone="0,-5,0,0" />
+	        </Setter.Value>
+	    </Setter>
+	    <Setter Property="FontSize" Value="48" />
+	    <Setter Property="FontFamily">
+	        <Setter.Value>
+	            <OnPlatform x:TypeArguments="x:String">
+	                <OnPlatform.iOS>Digital-7Mono</OnPlatform.iOS>
+	                <OnPlatform.Android></OnPlatform.Android>
+	                <OnPlatform.WinPhone>/Assets/Fonts/Digital.ttf#Digital-7 Mono</OnPlatform.WinPhone>
+	            </OnPlatform>
+	        </Setter.Value>
+	    </Setter>
+	</Style>
 	```
 
 	The main purpose of this style is to set the ```FontFamily``` property of the controls to which it is applied on iOS and Windows to use the font in **Digital.ttf**. It also ensures that the margins and spacing look great on all three platforms. Note the use of ```OnPlatform```, which is a simple yet powerful way to assign per-platform values to control properties and "tweak" the UI for each different operating system.
