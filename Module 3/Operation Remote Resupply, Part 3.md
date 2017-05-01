@@ -6,13 +6,13 @@
 <a name="Overview"></a>
 ## Overview ##
 
-One of the key challenges in maintaining and supporting mobile apps is managing the build and distribution process, especially during early iterations of your app, such as during alpha and beta phases, as well as understanding what users are experiencing once your app is published. No matter how perfectly you write your code, or how thorough you are about exception handling and logging, once an app is in use by real users, apps sometimes misbehave, and even crash. When they do, you need to know what went wrong and why. Services such as [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") make it possible to automate build, testing, distribution, and even collect crash data from various devices, and then prioritize your actions based on the number of users seeing the crash, and get full stack traces to help you identify and fix the problem.
+One of the key challenges to maintaining and supporting mobile apps is understanding what users encounter once an app is published. No matter how perfectly you write your code, or how thorough you are about exception handling and logging, apps sometimes misbehave or even crash. When they do, you need to know what went wrong and why. [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") lets you collect crash data — including full stack traces — from various devices so you can identify bugs and prioritize fixes.
 
-Beyond automating processes and collecting crash information, you may want statistics regarding how many users are launching your app, where they are located, and the languages they speak. Visual Studio Mobile Center makes it easy to collect this information and more. It even allows you to integrate event tracking to collect rich behavioral analytics to understand which feature is used most often, which screens are never seen, or how users utilize in-app purchases.  
+Beyond crash analytics, you may want statistics regarding how many users are launching your app, where they are located, and what languages they speak. Visual Studio Mobile Center makes it easy to collect this information and more. It even allows you to collect rich behavioral analytics and answer questions such as which feature is used most often, which screens are never seen, and how users utilize in-app purchases.  
 
-Visual Studio Mobile Center brings services commonly used by mobile developers together into a single, integrated product. You can build, test, distribute, and monitor your mobile apps and easily add back-end cloud services to scale your app to serve millions of users. 
+Visual Studio Mobile Center can also be used to automate the build, test, and distribution process. In short, it packages essential services needed by mobile developers into a single, integrated product to help you control the development lifecycle from start to finish.
 
-In this lab, you will use Visual Studio 2017 and Visual Studio Mobile Center to integrate your drone-lander app development lifecycle with the build, test, distribution, and crash analytics processes of Visual Studio Mobile Center.
+In this lab, you will use the Drone Lander app you built in the previous labs to learn about the many features that Visual Studio Mobile Center has to offer, and why it should be part of the development process for every mobile app.
 
 <a name="Objectives"></a>
 ### Objectives ###
