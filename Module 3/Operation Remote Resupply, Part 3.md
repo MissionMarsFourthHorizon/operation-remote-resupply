@@ -46,8 +46,8 @@ This lab includes the following exercises:
 
 - [Exercise 1: Register the app with Visual Studio Mobile Center](#Exercise1)
 - [Exercise 2: Add the solution to source control](#Exercise2)
-- [Exercise 3: Configure Visual Studio Mobile Center for automated builds](#Exercise3)
-- [Exercise 4: Integrate app builds with Visual Studio Mobile Center Distribution](#Exercise4)
+- [Exercise 3: Enable automated builds](#Exercise3)
+- [Exercise 4: Enable automated distribution](#Exercise4)
 - [Exercise 5: Add crash analytics support to the app](#Exercise5)
 - [Exercise 6 (optional): Review launch test results](#Exercise6)
  
@@ -144,9 +144,9 @@ In order to take advantage of Visual Studio Mobile Center (VSMC) build integrati
 Now that Drone Lander has been added to source control and uploaded to a GitHub repository, you can configure Visual Studio Mobile Center to build it directly from there.
 
 <a name="Exercise3"></a>
-## Exercise 3: Configure Visual Studio Mobile Center for automated builds ##
+## Exercise 3: Enable automated builds ##
 
-With Visual Studio Mobile Center build integration, you can manage your source code in a GitHub repository and create an installable app package automatically with every commit or push. Best of all, you don't need to provision any agents or external machines to build your apps. Mobile Center takes care of this and will compile your Android (and optionally iOS) apps right from the repo with no manual setup on your side. In this exercise, you will configure Visual Studio Mobile Center to build the app from the repo you established in the previous exercise.
+With Visual Studio Mobile Center's build feature, you can store your source code in a GitHub repository and create an installable app package automatically with every commit or push — a process known as *continuous integration*. Best of all, you don't need to provision any agents or external machines to build your apps. Mobile Center takes care of this and will compile your Android (and optionally iOS) apps right from the repo with no manual setup on your side. In this exercise, you will configure Visual Studio Mobile Center to build the app from the repo you established in the previous exercise.
 
 1. Open your Visual Studio Mobile Center apps collection by navigating to [https://mobile.azure.com/apps](https://mobile.azure.com/apps). Then click **Drone Lander for Android**.
 
@@ -208,40 +208,38 @@ With Visual Studio Mobile Center build integration, you can manage your source c
 	
 	_Downloading the package_ 
 
-Now that Visual Studio Mobile Center is configured to build the app, a new build will be initiated each time you check in changes to the GitHub repo in a process known as *continuous integration*. Now...wouldn't it be great if each person testing the app could be notified following each successful build? Visual Studio Mobile Center can take care of that, too.
+Now that Visual Studio Mobile Center is configured to build the app, a new build will be initiated each time you check in changes to the GitHub repo. Now...wouldn't it be great if each person testing the app could be notified following each successful build? Visual Studio Mobile Center can take care of that, too.
 
 <a name="Exercise4"></a>
-## Exercise 4: Integrate app builds with Visual Studio Mobile Center Distribution ##
+## Exercise 4: Enable automated distribution ##
 
-With your first successful build in place, it's time to get your app into the hand of some testers, via the Visual Studio Mobile Center Distribute feature. Distribution is managed via simple Distribution Groups containing a set of e-mails, and are designed to communicate with testers in a way they can directly install the app their phones or other devices, similar to the way they would download an app from the app store.   
+In this exercise, you will configure Visual Studio Mobile Center to send e-mail notifications to a group of collaborators each time a new build is created. The e-mails will include a link that each tester can use use to the download the app and install it on his or her device. 
 
-In this exercise you will be using Visual Studio Mobile Center Distribution to notify one or more testers of the availability of an app release.
+1. Return to the build created in the previous exercise and click **Distribute**.
 
-1. Open Visual Studio Mobile Center to the build created in the previous exercise, or open a browser and navigate to [https://mobile.azure.com/apps](https://mobile.azure.com/apps "https://mobile.azure.com/apps") to view your apps collection and return to the build result form the previous exercise, and click **Distribute**.
-
-	![Selecting to distribute your app release](Images/web-click-distribute.png)
+	![Configuring build distributions](Images/web-click-distribute.png)
 	
-	_Selecting to distribute your app release_ 
+	_Configuring build distributions_ 
 
-1. Select the **Collaborators** distribution group, then click **Next >**. 
+1. Select the **Collaborators** distribution group, and then click **Next**. 
 
-	![Setting up a build branch](Images/web-select-distribution.png)
+	> The Collaborators group is created automatically when you configure build services in Visual Studio Mobile Center. You can create additional groups if desired, and you can add e-mail addresses to the Collaborators groups and to groups that you create.
+
+	![Selecting a distribution group](Images/web-select-distribution.png)
 	
-	_Setting up a build branch_ 
+	_Selecting a distribution group_ 
 
-	>The Collaborators distribution group is created automatically when you configure build services in Visual Studio Mobile Center. You can create and manage additional groups as needed.
+1. Optionally enter a short release note such as "My first release of the awesome Drone Lander app." Then click click **Distribute Build**.
 
-1. Optionally, enter content under **Release notes (optional)**, such as "My first release of the awesome Drone Lander app." and click **Distribute Build**.
+1. Check e-mail sent to the e-mail address associated with your GitHub account, and confirm that you receive a message notifying you of a new release.
 
-	After a short delay, check your email at the email address used when you created your GitHub (and therefore Visual Studio Mobile Center) account, and you should have a simple, informative message from the Visual Studio Mobile Center notifying you of a new app release:
-
-	![A new build notification from Visual Studio Mobile Center](Images/mail-new-version.png)
+	![Build notification from Visual Studio Mobile Center](Images/mail-new-version.png)
 	
-	_A new build notification from Visual Studio Mobile Center_ 
+	_Build notification from Visual Studio Mobile Center_ 
 
-Feel free to add more testers to the Collaborators distribution group, or even create additional groups. Remember, users can install your app directly from their device by simply clicking on the link in the email.
+Feel free to add more testers to the Collaborators distribution group, or even create additional groups. Remember, users can install your app on their devices by simply clicking on the link in the email.
 
-Now that a few users have their hands on your app, it will be helpful to know if they've installed it, how its performing for them, and most especially if the app has defects or other issues you need to address. The is where Visual Studio Mobile Center Crash Analytics come to the rescue!
+Now that a few users have their hands on your app, it might be helpful to know if they've installed it, how it's performing for them, and, most importantly, if the app has defects or other issues you need to address. This is where Visual Studio Mobile Center Crash Analytics come in.
 
 <a name="Exercise5"></a>
 ## Exercise 5: Add crash analytics support to the app ##
