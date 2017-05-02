@@ -33,6 +33,7 @@ The following are required to complete this lab:
 - [Visual Studio Community 2017](https://www.visualstudio.com/vs/) or higher
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
 - A GitHub account. If you don't have one, sign up for free at https://github.com/join.
+- [GitHub Extension for Visual Studio](https://visualstudio.github.com/)
 
 If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
 
@@ -44,8 +45,8 @@ If you wish to build and run the iOS version of the app, you also have to have a
 This lab includes the following exercises:
 
 - [Exercise 1: Register the app with Visual Studio Mobile Center](#Exercise1)
-- [Exercise 2: Integrate the solution with a GitHub repository](#Exercise2)
-- [Exercise 3: Integrate the app build cycle into Visual Studio Mobile Center](#Exercise3)
+- [Exercise 2: Add the solution to source control](#Exercise2)
+- [Exercise 3: Configure Visual Studio Mobile Center for automated builds](#Exercise3)
 - [Exercise 4: Integrate app builds with Visual Studio Mobile Center Distribution](#Exercise4)
 - [Exercise 5: Add crash analytics support to the app](#Exercise5)
 - [Exercise 6 (optional): Review launch test results](#Exercise6)
@@ -85,9 +86,9 @@ Before you can use Visual Studio Mobile Center to automate the build and distrib
 
 1. Enter "Drone Lander" for the app name, and specify **Android** as the OS and **Xamarin** as the platform. Then click **Add new app**. 
 
-    ![Register the Android version of Drone Lander](Images/web-add-new-app.png)
+    ![Registering the Android version of Drone Lander](Images/web-add-new-app.png)
 
-    _Register the Android version of Drone Lander_
+    _Registering the Android version of Drone Lander_
 
 1. Click **Xamarin.Forms** for a summary of the steps required to add the Mobile Center SDK to your app. (This is for informational purposes only at the moment. You will make these changes in the next exercise.)
 
@@ -98,137 +99,116 @@ Before you can use Visual Studio Mobile Center to automate the build and distrib
 If you would like to register the iOS of version Drone lander as well, you can do so by registering Drone Lander again, but this time specifying iOS as the operating system. You don't need to register the iOS version for this lab, but be aware that when you register a Xamarin app with Visual Studio Mobile Center, you need to register it separately for each platform that it runs on. 
 
 <a name="Exercise2"></a>
-## Exercise 2: Integrate the solution with a GitHub repository ##
+## Exercise 2: Add the solution to source control ##
 
-To automate Visual Studio Mobile Center Build integration, you need to setup a remote source code repository. Mobile Center supports source code integration with GitHub, Bitbucket and Visual Studio Team Services (VSTS) repositories.
+In order to take advantage of Visual Studio Mobile Center (VSMC) build integration, you must set up a remote source-code repository. VSMC supports GitHub, Bitbucket, and Visual Studio Team Services (VSTS) as source-code repositories. You will use [GitHub](https://github.com/), which is a "Git" hosting service that features a browser-based user interface, bug tracking, access control, task management, and more. In this exercise, you will create a GitHub repository for your Drone Lander solution.
 
-In this lab you will be using GitHub as your source repository. GitHub is a "Git" repository hosting service, that adds a number of additional features to the [Git](https://en.wikipedia.org/wiki/Git "Git") process. While Git is a command line tool, GitHub provides a Web-based graphical interface. GitHub also provides access control and collaboration features, such basic task management tools.
+1. Type "github extension" into Visual Studio 2017's "Quick Launch" window. If **GitHub extension for Visual Studio** appears under "Install," click it and follow the on-screen instructions to install GitHub Extension for Visual Studio. You will probably have to close Visual Studio to install the extension.
 
-In this exercise you will be integrating your Drone Lander solution with a GitHub repository, to prepare it for Visual Studio Mobile Center build integration.
+    ![Installing GitHub Extension for Visual Studio](Images/vs-install-git-hub.png)
 
-To integrate GitHub processes with Visual Studio 2017, you need the **GitHub extension for Visual Studio** installed. If you are unsure as to whether this extension is installed, you can check from within the Visual Studio IDE:
+    _Installing GitHub Extension for Visual Studio_
 
-1. Type "github extension" into the Visual Studio 2017 "Quick Launch" to view available actions, and, if available, select **GitHub extension for Visual Studio** underneath the "Install" group. 
+1. In Solution Explorer, right-click the **DroneLander** solution and use the **Source Control** > **Add Solution to Source Control...** command to add the solution to a local GitHub repository.
 
-    ![Accessing GitHub extension installation from the Quick Launch](Images/vs-install-git-hub.png)
-
-    _Accessing GitHub extension installation from the Quick Launch_
-
-1. Once you have confirmed installation of GitHub integration, in Solution Explorer, right-click the **DroneLander** solution and use the **Add Solution to Source Control...** command to add the solution to a local GitHub repository. When successful, you will notice additional source code-related icons to the left of many of the items in Solution Explorer.
-
-    ![Visual icon representations after local GitHub integration](Images/vs-new-git-icons.png)
-
-    _Visual icon representations after local GitHub integration_
- 
-1. In the Solution Explorer window, select the **GitHub** tab, then click **Get Started** to begin repository publishing steps.
+1. Select the **GitHub** tab in Solution Explorer, and then click **Get Started**.
 
     ![Starting the GitHub publishing process](Images/vs-click-get-started.png)
 
     _Starting the GitHub publishing process_
  
-1. Ensure you are logged into GitHub with the correct, active account, and click **Publish**.
+1. Confirm that the user name shown is the one you want to use to log in to GitHub, and then click **Publish**.
 
-    ![Visual icon representations after local GitHub integration](Images/vs-github-click-publish.png)
+    ![Publishing to GitHub](Images/vs-github-click-publish.png)
 
-    _Visual icon representations after local GitHub integration_
+    _Publishing to GitHub_
  
-	After a short delay, a new DroneLander GitHub repo will be provisioned and available, and the Team Explorer "Home" tab will become available.
+1. In Team Explorer, click **Sync**.
 
-1. On the Team Explorer "Home" tab click **Sync**, and then click **Sync** one more time to synchronize GitHub incoming and outgoing commits.
+    ![Synchronizing repos](Images/vs-click-first-sync.png)
 
-    ![Selecting Sync from the Home tab](Images/vs-click-first-sync.png)
+    _Synchronizing repos_ 
 
-    _Selecting Sync from the Home tab_ 
+1. Click **Sync** one more time to synchronize incoming and outgoing commits.
 
-    ![Synchronizing your GitHub repository](Images/vs-github-click-sync.png)
+    ![Synchronizing repos](Images/vs-github-click-sync.png)
 
-    _Synchronizing your GitHub repository_
+    _Synchronizing repos_
  
-	After another short delay a message with confirm a successful synchonization.
+1. Confirm that the repos synced successfully.
 
     ![A successful GitHub synchronization](Images/vs-sync-success.png)
 
     _A successful GitHub synchronization_
  
-Your Xamarin Forms solution has now been fully integrated with a GitHub repository and ready to be incorporated into a Visual Studio Mobile Center app build cycle.
+Now that Drone Lander has been added to source control and uploaded to a GitHub repository, you can configure Visual Studio Mobile Center to build it directly from there.
 
 <a name="Exercise3"></a>
-## Exercise 3: Integrate the app build cycle into Visual Studio Mobile Center ##
+## Exercise 3: Configure Visual Studio Mobile Center for automated builds ##
 
-With Visual Studio Mobile Center Build integration, you can manage your source code in a Git repository and create an installable app package automatically with every commit or push. Best of all, you don't need to provision any agents or external machines to build your apps. Mobile Center takes care of this and will compile your Android (and optionally iOS) apps right from the source code with no manual setup on your side.
+With Visual Studio Mobile Center build integration, you can manage your source code in a GitHub repository and create an installable app package automatically with every commit or push. Best of all, you don't need to provision any agents or external machines to build your apps. Mobile Center takes care of this and will compile your Android (and optionally iOS) apps right from the repo with no manual setup on your side. In this exercise, you will configure Visual Studio Mobile Center to build the app from the repo you established in the previous exercise.
 
-In this exercise you will be integrating your Drone Lander solution with a GitHub repository, and configuring Visual Studio Mobile Center to integrate a build process with this repository.
+1. Open your Visual Studio Mobile Center apps collection by navigating to [https://mobile.azure.com/apps](https://mobile.azure.com/apps). Then click **Drone Lander for Android**.
 
-1. Open your Visual Studio Mobile Center "apps collection" by opening [https://mobile.azure.com/apps](https://mobile.azure.com/apps "https://mobile.azure.com/apps") in a browser, and select the Android version of the **Drone Lander** app created in Exercise 1.
+    ![Opening the Android version of Drone Lander](Images/web-app-listing.png)
 
-    ![Selecting the Android version of Drone Lander in the apps collection](Images/web-app-listing.png)
-
-    _Selecting the Android version of Drone Lander in the apps collection_
+    _Opening the Android version of Drone Lander_
  
-1. Select the **Build** from the left portal navigation to view the Build integration page, then select **GitHub** in the "Select a service" menu.
+1. Click **Build** in the menu on the left.
 
-    ![Selecting the Android version of Drone Lander in the apps collection](Images/web-click-build-tab.png)
+    ![Opening the Build menu](Images/web-click-build-tab.png)
 
-    _Selecting the Android version of Drone Lander in the apps collection_ 
+    _Opening the Build menu_ 
 
-    ![Connecting to the GitHub service](Images/web-select-github-service.png)
-
-    _Connecting to the GitHub service_
+1. Click **GitHub**.
  
-	When Visual Studio Mobile Center detects the DroneLander repo setup in the previous exercise, the "Connect to repo" page will display a successful connection.   
+    ![Selecting GitHub as the service provider](Images/web-select-github-service.png)
 
-1. Click the **DroneLander** repo in the list to view all GitHub branch information.
+    _Selecting GitHub as the service provider_
 
-	![A successful GitHub Build cycle connection](Images/web-connected-to-github.png)
+1. Select **DroneLander** from list of repos.
+
+	![Selecting the DroneLander repo](Images/web-connected-to-github.png)
 	
-	_A successful GitHub Build cycle connection_ 
+	_Selecting the DroneLander repo_ 
 
-1. Select the **master** branch in the "Branches" list and then click **Setup a branch** to configure a branch for build integration.
+1. Select the **master** branch in the "Branches" list and then click **Set up a branch** to configure a branch for build integration.
 
 	![Setting up a build branch](Images/web-click-setup-branch.png)
 	
 	_Setting up a build branch_ 
 
-1. Change the "Configuration" from Debug to **Release**.
-1. Ensure **Build on push** and **Sign builds** in enabled, then click anywhere in the "Keystore file" panel to upload an Android Keystore file.
+1. Change the build configuration from Debug to **Release**. Ensure that **Build on push** and **Sign builds** are enabled, and then click **Keystore file** to upload an Android keystore file. A keystore file enables signing of the Android app package (*.apk) and is required for release deployments of Android apps.
 
 	![Configuring build branch settings](Images/web-branch-setup-01.png)
 	
 	_Configuring build branch settings_ 
 
-1. Browse to import the file named **DroneLanderKeystore.keystore** from the lab's "Resources\Keystore" folder. A keystore file enables signing of the Android app package (*.apk) and is required for release deployment of Android apps.
+1. Import the file named **DroneLanderKeystore.keystore** from this lab's "Resources\Keystore" folder
 
-	>The **DroneLanderKeystore.keystore** file was created in advance specifically for this lab. In your own development projects, you will want to create your own keystores in your environment using the Android Keystore tool available in Visual Studio 2017.
+	> The keystore file you're importing was created in advance specifically for this lab. In your own development projects, you will want to create your own keystores using the Android Keystore tool available in Visual Studio 2017.
 
 1. Enter the following values (without quotation marks) in the "Signing credentials" panel:
-	- **KEYSTORE_PASSWORD** -> "DroneLander"
-	- **KEY_ALIAS** -> "DroneLanderKeystore"
-	- **KEY_PASSWORD** -> "DroneLander"
-1. Enable both **Run a launch test on device** and **Distribute build** and click **Finish Setup**.
 
-	After a short delay your first build will be successfully queued and ready to be built.
+	- **KEYSTORE_PASSWORD** - "DroneLander"
+	- **KEY_ALIAS** - "DroneLanderKeystore"
+	- **KEY_PASSWORD** - "DroneLander"
 
-	![A queued app build in Visual Studio Mobile Center](Images/web-build-queued.png)
+	Enable **Run a launch test on device** and **Distribute build** and click **Finish Setup**.
+
+1. Wait until you are notified that a build has been added to the queue, and then that the build has begun.
+
+	![Notification that a build is in progress](Images/web-build-building.png)
 	
-	_A queued app build in Visual Studio Mobile Center_ 
+	_Notification that a build is in progress_ 
 
-	After another short delay your first build will begin building.
+1. Wait until the build completes. Then click the **Download** button and select **Download build** from the menu to download a signed and verified Android package.
 
-	![An app beginning to build in Visual Studio Mobile Center](Images/web-build-building.png)
+	![Downloading the package](Images/web-successful-build.png)
 	
-	_An app beginning to build in Visual Studio Mobile Center_ 
+	_Downloading the package_ 
 
-	And when the build process is complete, you'll be able to easily move to the Distribute step, or even download the signed package directly, right from the build location, as well as view the entire build process log.
-
-	![Your first successful build in Visual Studio Mobile Center](Images/web-successful-build.png)
-	
-	_Your first successful build in Visual Studio Mobile Center_ 
-
-1. Click **Download** -> **Download build** to verify you truly have a signed and verified Android *.apk file contained in a ZIP file, ready for use!
-
-With your app build process fully integrated with Visual Studio Mobile Center, a new build process will automatically initiate every time you check in changes to your GitHub repo, making it easy to manage the both the build cycle, and more importantly, the distribution cycle. Would it be great if your new builds could be ready and users notified every time a new successful build was created? 
-
-In the next exercise you will do just that, using Visual Studio Mobile Center Distribution.
+Now that Visual Studio Mobile Center is configured to build the app, a new build will be initiated each time you check in changes to the GitHub repo in a process known as *continuous integration*. Now...wouldn't it be great if each person testing the app could be notified following each successful build? Visual Studio Mobile Center can take care of that, too.
 
 <a name="Exercise4"></a>
 ## Exercise 4: Integrate app builds with Visual Studio Mobile Center Distribution ##
