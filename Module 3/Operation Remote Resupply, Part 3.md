@@ -8,11 +8,11 @@
 
 One of the key challenges to maintaining and supporting mobile apps is understanding what users encounter once an app is published. No matter how perfectly you write your code, or how thorough you are about exception handling and logging, apps sometimes misbehave or even crash. When they do, you need to know what went wrong and why. [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") lets you collect crash data — including full stack traces — from various devices so you can identify bugs and prioritize fixes.
 
-Beyond crash analytics, you may want statistics regarding how many users are launching your app, where they are located, and what languages they speak. Visual Studio Mobile Center makes it easy to collect this information and more. It even allows you to collect rich behavioral analytics and answer questions such as which feature is used most often, which screens are never seen, and how users utilize in-app purchases.  
+Beyond crash analytics, you may want statistics regarding how many users are launching your app, where they are located, and what languages they speak. Visual Studio Mobile Center makes it easy to collect this information and more. It even allows you to collect rich behavioral analytics and answer questions such as which features are used most often, which screens are never seen, and how users utilize in-app purchases.  
 
 Visual Studio Mobile Center can also be used to automate the build, test, and distribution process. In short, it packages essential services needed by mobile developers into a single, integrated product to help you control the development lifecycle from start to finish.
 
-In this lab, you will use the Drone Lander app you built in the previous labs to learn about the many features that Visual Studio Mobile Center has to offer, and why it should be part of the development process for every mobile app.
+In this lab, you will use the Drone Lander app you built in previous labs to learn about the many features that Visual Studio Mobile Center has to offer, and why it should be part of the development process for every mobile app.
 
 <a name="Objectives"></a>
 ### Objectives ###
@@ -32,7 +32,7 @@ The following are required to complete this lab:
 
 - [Visual Studio Community 2017](https://www.visualstudio.com/vs/) or higher
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
-- An active [GitHub](https://github.com/ "GitHub") account or sign up for one free at [https://github.com/join](https://github.com/join "https://github.com/join").
+- A GitHub account. If you don't have one, sign up for free at https://github.com/join.
 
 If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
 
@@ -55,29 +55,29 @@ Estimated time to complete this lab: **45** minutes.
 <a name="Exercise1"></a>
 ## Exercise 1: Register the app with Visual Studio Mobile Center ##
  
-Before you can use Visual Studio Mobile Center to automate the build and distribution process, you need to create a Visual Studio Mobile Center account and register the app with Visual Studio Mobile Center. In this exercise, you will create an account and then register the Android and iOS versions of Drone Lander. 
+Before you can use Visual Studio Mobile Center to automate the build and distribution process or retrieve crash analytics, you need to create a Visual Studio Mobile Center account and register the app there. In this exercise, you will create an account and then register the Android version of Drone Lander. Visual Studio Mobile Center doesn't curently support Windows apps, but Windows support is coming soon.
 
-**If you do not have an active GitHub account, stop now and create one before proceeding.**
+1. If you don't have a GitHub account, go to https://github.com/join and sign up for one.
 
-1. In a browser, navigate to the https://mobile.azure.com/login. Once there, click **Connect with GitHub**. If you are prompted to log in, do so using your GitHub account.
+1. In a browser, navigate to https://mobile.azure.com/login. Once there, click **Connect with GitHub**. If you are prompted to log in, do so using your GitHub account.
  
     ![Connecting with a GitHub account](Images/web-select-github.png)
 
     _Connecting with a GitHub account_
 
-1. On the GitHub "Authorize application" page click **Authorize application**.
+1. On the "Authorize application" page, click **Authorize application**.
 
     ![Authorizing a GitHub connection](Images/web-authorize-github.png)
 
     _Authorizing a GitHub connection_
 
-2. Accept the default, or enter a new username for your Visual Studio Mobile Center account and click **Choose username**.  
+2. Enter a user name for your Visual Studio Mobile Center account (or accept the default) and click **Choose username**.  
 
-    ![Accepting a Visual Studio Mobile Center username](Images/web-vsmc-username.png)
+    ![Choosing a user name](Images/web-vsmc-username.png)
 
-    _Accepting a Visual Studio Mobile Center username_
+    _Choosing a user name_
 
-1. Now that you have created a Visual Studio Mobile Center account, the next step is to register the Drone Lander app that you built for the target platforms that it supports. To begin, click **Add new app**. 
+1. Now that you have created a Visual Studio Mobile Center account, the next step is to register the Drone Lander app that you built in Labs 1 and 2. To begin, click **Add new app**. 
 
     ![Adding a new app in Visual Studio Mobile Center](Images/web-click-add-new-app.png)
 
@@ -85,9 +85,9 @@ Before you can use Visual Studio Mobile Center to automate the build and distrib
 
 1. Enter "Drone Lander" for the app name, and specify **Android** as the OS and **Xamarin** as the platform. Then click **Add new app**. 
 
-    ![Adding Drone Lander as an Android Xamarin app in Visual Studio Mobile Center](Images/web-add-new-app.png)
+    ![Register the Android version of Drone Lander](Images/web-add-new-app.png)
 
-    _Adding Drone Lander as an Android Xamarin app in Visual Studio Mobile Center_
+    _Register the Android version of Drone Lander_
 
 1. Click **Xamarin.Forms** for a summary of the steps required to add the Mobile Center SDK to your app. (This is for informational purposes only at the moment. You will make these changes in the next exercise.)
 
@@ -95,12 +95,7 @@ Before you can use Visual Studio Mobile Center to automate the build and distrib
 
     _Viewing Xamarin.Forms integration information_
 
-	If you are interesting in integrating the iOS version of Drone Lander with Visual Studio Mobile Center:
-
-1. Click the Back button in the upper-left corner of the page to navigate back to the "My Apps" page.
-1. Click **Add new app**. Enter "Drone Lander" for the app name, and specify **iOS** as the OS and **Xamarin** as the platform. Then click **Add new app**.
- 
-You have now registered the Android (and optionally iOS) versions of the app with Visual Studio Mobile Center. You can't register the Windows version just yet, but Windows support is coming soon.
+If you would like to register the iOS of version Drone lander as well, you can do so by registering Drone Lander again, but this time specifying iOS as the operating system. You don't need to register the iOS version for this lab, but be aware that when you register a Xamarin app with Visual Studio Mobile Center, you need to register it separately for each platform that it runs on. 
 
 <a name="Exercise2"></a>
 ## Exercise 2: Integrate the solution with a GitHub repository ##
