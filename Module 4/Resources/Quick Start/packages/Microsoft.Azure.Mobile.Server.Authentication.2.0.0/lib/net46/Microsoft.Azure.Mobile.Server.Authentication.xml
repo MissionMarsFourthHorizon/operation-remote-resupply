@@ -1,0 +1,654 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Azure.Mobile.Server.Authentication</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Azure.Mobile.Server.Properties.CommonResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.ArgMustBeGreaterThanOrEqualTo">
+            <summary>
+              Looks up a localized string similar to Argument must be greater than or equal to {0}..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.ArgumentOutOfRange_InvalidEnum">
+            <summary>
+              Looks up a localized string similar to The value must be from the &apos;{0}&apos; enumeration..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.Assembly_UnknownFileVersion">
+            <summary>
+              Looks up a localized string similar to &lt;unknown&gt;.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.DomainManager_Conflict">
+            <summary>
+              Looks up a localized string similar to The operation failed due to a conflict: &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.HttpHeaderToken_Invalid">
+            <summary>
+              Looks up a localized string similar to The format of value &apos;{0}&apos; is invalid. The character &apos;{1}&apos; is not a valid HTTP header token character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.Property_CannotBeNull">
+            <summary>
+              Looks up a localized string similar to &apos;{0}&apos; cannot be null..
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Properties.RResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.Authentication_Error">
+            <summary>
+              Looks up a localized string similar to Authentication failed with error: {0}..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.Authentication_InvalidIdentity">
+            <summary>
+              Looks up a localized string similar to Authentication failed due to invalid security identity type. Expected an &apos;{0}&apos; of type &apos;{1}&apos; but received &apos;{2}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.Authentication_InvalidToken">
+            <summary>
+              Looks up a localized string similar to Authentication failed due to an invalid token..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.GetIdentities_MissingHeader">
+            <summary>
+              Looks up a localized string similar to GetIdentity failed because the authentication header was missing or had an invalid value..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.GetIdentity_ClaimsMustHaveIssuer">
+            <summary>
+              Looks up a localized string similar to The IPrincipal&apos;s Claims must contain an &apos;iss&apos; Claim..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.GetIdentity_HttpError">
+            <summary>
+              Looks up a localized string similar to There was an unexpected error retrieving the credentials: &apos;{0}&apos;.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.ParameterMustBeOfType">
+            <summary>
+              Looks up a localized string similar to The &apos;{0}&apos; parameter must be of type &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.HmacSigningCredentials.ParseKeyString(System.String)">
+            <summary>
+            Converts a base64 OR hex-encoded string into a byte array.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppService.AppServiceHttpClient.GetRawTokenAsync(System.Uri,System.String,System.String)">
+            <summary>
+            Calls the App Service Authentication module to retrieve the access token for the specified auth token and token provider name.
+            </summary>
+            <param name="webAppUri">The Web site from which to request tokens. For example: 'https://www.contoso.com'.</param>
+            <param name="authToken">The auth token that App Service Authentication issued for the current user. Used for authentication and identification.</param>
+            <param name="tokenProviderName">The token provider for which the associated access token will be retrieved. 'Facebook', 'Google', or 'Twitter', for example.</param>
+            <returns>A <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry"/> with user details.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.AppService.ClaimSlim">
+            <summary>
+            Light-weight representation of a <see cref="T:System.Security.Claims.Claim"/> object.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppService.ClaimSlim.ToString">
+            <summary>
+            Gets a string showing the type and value of the claim. This is primarily intended for debugging.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry">
+            <summary>
+            Common data contract for storing provider-specific security tokens.
+            </summary>
+            <remarks>
+            This is a strongly-typed token container class. Not all token types will
+            apply to all providers. Null-valued properties will be explicitly excluded
+            from the serialized JSON (<see cref="P:System.Runtime.Serialization.DataMemberAttribute.EmitDefaultValue"/>).
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry.ProviderName">
+            <summary>
+            The well-known alias of the provider that issued the token (e.g. "aad").
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry.UserId">
+            <summary>
+            Gets or sets a friendly, provider-specific User ID for the current entry (e.g. "name@contoso.com").
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry.AccessToken">
+            <summary>
+            Gets or sets an OAuth 1.0a/2.0 access token for the current entry.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry.AccessTokenSecret">
+            <summary>
+            Gets or sets an OAuth 1.0a access token secret for the current entry.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry.ExpiresOn">
+            <summary>
+            Gets or sets the date/time on which the OAuth 2.0 access token expires.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry.RefreshToken">
+            <summary>
+            Gets or sets an OAuth 2.0 refresh token for the current entry.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry.IdToken">
+            <summary>
+            Gets or sets an OpenID Connection ID token for the current entry.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry.AuthenticationToken">
+            <summary>
+            Gets or sets an authentication token for the current entry.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppService.TokenEntry.UserClaims">
+            <summary>
+            Gets or sets provider-specific user claims for this current entry.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.AzureActiveDirectoryCredentials">
+            <summary>
+            A <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials"/> implementation containing provider specific credentials for Azure Active directory authentication.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AzureActiveDirectoryCredentials.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.AzureActiveDirectoryCredentials"/> class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AzureActiveDirectoryCredentials.TenantId">
+            <summary>
+            Gets or sets the tenant ID for the current user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AzureActiveDirectoryCredentials.ObjectId">
+            <summary>
+            Gets or sets the object ID for the current user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AzureActiveDirectoryCredentials.AccessToken">
+            <summary>
+            Gets or sets the access token for the current user.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.FacebookCredentials">
+            <summary>
+            A <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials"/> implementation containing provider specific credentials for Facebook authentication.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.FacebookCredentials.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.FacebookCredentials"/> class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.FacebookCredentials.AccessToken">
+            <summary>
+            Gets or sets the access token secret for the current user.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.GoogleCredentials">
+            <summary>
+            A <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials"/> implementation containing provider specific credentials for Google authentication.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.GoogleCredentials.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.GoogleCredentials"/> class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.GoogleCredentials.AccessToken">
+            <summary>
+            Gets or sets the access token for the current user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.GoogleCredentials.RefreshToken">
+            <summary>
+            Gets or sets the refresh token for the current user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.GoogleCredentials.AccessTokenExpiration">
+            <summary>
+            Gets or sets the expiration time for the access token.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.IAppServiceTokenHandler">
+            <summary>
+            Provides an abstraction for handling security tokens. This abstraction can be used for validating security
+            tokens and creating <see cref="T:System.Security.Claims.ClaimsPrincipal"/> instances.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.IAppServiceTokenHandler.TryValidateLoginToken(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Security.Claims.ClaimsPrincipal@)">
+            <summary>
+            Validates a string representation of a mobile service authentication token used to authenticate a user request.
+            </summary>
+            <param name="token">A <see cref="T:System.String"/> representation of the authentication token to validate.</param>
+            <param name="signingKey">The secret key with which the token has been signed.</param>
+            <param name="validAudiences">The valid audiences to accept in token validation.</param>
+            <param name="validIssuers">The valid issuers to accept in token validation.</param>
+            <param name="claimsPrincipal">The resulting <see cref="T:System.Security.Claims.ClaimsPrincipal"/> if the token is valid; null otherwise.</param>
+            <returns><c>true</c> if <paramref name="token"/> is valid; otherwise <c>false</c>/</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.IAppServiceTokenHandler.CreateUserId(System.String,System.String)">
+            <summary>
+            Creates a user id value contained within a <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials"/>. The user id is of the form
+            <c>ProviderName:ProviderId</c> where the <c>ProviderName</c> is the unique identifier for the login provider
+            and the <c>ProviderId</c> is the provider specific id for a given user.
+            </summary>
+            <param name="providerName">The login provider name.</param>
+            <param name="providerUserId">The provider specific user id.</param>
+            <returns>A formatted <see cref="T:System.String"/> representing the resulting value.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.IAppServiceTokenHandler.TryParseUserId(System.String,System.String@,System.String@)">
+            <summary>
+            Parses a user id into its two components: a <c>ProviderName</c> which uniquely identifies the login provider
+            and the <c>ProviderId</c> which identifies the provider specific id for a given user.
+            </summary>
+            <param name="userId">The input value to parse.</param>
+            <param name="providerName">The login provider name; or <c>null</c> if the <paramref name="userId"/> is not valid.</param>
+            <param name="providerUserId">The provider specific user id; or <c>null</c> is the <paramref name="userId"/> is not valid.</param>
+            <returns><c>true</c> if <paramref name="userId"/> is valid; otherwise <c>false</c>/</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.MicrosoftAccountCredentials">
+            <summary>
+            A <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials"/> implementation containing provider specific credentials for Microsoft Account authentication.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.MicrosoftAccountCredentials.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.MicrosoftAccountCredentials"/> class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.MicrosoftAccountCredentials.AccessToken">
+            <summary>
+            Gets or sets the access token for the current user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.MicrosoftAccountCredentials.RefreshToken">
+            <summary>
+            Gets or sets the refresh token for the current user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.MicrosoftAccountCredentials.AccessTokenExpiration">
+            <summary>
+            Gets or sets the expiration time for the access token.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationHandler">
+            <summary>
+            The <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationHandler"/> authenticates a caller who has already authenticated using the Login controller.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationHandler.#ctor(Microsoft.Owin.Logging.ILogger)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationHandler"/> class with the given <paramref name="logger"/>.
+            </summary>
+            <param name="logger">The <see cref="T:Microsoft.Owin.Logging.ILogger"/> to use for logging.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationHandler.ValidateIdentity(Microsoft.Owin.IOwinRequest,Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationOptions)">
+            <summary>
+            Authenticates the login token from the <see cref="T:Microsoft.Owin.IOwinRequest"/> header, if it exists, and
+            returns a <see cref="T:System.Security.Claims.ClaimsIdentity"/> if authentication succeeded, or false if
+            authentication failed. If token parsing failed, returns null.
+            </summary>
+            <param name="request">The <see cref="T:Microsoft.Owin.IOwinRequest"/> to authenticate.</param>
+            <param name="options">Authentication options.</param>
+            <returns>Returns the <see cref="T:System.Security.Claims.ClaimsIdentity"/> if token validation succeeded.
+            Returns null if token parsing failed for any reason.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials">
+            <summary>
+            Base class for all provider specific credentials. Provider
+            specific subclasses include add their own specific information,
+            for example access tokens, token secrets, etc.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials.#ctor(System.String)">
+            <summary>
+            Initializes a new instance with the name of the provider associated with this instance.
+            </summary>
+            <param name="providerName">The name of the provider.</param>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials.Provider">
+            <summary>
+            Gets or sets the name of the provider these credentials are for.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials.UserId">
+            <summary>
+            Gets or sets the provider id for the user. The value can be created and parsed using the methods provided by <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.IAppServiceTokenHandler"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials.UserClaims">
+            <summary>
+            Gets or sets the collection of additional claims associated with this instance. May
+            be null or empty.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationMiddleware">
+            <summary>
+            The <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationMiddleware"/> provides the OWIN middleware for authenticating a caller who has already authenticated using the Login controller.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationMiddleware.#ctor(Microsoft.Owin.OwinMiddleware,Owin.IAppBuilder,Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationMiddleware"/> class.
+            </summary>
+            <param name="next">The next <see cref="T:Microsoft.Owin.OwinMiddleware"/>.</param>
+            <param name="appBuilder">The <see cref="T:Owin.IAppBuilder"/> to configure.</param>
+            <param name="options">The options for this middleware.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationMiddleware.CreateHandler">
+            <inheritdoc />
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationOptions">
+            <summary>
+            The <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationOptions"/> provides options for the OWIN <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationMiddleware"/> class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.AppServiceAuthenticationOptions.SigningKey">
+            <summary>
+            Gets or sets the application signing key.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceTokenHandler">
+            <summary>
+            Provides a default implementation of the <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.IAppServiceTokenHandler"/> interface.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceTokenHandler.#ctor(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.AppServiceTokenHandler"/> class.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/> for this instance.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceTokenHandler.TryValidateLoginToken(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Security.Claims.ClaimsPrincipal@)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceTokenHandler.CreateUserId(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceTokenHandler.TryParseUserId(System.String,System.String@,System.String@)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceTokenHandler.ValidateToken(System.String,System.String,System.String,System.String)">
+            <summary>
+            Validates the specified JWT token string against the specified secret key. Exceptions thrown by the validation method
+            are not caught.
+            </summary>
+            <param name="token">The JWT token string to validate.</param>
+            <param name="secretKey">The key to use in the validation.</param>
+            <param name="audience">The audience to use in validation.</param>
+            <param name="issuer">The issuer to use in validation.</param>
+            <exception cref="T:System.ArgumentException">Thrown if the JWT token is malformed.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown if one of the method parameters are null or empty.</exception>
+            <exception cref="T:System.IdentityModel.Tokens.SecurityTokenValidationException">Thrown if the JWT token fails validation.</exception>
+            <exception cref="T:System.IdentityModel.Tokens.SecurityTokenExpiredException">Thrown if the JWT token is expired.</exception>
+            <exception cref="T:System.IdentityModel.Tokens.SecurityTokenNotYetValidException">Thrown if the JWT token is not yet valid.</exception>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.AppServiceTokenHandler.ToClaimValue(Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials)">
+            <summary>
+            Returns the serialized JSON for this credentials object that should
+            be returned in the claims of Mobile Service JWT tokens.
+            </summary>
+            <returns>The claim value</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Authentication.TwitterCredentials">
+            <summary>
+            A <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.ProviderCredentials"/> implementation containing provider specific credentials for Twitter authentication.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Authentication.TwitterCredentials.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Authentication.TwitterCredentials"/> class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.TwitterCredentials.AccessToken">
+            <summary>
+            Gets or sets the access token for the current user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Authentication.TwitterCredentials.AccessTokenSecret">
+            <summary>
+            Gets or sets the access token secret for the current user.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.EnumHelper`1">
+            <summary>
+            Defines a helper class for evaluating whether an enumeration value is valid or invalid. 
+            </summary>
+            <typeparam name="TEnum">The type of the enumeration.</typeparam>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.EnumHelper`1.#ctor">
+            <summary>
+            Constructs a new instance
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.EnumHelper`1.IsDefined(`0)">
+            <summary>
+            Indicates whether the given value is defined in the enumeration.
+            </summary>
+            <param name="value">The parameter to validate.</param>
+            <returns><c>true</c> if value is valid; false otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.EnumHelper`1.Validate(`0,System.String)">
+            <summary>
+            Verifies that a enumeration value is valid and if not throws an <see cref="T:System.ArgumentOutOfRangeException"/>
+            exception.
+            </summary>
+            <param name="value">Value to validate.</param>
+            <param name="parameterName">The name of the parameter holding the value.</param>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.HttpHeaderUtils">
+            <summary>
+            Utility class for various HTTP header manipulations
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.HttpHeaderUtils.IsTokenChar(System.Char)">
+            <summary>
+            Checks whether the given character is a valid HTTP header token character.
+            </summary>
+            <param name="character">The character to check.</param>
+            <returns>true if the character is a token character.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.HttpHeaderUtils.ValidateToken(System.String)">
+            <summary>
+            Validates whether a given <paramref name="token"/> is a valid HTTP header token.
+            </summary>
+            <param name="token">The <see cref="T:System.String"/> to validate.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.HttpHeaderUtils.GetQuotedString(System.String)">
+            <summary>
+            Creates a quoted string (starting and ending with '"').
+            </summary>
+            <remarks>This method does not validate whether there are additional quotes ('"') within the string. It only
+            checks whether the string starts and ends with a quote, and if not then quotes it.</remarks>
+            <param name="value">The string to quote.</param>
+            <returns>The quoted string</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.HttpHeaderUtils.GetUnquotedString(System.String)">
+            <summary>
+            Removes a quote pair from a string if present.
+            </summary>
+            <param name="value">The string to unquote.</param>
+            <returns>The unquoted string.</returns>
+        </member>
+        <member name="T:System.Collections.Generic.DictionaryExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.TryGetValue``1(System.Collections.Generic.IDictionary{System.Object,System.Object},System.Object,``0@)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance where both <c>TKey</c> and <c>TValue</c> are of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <param name="value">When this method returns, the value with the specified key if found; otherwise the default value.</param>
+            <returns><c>true</c> if key was found and value is of type <typeparamref name="TValue"/> and non-null; otherwise false.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault``1(System.Collections.Generic.IDictionary{System.Object,System.Object},System.Object)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance where both <c>TKey</c> and <c>TValue</c> are of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise the default value.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.TryGetValue``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,``0@)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.String"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <param name="value">When this method returns, the value with the specified key if found; otherwise the default value.</param>
+            <returns><c>true</c> if key was found and value is of type <typeparamref name="TValue"/> and non-null; otherwise false.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.String"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise the default value.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.TryGetValue``1(System.Collections.Generic.IDictionary{System.Type,System.Object},System.Type,``0@)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.Type"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <param name="value">When this method returns, the value with the specified key if found; otherwise the default value.</param>
+            <returns><c>true</c> if key was found and value is of type <typeparamref name="TValue"/> and non-null; otherwise false.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault``1(System.Collections.Generic.IDictionary{System.Type,System.Object},System.Type)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.Type"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise the default value.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.SetOrClearValue``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,``0)">
+            <summary>
+            Sets the entry with the given key to the given value. If value is the default value
+            then the entry is removed.
+            </summary>
+            <typeparam name="T">Type of value to be set or cleared.</typeparam>
+            <param name="dictionary">The dictionary to insert of clear a value from.</param>
+            <param name="key">The key of the entry.</param>
+            <param name="value">The value (or default value).</param>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault(System.Collections.Generic.IDictionary{System.String,System.String},System.String)">
+            <summary>
+            Gets the value with the given key, or null if the key is not present. 
+            </summary>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <c>string</c >and <c>TValue</c> of type <c>string</c>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise null.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault``1(System.Collections.Generic.IDictionary{System.String,System.String},System.String)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <c>string</c >and <c>TValue</c> of type <c>string</c>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise null.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.TryGetValue``1(System.Collections.Generic.IDictionary{System.String,System.String},System.String,``0@)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.String"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <param name="value">When this method returns, the value with the specified key if found; otherwise the default value.</param>
+            <returns><c>true</c> if key was found and value is of type <typeparamref name="TValue"/>; otherwise false.</returns>
+        </member>
+        <member name="M:System.StringExtensions.FormatForUser(System.String,System.Object[])">
+            <summary>
+            Formats the input string to be user visible using <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>.
+            </summary>
+        </member>
+        <member name="M:System.StringExtensions.FormatInvariant(System.String,System.Object[])">
+            <summary>
+            Formats the input string to be user visible using <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
+            </summary>
+        </member>
+        <member name="M:System.StringExtensions.SplitAndTrim(System.String,System.Char[])">
+            <summary>
+            Splits a string into segments based on a given <paramref name="separator"/>. The segments are 
+            trimmed and empty segments are removed.
+            </summary>
+            <param name="input">The string to split.</param>
+            <param name="separator">An array of Unicode characters that delimit the substrings in this instance, an empty array that contains no delimiters, or null.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing the resulting segments.</returns>
+        </member>
+        <member name="M:System.Security.Principal.IPrincipalExtensions.GetAppServiceIdentityAsync``1(System.Security.Principal.IPrincipal,System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Gets the identity provider specific identity details for the <see cref="T:System.Security.Principal.IPrincipal"/> making the request.
+            </summary>
+            <param name="principal">The <see cref="T:System.Security.Principal.IPrincipal"/> object.</param>
+            <param name="request">The request context.</param>
+            <typeparam name="T">The provider type.</typeparam>
+            <returns>The identity provider credentials if found, otherwise null.</returns>
+        </member>
+        <member name="T:System.Web.Http.AuthenticationHttpConfigurationExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:System.Web.Http.HttpConfiguration"/> class.
+            </summary>
+        </member>
+        <member name="T:Owin.MobileAppAuthenticationAppBuilderExtensions">
+            <summary>
+            Extension methods for <see cref="T:Owin.IAppBuilder"/>.
+            </summary>
+        </member>
+    </members>
+</doc>
