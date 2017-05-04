@@ -475,7 +475,7 @@ vertical-align:1px;
 <h2>Overview</h2>
 <p>In the first lab, you build a Xamarin Forms Drone Lander application that achieved 100% sharing of code (C#) and UI (XAML). In the real world, it's rarely that simple. Almost every application requires some platform-specific code in order to customize the UI for individual platforms or leverage features of those platforms that aren't exposed through Xamarin.</p>
 <p>Xamarin Forms supports several techniques for implementing per-platform features. <a href="https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/dependency-service/">Dependency services</a> allow platform-specific services such as location APIs and text-to-speech APIs to be called through a common interface defined in shared code. <a href="https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/custom-renderer/">Custom renderers</a> allow deep customization of Xamarin Forms controls. <a href="https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/effects/">Effects</a> also facilitate control customization, but without many of the complications of custom renderers.</p>
-<p>In this lab, you will modify the app you built in Lab 1 by customizing the <code>ProgressBar</code> control that represents the fuel gauge and the <code>Slider</code> control used for the throttle. You will also add sounds to the app so users receive audible feedback as they attempt to land the drone. Along the way, you will get a first-hand look at dependency services, custom renderers, and custom effects, and learn how to write them as well as when to apply them.</p>
+<p>In this lab, you will modify the app you built in Part 1 by customizing the <code>ProgressBar</code> control that represents the fuel gauge and the <code>Slider</code> control used for the throttle. You will also add sounds to the app so users receive audible feedback as they attempt to land the drone. Along the way, you will get a first-hand look at dependency services, custom renderers, and custom effects, and learn how to write them as well as when to apply them.</p>
 <p><a name="Objectives"></a></p>
 <h3>Objectives</h3>
 <p>In this lab, you will learn how to:</p>
@@ -491,7 +491,7 @@ vertical-align:1px;
 <li><a href="https://www.visualstudio.com/vs/">Visual Studio Community 2017</a> or higher</li>
 <li>A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see <a href="https://msdn.microsoft.com/en-us/library/mt228280.aspx">https://msdn.microsoft.com/en-us/library/mt228280.aspx</a>.</li>
 </ul>
-<p>If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see <a href="https://developer.xamarin.com/guides/ios/getting_started/installation/windows/">https://developer.xamarin.com/guides/ios/getting_started/installation/windows/</a>.</p>
+<p>You won't be building the iOS version of the app during this event because doing so would require additional setup, including a Mac configured as a build host. For more information about building Xamarim Forms iOS apps, see <a href="https://developer.xamarin.com/guides/ios/getting_started/installation/windows/">https://developer.xamarin.com/guides/ios/getting_started/installation/windows/</a>.</p>
 <hr>
 <p><a name="Exercises"></a></p>
 <h2>Exercises</h2>
@@ -1036,6 +1036,7 @@ RequestedTheme=<span class="pl-s"><span class="pl-pds">"</span>Dark<span class="
         }
     }
 }</pre></div>
+<p>Including this class in the Portable project enables you to apply a custom effect to any control by decorating it with a <code>DigitalFontEffect.FontFileName</code> attribute. The implementation of the effect is performed on a per-platform basis.</p>
 </li>
 <li>
 <p>Add a folder named "Effects" to the <strong>DroneLander.Android</strong> project. Then right-click the folder and use the <strong>Add</strong> &gt; <strong>Class</strong> command to add a class file named "DigitalFontEffect.cs." Replace the contents of the file with the following code:</p>
@@ -1082,6 +1083,7 @@ RequestedTheme=<span class="pl-s"><span class="pl-pds">"</span>Dark<span class="
         }
     }
 }</pre></div>
+<p>Custom effects are written by deriving from Xamarin Forms' <code>PlatformEffect</code> class and overriding key methods such as <code>OnAttached</code>, which is called when the effect is "attached" to the control, and <code>OnElementPropertyChanged</code>, which is called when one of the control's property values changes.</p>
 </li>
 <li>
 <p>Right-click the "Assets" folder in the <strong>DroneLander.Android</strong> project and use the <strong>Add</strong> &gt; <strong>New Folder</strong> command to add a subfolder named "Fonts." Then right-click the "Fonts" folder and use the <strong>Add</strong> &gt; <strong>Existing Item...</strong> command to import <strong>Digital.ttf</strong> from the lab's "Resources\Fonts" folder.</p>
@@ -1333,13 +1335,11 @@ RequestedTheme=<span class="pl-s"><span class="pl-pds">"</span>Dark<span class="
             }
             <span class="pl-k">else</span>
             {
-
                 <span class="pl-k">string</span> <span class="pl-en">localUrl</span> = <span class="pl-s"><span class="pl-pds">"</span>Sounds/engine.m4a<span class="pl-pds">"</span></span>;
                 _audioPlayer = AVAudioPlayer.FromUrl(NSUrl.FromFilename(localUrl));
                 _audioPlayer.SetVolume(<span class="pl-c1">0.1f</span>, <span class="pl-c1">0</span>);
                 _audioPlayer.FinishedPlaying += OnMediaCompleted;
                 _audioPlayer.Play();
-
             }
         }
 
@@ -1411,7 +1411,6 @@ RequestedTheme=<span class="pl-s"><span class="pl-pds">"</span>Dark<span class="
 
                 <span class="pl-en">Uri</span> <span class="pl-en">pathUri</span> = <span class="pl-k">new</span> <span class="pl-en">Uri</span>(<span class="pl-pds">$"</span><span class="pl-s">ms-appx:///</span>{fullPath}<span class="pl-pds">"</span>);
                 _mediaPlayer.Source = Windows.Media.Core.MediaSource.CreateFromUri(pathUri);
-
                 _mediaPlayer.Play();
             }	
         }
@@ -1420,10 +1419,8 @@ RequestedTheme=<span class="pl-s"><span class="pl-pds">"</span>Dark<span class="
         {
             OnFinishedPlaying?.Invoke();
         }
-
     }
-}
-</pre></div>
+}</pre></div>
 </li>
 <li>
 <p>Add a subfolder named "Sounds" to the "Assets" folder in the <strong>DroneLander.UWP</strong> project. Right-click the "Sounds" folder and use the <strong>Add</strong> &gt; <strong>Existing Item...</strong> command to import <strong>engine.m4a</strong> from the lab's "Resources\Sounds" folder.</p>

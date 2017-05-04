@@ -473,9 +473,9 @@ vertical-align:1px;
 <hr>
 <p><a name="Overview"></a></p>
 <h2>Overview</h2>
-<p>One of the key challenges in developing mobile applications for multiple devices and platforms is the divergent set of tools, languages, and resources required to develop and maintain features and functionality across a variety of programming languages, APIs, and user-interface paradigms.</p>
+<p>One of the key challenges in developing mobile applications for multiple devices and platforms is the diverse set of tools, languages, and resources required to develop and maintain features and functionality across a variety of programming languages, APIs, and user-interface paradigms.</p>
 <p><a href="https://www.xamarin.com/">Xamarin</a> offers one solution to the problem by allowing apps to be written in C# for iOS, Android, and Windows using a common API based on Microsoft .NET. Xamarin apps are built with native user interface controls. Apps look and act the way a user expects for a given device and platform. Xamarin apps also have access to the full spectrum of functionality exposed by the underlying operating system and device and are compiled into native binaries for performance.</p>
-<p><a href="https://www.xamarin.com/forms">Xamarin Forms</a> is a framework included with Xamarin that allows developers to create cross-platform user interfaces by defining those interfaces in XAML. Controls and UI elements declared in XAML render native controls for the host platform, so iOS users see iOS controls and Android users see Android controls. Whereas classic Xamarin apps share code but not UI, Xamarin Forms apps share code <em>and</em> UI and are frequently able to share 95% of their source code across platforms.</p>
+<p><a href="https://www.xamarin.com/forms">Xamarin Forms</a> is a framework included with Xamarin that allows developers to create cross-platform user interfaces by defining those interfaces in XAML or code. Controls and UI elements created this way render native controls for the host platform, so iOS users see iOS controls and Android users see Android controls. Whereas classic Xamarin apps share code but not UI, Xamarin Forms apps share code <em>and</em> UI and are frequently able to share 95% of their source code across platforms.</p>
 <p><a href="https://www.visualstudio.com/vs/">Visual Studio 2017</a> provides seamless support for Xamarin and Xamarin Forms so you can build cutting-edge mobile apps for a variety of platforms using a single set of tools and APIs. In this lab, you will use Visual Studio 2017 and Xamarin Forms to create a drone-lander app that lets you fly simulated supply missions to Mars. In subsequent labs, you will build upon what you created here to expand the app's features and capabilities.</p>
 <p><a name="Objectives"></a></p>
 <h3>Objectives</h3>
@@ -493,7 +493,7 @@ vertical-align:1px;
 <li><a href="https://www.visualstudio.com/vs/">Visual Studio Community 2017</a> or higher</li>
 <li>A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see <a href="https://msdn.microsoft.com/en-us/library/mt228280.aspx">https://msdn.microsoft.com/en-us/library/mt228280.aspx</a>.</li>
 </ul>
-<p>If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see <a href="https://developer.xamarin.com/guides/ios/getting_started/installation/windows/">https://developer.xamarin.com/guides/ios/getting_started/installation/windows/</a>.</p>
+<p>You won't be building the iOS version of the app during this event because doing so would require additional setup, including a Mac configured as a build host. For more information about building Xamarim Forms iOS apps, see <a href="https://developer.xamarin.com/guides/ios/getting_started/installation/windows/">https://developer.xamarin.com/guides/ios/getting_started/installation/windows/</a>.</p>
 <hr>
 <p><a name="Exercises"></a></p>
 <h2>Exercises</h2>
@@ -525,14 +525,14 @@ vertical-align:1px;
 </li>
 <li>
 <p>Under "Individual Components" in the Visual Studio installer, make sure <strong>Visual Studio Emulator for Android</strong> and <strong>Windows 10 Mobile Emulator (Creators Update)</strong> are checked.</p>
+<blockquote>
+<p>If you haven't installed the Windows Creators Update, select the Anniversary Edition instead. If these emulators don't appear as options in the Visual Studio installer, it could because your PC doesn't support virtualization or that virtualization hasn't been enabled. For more information, see <a href="https://msdn.microsoft.com/en-us/library/mt228280.aspx">https://msdn.microsoft.com/en-us/library/mt228280.aspx</a>.</p>
+</blockquote>
 <p><a href="Images/workload-3.png" target="_blank"><img src="Images/workload-3.png" alt="Installing emulators" style="max-width:100%;"></a></p>
 <p><em>Installing emulators</em></p>
-<blockquote>
-<p>Although the Anniversary Edition of the Windows 10 Mobile Emulator is supported for this lab, the exercises in this lab with target the Creators Update, and should be selected if available.</p>
-</blockquote>
 </li>
 </ol>
-<p>Once these workloads and components are installed, you can begin creating Xamarin Forms apps.</p>
+<p>Once these workloads and components are installed, you are ready to begin creating Xamarin Forms apps.</p>
 <p><a name="Exercise2"></a></p>
 <h2>Exercise 2: Create a Xamarin Forms solution</h2>
 <p>The first step in creating a cross-platform solution with Xamarin Forms is to provision a solution based on the Visual Studio 2017 Cross Platform App template. In this exercise, you will create a new Xamarin Forms solution using this template.</p>
@@ -931,7 +931,7 @@ vertical-align:1px;
                 <span class="pl-k">await</span> Task.WhenAll(
                          page.ScaleTo(<span class="pl-c1">1.0</span>, <span class="pl-c1">20</span>, Easing.Linear),
                          page.TranslateTo(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">20</span>, Easing.Linear)
-                     );
+                   );
             }	            
         }
 
@@ -987,13 +987,14 @@ vertical-align:1px;
             &lt;<span class="pl-ent">Style</span> <span class="pl-e">x</span><span class="pl-e">:</span><span class="pl-e">Key</span>=<span class="pl-s"><span class="pl-pds">"</span>ButtonLabelStyle<span class="pl-pds">"</span></span> <span class="pl-e">TargetType</span>=<span class="pl-s"><span class="pl-pds">"</span>Button<span class="pl-pds">"</span></span>&gt;
                 &lt;<span class="pl-ent">Setter</span> <span class="pl-e">Property</span>=<span class="pl-s"><span class="pl-pds">"</span>BorderWidth<span class="pl-pds">"</span></span> <span class="pl-e">Value</span>=<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> /&gt;
                 &lt;<span class="pl-ent">Setter</span> <span class="pl-e">Property</span>=<span class="pl-s"><span class="pl-pds">"</span>TextColor<span class="pl-pds">"</span></span> <span class="pl-e">Value</span>=<span class="pl-s"><span class="pl-pds">"</span>White<span class="pl-pds">"</span></span> /&gt;
-				&lt;<span class="pl-ent">Setter</span> <span class="pl-e">Property</span>=<span class="pl-s"><span class="pl-pds">"</span>FontSize<span class="pl-pds">"</span></span> <span class="pl-e">Value</span>=<span class="pl-s"><span class="pl-pds">"</span>20<span class="pl-pds">"</span></span> /&gt;
+                &lt;<span class="pl-ent">Setter</span> <span class="pl-e">Property</span>=<span class="pl-s"><span class="pl-pds">"</span>FontSize<span class="pl-pds">"</span></span> <span class="pl-e">Value</span>=<span class="pl-s"><span class="pl-pds">"</span>20<span class="pl-pds">"</span></span> /&gt;
                 &lt;<span class="pl-ent">Setter</span> <span class="pl-e">Property</span>=<span class="pl-s"><span class="pl-pds">"</span>BackgroundColor<span class="pl-pds">"</span></span> <span class="pl-e">Value</span>=<span class="pl-s"><span class="pl-pds">"</span>Transparent<span class="pl-pds">"</span></span> /&gt;
                 &lt;<span class="pl-ent">Setter</span> <span class="pl-e">Property</span>=<span class="pl-s"><span class="pl-pds">"</span>HeightRequest<span class="pl-pds">"</span></span> <span class="pl-e">Value</span>=<span class="pl-s"><span class="pl-pds">"</span>64<span class="pl-pds">"</span></span> /&gt;
             &lt;/<span class="pl-ent">Style</span>&gt;
         &lt;/<span class="pl-ent">ResourceDictionary</span>&gt;	
 	&lt;/<span class="pl-ent">Application</span>.Resources&gt;
 &lt;/<span class="pl-ent">Application</span>&gt;</pre></div>
+<p>This markup defines several styles that will be used to stylize the app's controls. It also declares an instance of <code>DecimalDisplayConverter</code>, which will be used in <strong>MainPage.xaml</strong> as a value converter. Value converters are components that modify data as it is passed between data sources and data targets during data binding and are widely used in XAML UIs to control output formatting and convert data from one type to another. You imported the <code>DecimalDisplayConverter</code> class when you imported the files from the lab's "Resources\Portable\Common" folder in Exercise 4, Step 2. Declaring styles, converters, and other resources in <strong>App.xaml</strong> makes them available to all of the application's views. You can also declare resources in the XAML files for individual views, but doing so limits the availability of those resources to the views in which they are declared.</p>
 </li>
 <li>
 <p>Now open <strong>App.xaml.cs</strong> and add the following property declaration above the <code>App</code> constructor:</p>
@@ -1043,6 +1044,7 @@ vertical-align:1px;
         &lt;<span class="pl-ent">Button</span> <span class="pl-e">Style</span>=<span class="pl-s"><span class="pl-pds">"</span>{DynamicResource ButtonLabelStyle}<span class="pl-pds">"</span></span> Grid.Row=<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span> <span class="pl-e">VerticalOptions</span>=<span class="pl-s"><span class="pl-pds">"</span>Fill<span class="pl-pds">"</span></span> <span class="pl-e">Text</span>=<span class="pl-s"><span class="pl-pds">"</span>{Binding ActionLabel}<span class="pl-pds">"</span></span> <span class="pl-e">Command</span>=<span class="pl-s"><span class="pl-pds">"</span>{Binding AttemptLandingCommand}<span class="pl-pds">"</span></span> /&gt;
     &lt;/<span class="pl-ent">Grid</span>&gt;
 &lt;/<span class="pl-ent">ContentPage</span>&gt;</pre></div>
+<p>Note the <code>Style</code> attributes that reference the styles added to <strong>App.xaml</strong>. Also note how <code>DecimalDisplayConverter</code> is used to format the text output by three of the <code>Label</code> controls. Without this converter, the Altitude, Descent Rate, and Thrust readouts would include numbers to the right of the decimal point. Internally, <code>DecimalDisplayConverter</code> calls <code>ToString("F0")</code> on the value passed to it to remove the decimal point and any values to the right of it.</p>
 </li>
 <li>
 <p>Now open <strong>MainPage.xaml.cs</strong> and replace its contents with the following code:</p>
@@ -1122,6 +1124,9 @@ vertical-align:1px;
 <ol>
 <li>
 <p>In Solution Explorer, right-click the <strong>DroneLander.Android</strong> project and use the <strong>Add</strong> &gt; <strong>New Item...</strong> command to add an activity named "SplashActivity.cs."</p>
+<blockquote>
+<p>In Android, an <em>activity</em> is a task that you define to interact with a user. Activities usually, but not always, occupy the entire screen, and are somewhat analgous to <em>pages</em> in other platforms such as Windows.</p>
+</blockquote>
 <p><a href="Images/vs-add-splash-activity.png" target="_blank"><img src="Images/vs-add-splash-activity.png" alt="Adding an activity to the Android project" style="max-width:100%;"></a></p>
 <p><em>Adding an activity to the Android project</em></p>
 </li>

@@ -35,7 +35,7 @@ The following are required to complete this lab:
 - A GitHub account. If you don't have one, sign up for free at https://github.com/join.
 - [GitHub Extension for Visual Studio](https://visualstudio.github.com/)
 
-If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
+You won't be building the iOS version of the app during this event because doing so would require additional setup, including a Mac configured as a build host. For more information about building Xamarim Forms iOS apps, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
 
 ---
 

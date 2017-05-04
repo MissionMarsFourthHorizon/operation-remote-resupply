@@ -10,7 +10,7 @@ In the first lab, you build a Xamarin Forms Drone Lander application that achiev
 
 Xamarin Forms supports several techniques for implementing per-platform features. [Dependency services](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/dependency-service/) allow platform-specific services such as location APIs and text-to-speech APIs to be called through a common interface defined in shared code. [Custom renderers](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/custom-renderer/) allow deep customization of Xamarin Forms controls. [Effects](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/effects/) also facilitate control customization, but without many of the complications of custom renderers.
 
-In this lab, you will modify the app you built in Lab 1 by customizing the ```ProgressBar``` control that represents the fuel gauge and the ```Slider``` control used for the throttle. You will also add sounds to the app so users receive audible feedback as they attempt to land the drone. Along the way, you will get a first-hand look at dependency services, custom renderers, and custom effects, and learn how to write them as well as when to apply them.
+In this lab, you will modify the app you built in Part 1 by customizing the ```ProgressBar``` control that represents the fuel gauge and the ```Slider``` control used for the throttle. You will also add sounds to the app so users receive audible feedback as they attempt to land the drone. Along the way, you will get a first-hand look at dependency services, custom renderers, and custom effects, and learn how to write them as well as when to apply them.
 
 <a name="Objectives"></a>
 ### Objectives ###
@@ -29,7 +29,7 @@ The following are required to complete this lab:
 - [Visual Studio Community 2017](https://www.visualstudio.com/vs/) or higher
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
 
-If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
+You won't be building the iOS version of the app during this event because doing so would require additional setup, including a Mac configured as a build host. For more information about building Xamarim Forms iOS apps, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
 
 ---
 
@@ -594,6 +594,8 @@ In this exercise, you will update the ```Label``` controls that display altitude
 	}
 	```
 
+	Including this class in the Portable project enables you to apply a custom effect to any control by decorating it with a ```DigitalFontEffect.FontFileName``` attribute. The implementation of the effect is performed on a per-platform basis.
+
 1. Add a folder named "Effects" to the **DroneLander.Android** project. Then right-click the folder and use the **Add** > **Class** command to add a class file named "DigitalFontEffect.cs." Replace the contents of the file with the following code: 
 
 	```C#
@@ -641,6 +643,8 @@ In this exercise, you will update the ```Label``` controls that display altitude
 	    }
 	}
 	```
+
+	Custom effects are written by deriving from Xamarin Forms' ```PlatformEffect``` class and overriding key methods such as ```OnAttached```, which is called when the effect is "attached" to the control, and ```OnElementPropertyChanged```, which is called when one of the control's property values changes.
 
 1. Right-click the "Assets" folder in the **DroneLander.Android** project and use the **Add** > **New Folder** command to add a subfolder named "Fonts." Then right-click the "Fonts" folder and use the **Add** > **Existing Item...** command to import **Digital.ttf** from the lab's "Resources\Fonts" folder.
 
@@ -906,13 +910,11 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	            }
 	            else
 	            {
-	
 	                string localUrl = "Sounds/engine.m4a";
 	                _audioPlayer = AVAudioPlayer.FromUrl(NSUrl.FromFilename(localUrl));
 	                _audioPlayer.SetVolume(0.1f, 0);
 	                _audioPlayer.FinishedPlaying += OnMediaCompleted;
 	                _audioPlayer.Play();
-	
 	            }
 	        }
 	
@@ -985,7 +987,6 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	
 	                Uri pathUri = new Uri($"ms-appx:///{fullPath}");
 	                _mediaPlayer.Source = Windows.Media.Core.MediaSource.CreateFromUri(pathUri);
-	
 	                _mediaPlayer.Play();
 	            }	
 	        }
@@ -994,10 +995,8 @@ In this exercise, you will write a dependency service that enables the Drone Lan
 	        {
 	            OnFinishedPlaying?.Invoke();
 	        }
-	
 	    }
 	}
-
 	```
 
 1. Add a subfolder named "Sounds" to the "Assets" folder in the **DroneLander.UWP** project. Right-click the "Sounds" folder and use the **Add** > **Existing Item...** command to import **engine.m4a** from the lab's "Resources\Sounds" folder.	
