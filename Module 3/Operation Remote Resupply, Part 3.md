@@ -72,6 +72,8 @@ Before you can use Visual Studio Mobile Center to automate the build and distrib
 
     _Authorizing a GitHub connection_
 
+1. If you asked to sign in GitHub, do so with your GitHub user name and password.
+
 2. Enter a user name for your Visual Studio Mobile Center account (or accept the default) and click **Choose username**.  
 
     ![Choosing a user name](Images/web-vsmc-username.png)
