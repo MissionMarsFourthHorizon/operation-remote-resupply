@@ -19,9 +19,9 @@ In this lab, you will use the Drone Lander app you built in previous labs to lea
 
 In this lab, you will learn how to:
 
-- Create a Visual Studio Mobile Center account
-- Register an app with the Visual Studio Mobile Center
-- Integrate the app build and distribution process with Visual Studio Mobile Center
+- Register an app with Visual Studio Mobile Center
+- Use Visual Studio Mobile Center to automate builds
+- Use Visual Studio Mobile Center to automate distribution to testers
 - Add crash analytics to a Xamarin Forms app 
 - View crash reports in Visual Studio Mobile Center
 
@@ -56,7 +56,7 @@ Estimated time to complete this lab: **45** minutes.
 <a name="Exercise1"></a>
 ## Exercise 1: Register the app with Visual Studio Mobile Center ##
  
-Before you can use Visual Studio Mobile Center to automate the build and distribution process or retrieve crash analytics, you need to create a Visual Studio Mobile Center account and register the app there. In this exercise, you will create an account and then register the Android version of Drone Lander. Visual Studio Mobile Center doesn't curently support Windows apps, but Windows support is coming soon.
+Before you can use Visual Studio Mobile Center to automate the build and distribution process or retrieve crash analytics, you need to create a Visual Studio Mobile Center account and register the app there. In this exercise, you will create an account and register the Android version of Drone Lander.
 
 1. If you don't have a GitHub account, go to https://github.com/join and sign up for one.
 
@@ -66,21 +66,19 @@ Before you can use Visual Studio Mobile Center to automate the build and distrib
 
     _Connecting with a GitHub account_
 
-1. On the "Authorize application" page, click **Authorize application**.
+1. On the "Authorize application" page, click **Authorize application**. If you are asked to sign in to GitHub, do so with your GitHub user name and password.
 
-    ![Authorizing a GitHub connection](Images/web-authorize-github.png)
+    ![Authorizing an application](Images/web-authorize-github.png)
 
-    _Authorizing a GitHub connection_
+    _Authorizing an application_
 
-1. If you asked to sign in GitHub, do so with your GitHub user name and password.
-
-2. Enter a user name for your Visual Studio Mobile Center account (or accept the default) and click **Choose username**.  
+1. If you are asked to choose a user name, enter a user name for your Visual Studio Mobile Center account (or accept the default) and click **Choose username**.  
 
     ![Choosing a user name](Images/web-vsmc-username.png)
 
     _Choosing a user name_
 
-1. Now that you have created a Visual Studio Mobile Center account, the next step is to register the Drone Lander app that you built in Labs 1 and 2. To begin, click **Add new app**. 
+1. Now that you have created a Visual Studio Mobile Center account, the next step is to register the Drone Lander app that you built in Parts 1 and 2. To begin, click **Add new app**. 
 
     ![Adding a new app in Visual Studio Mobile Center](Images/web-click-add-new-app.png)
 
@@ -92,20 +90,20 @@ Before you can use Visual Studio Mobile Center to automate the build and distrib
 
     _Registering the Android version of Drone Lander_
 
-1. Click **Xamarin.Forms** for a summary of the steps required to add the Mobile Center SDK to your app. (This is for informational purposes only at the moment. You will make these changes in the next exercise.)
+1. Click **Xamarin.Forms** for a summary of the steps required to add the Mobile Center SDK to your app. (This is for informational purposes only at the moment. You will make these changes in a subsequent exercise.)
 
     ![Viewing Xamarin.Forms integration information](Images/web-click-xamarin-forms.png)
 
     _Viewing Xamarin.Forms integration information_
 
-If you would like to register the iOS of version Drone lander as well, you can do so by registering Drone Lander again, but this time specifying iOS as the operating system. You don't need to register the iOS version for this lab, but be aware that when you register a Xamarin app with Visual Studio Mobile Center, you need to register it separately for each platform that it runs on. 
+If you would like to register the iOS of version Drone lander as well, you can do so by registering Drone Lander again, but this time specifying iOS as the operating system. You don't need to register the iOS version for this lab, but be aware that when you register a Xamarin app with Visual Studio Mobile Center, you need to register it separately for each platform that it runs on. You can also register the Windows (UWP) version if you would like, but realize that Visual Studio Mobile Center and doesn't yet support crash analytics on Windows.
 
 <a name="Exercise2"></a>
 ## Exercise 2: Add the solution to source control ##
 
-In order to take advantage of Visual Studio Mobile Center (VSMC) build integration, you must set up a remote source-code repository. VSMC supports GitHub, Bitbucket, and Visual Studio Team Services (VSTS) as source-code repositories. You will use [GitHub](https://github.com/), which is a "Git" hosting service that features a browser-based user interface, bug tracking, access control, task management, and more. In this exercise, you will create a GitHub repository for your Drone Lander solution.
+In order to take advantage of Visual Studio Mobile Center (VSMC) build integration, you must set up a remote source-code repository. VSMC supports [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org/), and [Visual Studio Team Services](https://www.visualstudio.com/team-services/) (VSTS) as repositories. You will use GitHub, which is a Git hosting service that features a browser-based user interface, bug tracking, access control, task management, and more. In this exercise, you will create a GitHub repository for your Drone Lander solution.
 
-1. Type "github extension" into Visual Studio 2017's "Quick Launch" window. If **GitHub extension for Visual Studio** appears under "Install," click it and follow the on-screen instructions to install GitHub Extension for Visual Studio. You will probably have to close Visual Studio to install the extension.
+1. Type "github extension" into Visual Studio 2017's Quick Launch window. If **GitHub extension for Visual Studio** appears under "Install," click it and follow the on-screen instructions to install GitHub Extension for Visual Studio. You will probably have to close Visual Studio to install the extension.
 
     ![Installing GitHub Extension for Visual Studio](Images/vs-install-git-hub.png)
 
@@ -119,7 +117,7 @@ In order to take advantage of Visual Studio Mobile Center (VSMC) build integrati
 
     _Starting the GitHub publishing process_
  
-1. Confirm that the user name shown is the one you want to use to log in to GitHub, and then click **Publish**.
+1. Confirm that **GitHub** is selected and that your GitHub user name is shown, and then click **Publish**.
 
     ![Publishing to GitHub](Images/vs-github-click-publish.png)
 
@@ -148,7 +146,7 @@ Now that Drone Lander has been added to source control and uploaded to a GitHub 
 <a name="Exercise3"></a>
 ## Exercise 3: Enable automated builds ##
 
-With Visual Studio Mobile Center's build feature, you can store your source code in a GitHub repository and create an installable app package automatically with every commit or push — a process known as *continuous integration*. Best of all, you don't need to provision any agents or external machines to build your apps. Mobile Center takes care of this and will compile your Android (and optionally iOS) apps right from the repo with no manual setup on your side. In this exercise, you will configure Visual Studio Mobile Center to build the app from the repo you established in the previous exercise.
+With Visual Studio Mobile Center's build feature, you can store your source code in a GitHub repository and create an installable app package automatically with every commit or push — a process known as *continuous integration*. Best of all, you don't need to provision any agents or external machines to build your apps. Mobile Center takes care of this and will compile your iOS, Android, and Windows apps right from the repo with no manual setup on your side. In this exercise, you will configure Visual Studio Mobile Center to build the app from the repo you established in the previous exercise.
 
 1. Open your Visual Studio Mobile Center apps collection by navigating to [https://mobile.azure.com/apps](https://mobile.azure.com/apps). Then click **Drone Lander for Android**.
 
@@ -168,13 +166,13 @@ With Visual Studio Mobile Center's build feature, you can store your source code
 
     _Selecting GitHub as the service provider_
 
-1. Select **DroneLander** from list of repos.
+1. Select **DroneLander** from the list of repos.
 
 	![Selecting the DroneLander repo](Images/web-connected-to-github.png)
 	
 	_Selecting the DroneLander repo_ 
 
-1. Select the **master** branch in the "Branches" list and then click **Set up a branch** to configure a branch for build integration.
+1. Select the **master** branch from the list of branches, and then click **Set up a branch** to configure a branch for build integration.
 
 	![Setting up a build branch](Images/web-click-setup-branch.png)
 	
@@ -210,7 +208,7 @@ With Visual Studio Mobile Center's build feature, you can store your source code
 	
 	_Downloading the package_ 
 
-Now that Visual Studio Mobile Center is configured to build the app, a new build will be initiated each time you check in changes to the GitHub repo. Now...wouldn't it be great if each person testing the app could be notified following each successful build? Visual Studio Mobile Center can take care of that, too.
+Now that Visual Studio Mobile Center is configured to build the app, a new build will be initiated each time you check in changes to the GitHub repo. Now...wouldn't it be great if each person testing the app could be notified following each successful build? Visual Studio Mobile Center can help with that, too.
 
 <a name="Exercise4"></a>
 ## Exercise 4: Enable automated distribution ##
@@ -231,30 +229,28 @@ In this exercise, you will configure Visual Studio Mobile Center to send e-mail 
 	
 	_Selecting a distribution group_ 
 
-1. Optionally enter a short release note such as "My first release of the awesome Drone Lander app." Then click click **Distribute Build**.
+1. Optionally enter a short release note such as "My first release of Drone Lander." Then click **Distribute Build**.
 
-1. Check e-mail sent to the e-mail address associated with your GitHub account, and confirm that you receive a message notifying you of a new release.
+1. Check your e-mail and confirm that you received a message notifying you of a new release.
 
 	![Build notification from Visual Studio Mobile Center](Images/mail-new-version.png)
 	
 	_Build notification from Visual Studio Mobile Center_ 
 
-Feel free to add more testers to the Collaborators distribution group, or even create additional groups. Remember, users can install your app on their devices by simply clicking on the link in the email.
-
-Now that a few users have their hands on your app, it might be helpful to know if they've installed it, how it's performing for them, and, most importantly, if the app has defects or other issues you need to address. This is where Visual Studio Mobile Center Crash Analytics come in.
+Feel free to add more testers to the Collaborators distribution group, or to create additional groups. Remember, users can install your app on their devices by simply clicking on the link in the email.
 
 <a name="Exercise5"></a>
 ## Exercise 5: Add crash analytics support to the app ##
 
-The Visual Studio Mobile Center SDK makes it easy to add logic to a Xamarin Forms app to generate crash analytics. In this exercise, you will add shared and platform-specific code to Drone Lander to configure it so that crash information can be viewed in Visual Studio Mobile Center, and you will test your changes by temporarily adding code that generates an unhandled exception when the app starts up. 
+In a perfect world, apps would never crash. In the real world, they sometimes do. The Visual Studio Mobile Center SDK makes it easy to add logic to a Xamarin Forms app to generate helpful analytics when crashes occur. In this exercise, you will add code to Drone Lander to configure it so that crash information can be viewed in Visual Studio Mobile Center, and you will test your changes by temporarily modifying your code to generate an unhandled exception when the app starts up. 
 
-1. Open the **DroneLander** solution in Visual Studio 2017, if not already open from previous exercises.
+1. Open the **DroneLander** solution in Visual Studio 2017 if it isn't already open. In Solution Explorer, right-click the solution and select **Manage NuGet Packages for Solution...**.
 
-1. In Solution Explorer, right-click the **DroneLander** solution and select **Manage NuGet Packages for Solution...**. 
 1. Ensure that "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Analytics" into the search box. Select the **Microsoft.Azure.Mobile.Analytics** package. Then check the **Project** box to add the package to all of the projects in the solution, and click **Install**. When prompted to review changes, click **OK**. 
-1. Return to the NuGet Package Manager and once more, ensure that "Browse" is selected. Type "Microsoft.Azure.Mobile.Crashes" into the search box and select the **Microsoft.Azure.Mobile.Crashes** package. Then check the **Project** box to add the package to all of the projects in the solution, and click **Install**. When prompted to review changes, click **OK**.
-1. In Solution Explorer, open the **App.xaml.cs** file in the **DroneLander (Portable)** project. 
-1. Add the following statements at the top of the file:
+
+1. Return to the NuGet Package Manager and once more ensure that "Browse" is selected. Type "Microsoft.Azure.Mobile.Crashes" into the search box and select the **Microsoft.Azure.Mobile.Crashes** package. Then check the **Project** box to add the package to all of the projects in the solution, and click **Install**. When prompted to review changes, click **OK**.
+
+1. In Solution Explorer, open **App.xaml.cs** in the **DroneLander (Portable)** project. Then add the following statements at the top of the file:
 
 	```C#
 	using Microsoft.Azure.Mobile;
@@ -269,106 +265,94 @@ The Visual Studio Mobile Center SDK makes it easy to add logic to a Xamarin Form
                    $"ios={Common.MobileCenterConstants.iOSAppId}",
                    typeof(Analytics), typeof(Crashes));
 
-1. Open "CoreConstants.cs" in the **DroneLander (Portable)** **Common** folder, and add the following class directly below the ```CoreConstants``` class:
+1. Open **CoreConstants.cs** in the **DroneLander (Portable)** project's "Common" folder, and add the following class directly below the ```CoreConstants``` class:
 
 	```C#
 	public static class MobileCenterConstants
     {
-        public const string AndroidAppId = "[MOBILE_CENTER_ANDROID_APP_ID]";
+        public const string AndroidAppId = "MOBILE_CENTER_ANDROID_APP_ID";
         public const string iOSAppId = "";
     }
 	```
 
-	![Adding MobileCenterConstants class to CoreConstants.cs](Images/vs-add-constants.png)
-	
-	_Adding MobileCenterConstants class to CoreConstants.cs_ 
+	These constants will be used by Mobile Center to track usage and crash information when your app starts.
 
-	These constants will be used by Mobile Center Crash and Analytics to track use and crash information when your app starts;
+1. Return to [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and open the Android version of **Drone Lander**.
 
-1. Return to the [Visual Studio Mobile Center app portal](https://mobile.azure.com/apps) in your browser and click the Android version of **Drone Lander**.
 1. Click **Manage App** in the upper-right corner of the page. 
+
 1. Copy the value in the **App secret** box to the clipboard.
-1. Return to **CoreConstants.cs** and paste to replace the value of **AndroidAppId** with the value in your clipboard.
+
+1. Return to **CoreConstants.cs** and replace MOBILE_CENTER_ANDROID_APP_ID with the value on the clipboard.
 	 
-	![The updated AndroidAppId in MobileCenterConstants](Images/vs-updated-android-id.png)
+	![Updating the Android App ID](Images/vs-updated-android-id.png)
 	
-	_The updated AndroidAppId in MobileCenterConstants_ 
+	_Updating the Android App ID_ 
 
-1. Now it's time generate a crash report and see how it looks in Visual Studio Mobile Center. To do that, you will temporarily comment out a line of code in the app to generate a crash. Begin by opening the **MainViewModels.cs** in the **DroneLander (Portable)** **ViewModels** folder.
-1. Locate the assignment of **this.ActiveLandingParameters** in the ```MainViewModel``` class initializer and comment it out.
+1. Now it's time generate a crash report and see how it looks in Visual Studio Mobile Center. To do that, you will temporarily comment out a line of code in the app to generate a crash. Begin by opening **MainViewModels.cs** in the **DroneLander (Portable)** project's "ViewModels" folder. Then comment out the line of code that initializes ```this.ActiveLandingParameters``` in the ```MainViewModel``` constructor.
 
-	![Commenting out the active landing parameters](Images/vs-comment-out.png)
+	![Commenting out a line of code to induce a crash](Images/vs-comment-out.png)
 	
-	_Commenting out the active landing parameters_
+	_Commenting out a line of code to induce a crash_
 
-	 Since we know a drone can't start a landing without active landing parameters, this is certain to throw an exception!
+1. Launch the Android version of Drone Lander in the debugger. Confirm that the app throws an unhandled exception when it starts. 
 
-1. In Solution Explorer, right-click the **DroneLander.Android** project and select **Set as StartUp Project**. 
-1. Click the **Run** button to launch Drone Lander in the selected Android emulator.
-1. Confirm that shortly after the app loads in the emulator, an unhandled exception is thrown. 
-
-	![Result of an unhandled exception](Images/vs-new-exception.png)
+	![The unhandled exception](Images/vs-new-exception.png)
 	
-	_Result of an unhandled exception_
+	_The unhandled exception_
 
-1. Crash data is initially stored on the local device, and is typically transmitted to Visual Studio Mobile Center the next time the app loads. In Visual Studio, return to **MainViewModel.cs** and uncomment the line of code that generates the unhandled exception. 
-1. Use Visual Studio's **Debug** > **Start Without Debugging** command (or simply press **CTRL+F5**) to launch the app **without** the debugger attached.  
+1. Crash data is initially stored on the local device, and is typically transmitted to Visual Studio Mobile Center the next time the app loads. In Visual Studio, return to **MainViewModel.cs** and uncomment the line of code that generates the unhandled exception. Use Visual Studio's **Debug** > **Start Without Debugging** command (or simply press **CTRL+F5**) to launch the app **without** the debugger attached. This will transmit the crash information stored on the local device to VSMC.
 
-	With the new crash and analytics features added to your app, it's probably a good time to commit your changes to your source repository.
+1. Since you modified the Drone Lander code, now is a good time to commit the changes and sync with GitHub. Right-click the **DroneLander** solution and use the **Commit** command to commit your changes.
 
-1.  Right-click the **DroneLander** solution and use the **Commit** command to commit your recent changes to GitHub.
-1. Enter a comment, such as "Added Mobile Center crash and analytics support." as the commit comment, then open "Commit All" drop down and select **Commit All and Push**.
+1. Enter a comment such as "Added Mobile Center crash and analytics support." Then select **Commit All and Push** from the **Commit All** drop-down.
 
 	![Committing updates to GitHub](Images/vs-commit-all.png)
 	
 	_Committing updates to GitHub_
 
 1. Return to the [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and open **Drone Lander**.
-1. Click **Crashes**.
-1. Observe the various charts displaying crash information, as well as the entry at the bottom of the page representing the crash that you generated moments ago. 
-1. Select the crash details for **Crash Group #1** at observe the through details, including the ability to view an entire stack trace.
+
+1. Click **Crashes** and take a moment to examine the various charts displaying crash information, as well as the entry at the bottom of the page representing the crash that occurred moments ago. 
+
+	> The crash may not appear in the portal for 10 minutes or so. If it's not there, proceed to Exercise 6 and return to the crash reports later. 
+
+1. Select the crash details for **Crash Group #1** and examine the stack trace for the crash that occurred. The stack trace identifies the ```MainViewModel``` constructor as the source of the crash, and ```System.NullReferenceException``` as the type of exception.
  
     ![Crash reporting in Visual Studio Mobile Center](Images/portal-new-crash-report.png)
 
     _Crash reporting in Visual Studio Mobile Center_
 
-	>Note that the crash may not appear in the portal for 10 minutes or so. If it's not there, and you have a little time, proceed to optional Exercise 6 and return to the crash reports later. 
-
-Having near real-time crash analytics available is important for any mobile app, but Visual Studio Mobile Center isn't limited to build integration, distribution, and crash reports. It also provides back-end services for authentication, integrated testing, data syncing, and (soon) push notifications, making it a one-stop solution for building mobile apps that you can maintain and scale. For more information, see https://docs.microsoft.com/en-us/mobile-center.
+You have seen first-hand how Visual Studio Mobile Center supports automated builds and distribution and provides rich crash analytics. But this isn't all VSMC can do. It also provides back-end services for authenticating users and supports integrated testing, data syncing, and (soon) push notifications. For more information on VSMC and its various features, see https://docs.microsoft.com/en-us/mobile-center.
 
 <a name="Exercise6"></a>
 ## Exercise 6 (optional): View launch test results ##
 
-Have some extra time and want to check out an additional feature of Visual Studio Mobile Center?  You may have noticed in Exercise 3 you enabled "Run a launch test on device" when you configured your build settings, but you never really took a look at anything in the Test area of Visual Studio Mobile Center.
-
-Even though you haven't configured any formal tests, yet, a "start up" test was run on the app since you enabled this setting.
+Have some extra time and want to learn about an additional feature of Visual Studio Mobile Center?  In Exercise 3, you enabled **Run a launch test on device** when you configured your build settings, but you never did anything to utilize that setting. In this exercise, you will learn what that setting does and how you can view the information that it generates.
 
 1. Return to the [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and open **Drone Lander**.
-1. Select **Test** from the left-navigation menu and observe an initial test was already run successfully.
 
-    ![The initial launch test results](Images/web-inital-test.png)
+1. Select **Test** from the menu on the left and confirm that a test was run when the app launched, and that the test ran successfully.
 
-    _The initial launch test results_
+    ![The launch test results](Images/web-inital-test.png)
+
+    _The launch test results_
 	
-1. Click anywhere in the test panel to view a detail of the test results:
+1. Click anywhere in the test panel to view a detail of the test results. Then click **App Launches Test**.
 
-    ![The initial launch test run details](Images/web-test-detail.png)
+    ![Viewing the test results](Images/web-test-detail.png)
 
-    _The initial launch test run details_
+    _Viewing the test results_
 	 
-1. Click the **App Launches Test** entry in the "TESTS" panel to view detailed information, including device model, hardware version, and even a screenshot of Drone Lander after initial startup!
+1. Examine the results of the test, which includes an indicator of how much RAM the app consumed and even a screen shot of the app itself.
 
-    ![Detailed launch run information, including a screenshot](Images/web-launch-screenshot.png)
+    ![Detailed launch-test information](Images/web-launch-screenshot.png)
 
-    _Detailed launch run information, including a screenshot_	
+    _Detailed launch-test information_	
 
-This has been a short exercise, but probably enough to whet your imagination for what's coming up in a later lab focusing on testing, and integrating testing into the build and distribution process!
+This merely scratches the surface of what you can do with VSMC when it comes to testing. You will learn more about integration testing in Part 6, and learn how to include comprehensive tests in the build and distribution process.
 
 <a name="Summary"></a>
 ## Summary ##
 
-Build, distribution, crash reporting, and analytics are now fully integrated into your development cycle, making it easy to simply write code, push changes to your source code repo, and let Visual Studio Mobile Center do all the heavy lifting. 
-
-You also may have noticed Visual Studio Mobile Center Test features were available in the portal as well, and were perhaps wondering how to integrate testing into your build processes. Don't worry, you will be coming back to Visual Studio Mobile Center in Part 6, specifically to cover testing. 
-
-That's it for Part 3 of Operation Remote Resupply. In Part 4, you will modify the app to integrate with an Azure Mobile backend, including integration of authentication, data services, and even creating your own mobile APIs.
+That's it for Part 3 of Operation Remote Resupply. In Part 4, you will build an Azure back-end and modify the app to use it. Along the way, you will learn how to authenticate users, employ Azure data services, and even create your own mobile APIs.
