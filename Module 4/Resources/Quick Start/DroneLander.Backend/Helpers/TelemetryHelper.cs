@@ -20,13 +20,13 @@ namespace DroneLander.Service.Helpers
     {
         public async static Task SendToMissionControlAsync(TelemetryItem telemetry)
         {   
-            var client = TopicClient.CreateFromConnectionString(Common.CoreConstants.HubConnectionString, Common.CoreConstants.HubTopicName);
+            var client = TopicClient.CreateFromConnectionString(Common.CoreConstants.MissionControlTransmissionConnection, Common.CoreConstants.MissionEventName);
 
             BrokeredMessage bm = new BrokeredMessage();
 
             bm.Label = telemetry.UserId;
             bm.Properties["UserId"] = telemetry.UserId;
-            bm.Properties["TeamName"] = telemetry.TeamName;
+            bm.Properties["DisplayName"] = telemetry.DisplayName;
             bm.Properties["Tagline"] = telemetry.Tagline;
             bm.Properties["Altitude"] = telemetry.Altitude;
             bm.Properties["DescentRate"] = telemetry.DescentRate;

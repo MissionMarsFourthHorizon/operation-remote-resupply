@@ -231,7 +231,15 @@ In this exercise you will be creating an Azure Mobile Backend using an Azure Mob
 	}
 
 	```
-1. Observe the use of the ```[MobileAppController]``` attribute assigned to the class. The MobileAppController simply designates a standard ApiController as an Azure Mobile App controller, meaning it can be accessed and managed through the Azure Mobile SDK using the API invocation methods you will be using later in this lab. The Telemetry Controller will be responsible for sending your real-time drone landing telemetry to the Earth-based "Mission Control" so they can monitor the progress of your resupply attempts.
+1. Observe the use of the ```[MobileAppController]``` attribute assigned to the class. The MobileAppController simply designates a standard ApiController as an Azure Mobile App controller, meaning it can be accessed and managed through the Azure Mobile SDK using the API invocation methods you will be using later in this lab. The Telemetry Controller will be responsible for sending your real-time drone landing telemetry to Earth-based "Mission Control" so they can monitor the progress of your resupply attempts. 
+ 
+Communication with Mission Control is only possible by sending secure, authorized transmissions. The ensure your transmissions are authorized and routed to Mission Control, you need to insert the Mission Event name. The Mission Event name was provided to you at the beginning of the event, during registration.
+1. Open **Common\CoreConstants.cs** in the **DroneLander.Backend** project, locate the "MissionEventName" constant, and replace "[ENTER_MISSION_EVENT_NAME]" with the value given to you by the event facilitator during registration.
+
+	![The MissionEventName constant in CoreConstants.cs](Images/vs-mission-name.png)
+
+    _The MissionEventName constant in CoreConstants.cs_
+
 
 With your Activity table controller and Telemetry API controller in place, all that's left to do is publish your changes to your Azure Mobile App.
 
@@ -627,13 +635,13 @@ With an Azure Mobile App created, authentication configured, and backend data an
 
 	```C#
 	using System;
-
+	
 	namespace DroneLander.Data
 	{
 	    public class TelemetryItem
 	    {
 	        public string UserId { get; set; }
-	        public string TeamName { get; set; }
+	        public string DisplayName { get; set; }
 	        public string Tagline { get; set; }
 	        public double Altitude { get; set; }
 	        public double DescentRate { get; set; }
@@ -987,12 +995,12 @@ Have some extra time and want to try an additional challenge? As you may recall,
 	```C#
 	public static class TelemetryConstants
     {
-        public const string TeamName = "";
+        public const string DisplayName = "";
         public const string Tagline = "";
     }
 	```
-1. If you were assigned a team name for this session, enter the team name as the value of **TeamName**.
-1. To add a bit of flair, feel free to add a tagline as well, by entering something unique to you as the value of **Tagline**. The value of your tagline **will be seen by other astronauts**, so make sure you come up with something great!  
+1. Enter a short value, such as your first or given name, as the value of **DisplayName**. If you were assigned a team name for this session, enter the team name as the value of **DisplayName**. This value will be seen by Mission Control as they track your landing attemptsl
+1. To add a bit of flair, feel free to enter a tagline as well, by entering something unique to you as the value of **Tagline**. The value of your tagline **will be seen by other astronauts**, so make sure you come up with something great!  
 1. Open **ActivityHelper.cs** in the **DroneLander (Portable)** Helpers folder, and add the following code directly inside the ```ActivityHelper``` class:
 
 	```C#
@@ -1079,11 +1087,20 @@ Have some extra time and want to try an additional challenge? As you may recall,
         });
     }
 	```
- 
+1. Once again, ensure that the Android project is selected as the startup project by right-clicking the **DroneLander.Android** project in Solution Explorer and selecting **Set as StartUp Project**, then click the **Run** button to launch the Android version of Drone Lander in the selected Android emulator.
+1. Click **Sign In** in the app toolbar menu, enter your Microsoft account credentials.
+
+	>Remember, now that authentication has been added to your mobile backend, only authorized users can add activity and send telemetry.
+	
+1. Continue to attempt resupply landings and observe the Mission Control remote monitoring screen to view real-time landing attempt information for yourself, as well as your fellow mission pilots.
+
+	![Real-time landing telemetry monitored by Mission Control](Images/app-mission-control.png)
+
+    _Real-time landing telemetry monitored by Mission Control_
  
 <a name="Summary"></a>
 ## Summary ##
 
-Here is a summary.
+The app is now complete, including sending authorized telemetry transmission to Mission Control, back on earth. Your mission, if you choose to accept it, is to continue practicing remote resupply missions for the astronauts that are depending upon you at various remote landing sites on the surface of Mars, while Mission Control monitors your progress.
 
 That's it for Part 4 of Operation Remote Resupply. In Part 5, you will be taking a slight detour to experience and experiment with some powerful supporting tools in Xamarin toolkit, such as the Xamarin Profiler, UI Inspector, and Forms Previewer, as well as how to create interactive, "executable" learning guides and teaching aids with Xamarin Workbooks.
