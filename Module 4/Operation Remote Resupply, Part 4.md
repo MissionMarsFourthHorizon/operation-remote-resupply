@@ -6,11 +6,11 @@
 <a name="Overview"></a>
 ## Overview ##
 
-The challenges of mobile development can often be daunting to even the most experienced developer. Mobile apps need to store data, and most users want their information available all the time, whether online or offline. Mobile apps need authentication and authorization to ensure the integrity and privacy of the data being sent, and modern mobile apps need an intuitive and reliable framework for real-time user notification and communication that can seamlessly broadcast information across a huge variety of platform variations and devices.
+The challenges of mobile development can be daunting to even the most experienced developer. Mobile apps need to store data, and most users want their information available all the time, whether online or offline. Mobile apps need authentication and authorization to ensure the integrity and privacy of the data being sent, and modern mobile apps need an intuitive and reliable framework for real-time user notification and communication that can seamlessly broadcast information across a huge variety of platform variations and devices.
 
 To meet these ever-increasing challenges, [Azure Mobile Apps](https://azure.microsoft.com/en-us/services/app-service/mobile/ "Azure Mobile Apps") offer a highly scalable, globally available mobile application development platform for developers that expose a rich set of capabilities such as authentication, authentication, data storage, and even offline synchronization and push notification.
 
-In this lab, you will use Visual Studio 2017 and Azure Mobile App services to provision and configure a mobile backend service to provide an authenticated user sign in experience, as well as add features to your app to record drone landing attempt history and send real-time telemetry information to Mission Control.
+In this lab, you will use Visual Studio 2017 and Azure Mobile Apps services to provision and configure a mobile backend service to provide an authenticated user sign-in experience, as well as add features to your app to record drone landing attempt history and send real-time telemetry information to Mission Control.
 
 <a name="Objectives"></a>
 ### Objectives ###
@@ -41,9 +41,9 @@ If you wish to build and run the iOS version of the app, you also have to have a
 
 This lab includes the following exercises:
 
-- [Exercise 1: Create and configure an Azure Mobile App](#Exercise1)
-- [Exercise 2: Add a data connection to an Azure Mobile App](#Exercise2)
-- [Exercise 3: Create and publish Azure Mobile backend service](#Exercise3)
+- [Exercise 1: Create an Azure Mobile App](#Exercise1)
+- [Exercise 2: Add a data connection](#Exercise2)
+- [Exercise 3: Implement and deploy a back-end service](#Exercise3)
 - [Exercise 4: Add Mobile App authentication to a backend service](#Exercise4)
 - [Exercise 5: Add Mobile App authentication support to a Xamarin Forms app](#Exercise5)
 - [Exercise 6: Call Mobile App services from a Xamarin Forms app](#Exercise6)
@@ -54,85 +54,84 @@ Estimated time to complete this lab: **45** minutes.
 <a name="Exercise1"></a>
 ## Exercise 1: Create an Azure Mobile App ##
  
-An Azure Mobile App is actually a "backend" service for a mobile app. You have already create the "client" side of a mobile app previous labs, using Xamarin Forms, and although Drone Lander is a complete, fully functioning app, there are no services available for storing data or authenticating users. An Azure Mobile App is a highly scalable, globally available mobile application development platform for mobile developers that delivers these features, with services such as data storage, authorization and authentication, and even offline storage and push notifications built right in.
+An Azure Mobile App is a back-end service for mobile apps. You have already create the "client" side of a mobile app previous labs, using Xamarin Forms, and although Drone Lander is a complete, fully functioning app, there are no services available for storing data or authenticating users. An Azure Mobile App is a highly scalable, globally available mobile application development platform for mobile developers that delivers these features, with services such as data storage, authorization and authentication, and even offline storage and push notifications built right in.
 
 In this exercise you will create an Azure Mobile App to serve as the foundation for your Drone Lander app backend. 
 
 1. Open the [Azure Portal](https://portal.azure.com) in your browser. If asked to log in, do so using your Microsoft account.
+
 1. Click **+ New**, followed by **Web + Mobile** and **Mobile App**.
-1. Enter an app name that is unique within Azure, such as "dronelandermobile001". Under **Resource Group**, select **Create new** and enter "DroneLanderResourceGroup" as the resource-group name to create a resource group for the Function App. Accept the default values for all other parameters. Then click **Create** to create a new Mobile App.
+
+1. Enter an app name that is unique within Azure, such as "dronelandermobile001." Under **Resource Group**, select **Create new** and enter "DroneLanderResourceGroup" as the resource-group name to create a resource group for the Mobile App. Accept the default values for all other parameters. Then click **Create** to create a new Mobile App.
     
 	![Creating a new Azure Mobile App](Images/portal-create-new-app.png)
 
     _Creating a new Azure Mobile App_
 
-1. Click **Resource groups** in the ribbon on the left side of the portal, and then click **DroneLanderResourceGroup**. 
-1. Wait until "Deploying" changes to "Succeeded," indicating that the Mobile App has been deployed.
+1. Click **Resource groups** in the ribbon on the left side of the portal, and then click **DroneLanderResourceGroup** to open the resource group.
+
+1. Click the **Refresh** button periodically until "Deploying" changes to "Succeeded," indicating that the Mobile App has been deployed.
  
 That's it, it's that quick. Although you have a new Mobile App created, it doesn't do much yet, and is really more of a "placeholder" at the moment. In the next exercise you will be adding support for data storage services via Azure Mobile "Easy" table and API support.
 
 <a name="Exercise2"></a>
-## Exercise 2: Add a data connection to an Azure Mobile App ##
+## Exercise 2: Add a data connection ##
 
-Every front end needs a great backend, and in mobile app development it’s important to have your data available at all times. Integrated with Azure Mobile Apps are the concepts of "Easy" tables and APIs, as well as direct data connections, that easy connect your mobile app backend services to data storage, as well as enable integrated authentication you will add later in this lab.
+Every front end needs a great backend, and in mobile app development it’s important to have your data available at all times. Integrated with Azure Mobile Apps are the concepts of "Easy" tables and APIs, as well as direct data connections, that easily connect your mobile app backend services to data storage, as well as enable integrated authentication you will add later in this lab.
 
 Azure Mobile data connections are "backended" by either Azure SQL Database or Azure Storage. In this exercise you will be configuring your Azure Mobile App to use Azure SQL Database.
 
-1. Return to the Azure Mobile App, if not already opened from the previous exercise, and select **Data connections** from the "MOBILE" group.
+1. In the blade for the "DroneLanderResourceGroup" resource, click the Mobile App service that you deployed in Exercise 1. Then scroll down in the menu on the left side of the blade and click **Data connections**.
 
-	![Selecting Data connections in the Azure Mobile App](Images/portal-select-data-connections.png)
+	![Viewing data connections](Images/portal-select-data-connections.png)
 
-    _Selecting Data connections in the Azure Mobile App_
+    _Viewing data connections_
  
-1. Click **+ Add** to access the "Add data connection" panel.
-1. Ensure **SQL database** is selected as the "Type" then select **Configure required settings** in the "SQL database" selection, and **+ Create new database** in the "Databases" panel.
-
-	![Creating a new database in the Azure Mobile App](Images/portal-configure-database.png)
-
-    _Creating a new database in the Azure Mobile App_
+1. Click **+ Add** to add a new data connection.
  
-1. Enter the value used for your Mobile App name, such as "dronelandermobile001" as the **Name** of your new database and click the **Target Server** panel.
+1. Ensure **SQL Database** is selected. Then click **Configure required settings**, followed by **Create a new database**.
 
-	![Creating a new database in the Azure Mobile App](Images/portal-click-target-server.png)
+	![Creating a new database](Images/portal-configure-database.png)
 
-    _Creating a new database in the Azure Mobile App_
+    _Creating a new database_
  
-	>Using the same name for your SQL database server and database is NOT required when configuring Mobile App database connections. The services can be named anything that makes sense for your situation in your organization. Use of the Mobile App name for SQL database name (and server) are for convenience only when working through this lab.
+1. Enter the name of your Mobile App as the database name, and then click **Target Server**.
 
-1. Click **+ Create a new server** in the "Server" panel and enter "dronelandermobile001" as the **Server name**, enter a **SQL admin login** of your own choosing, type in a **Password** and **Confirm password**, then select a **Location** nearest your current location and click **Select**.
-1. After a short delay, the "New server" panel will collapse, and you will be returned to the "SQL Database" panel. Click **Select** in the "SQL Database" panel to be returned to the "Add data connection" panel. 
-1. In the "Add data connection" click the **Connection string** selector, accept the default of "MS_TableConnectionString" then click **OK**.
+	> Using the same name for your Mobile App and SQL database is NOT a requirement. It is simply a convenience for working this lab.
 
-	![Accepting the default "MS_TableConnectionString" value](Images/portal-accept-connection-string.png)
+	![Naming a database](Images/portal-click-target-server.png)
 
-    _Accepting the default "MS_TableConnectionString" value_
+    _Naming a database_
  
-	>Since you will be working with a "Quick Start" backend service in the next exercise, it's important that you **use the default value of "MS_TableConnectionString" in this step**.
+1. Click **Create a new server** and enter "dronelandermobile001" as the server name. Enter a user name and password of your choosing for accessing the server, and then click **Select**.
 
-1. Click **OK** in the "Add data connection" panel to commit the changes you've made. Your SQL database connection, including a new Azure SQL database will now be provisioned and connected to your Azure Mobile App.
-	
-	Provisioning the server and database will take a few minutes. You can safely move on to the next step at any time.
+1. Click the **Select** button at the bottom of the "SQL Database" blade. Then click **Connection string** in the "Add data connection" blade, **OK** at the bottom of the "Connection String" blade, and **OK** at the bottom of the "Add data connection" blade.
 
-Your Azure Mobile App data connection, including an Azure SQL database, have now been provisioned.
+	> Since you will be working with a "Quick Start" backend service in the next exercise, it's important that you accept the default connection string name of "MS_TableConnectionString."
 
-With a mobile service created, and a data connection provisioned and configured, all the pieces are now in place to start adding code to communicate between your Azure Mobile App and data storage. In the next exercise you will be creating the "plumbing" for these services and adding code for Azure Mobile App backend integration.
+	![Adding a data connection](Images/portal-accept-connection-string.png)
+
+    _Adding a data connection_
+ 
+Provisioning the database and database server will take a few minutes, but there's no need to wait. You can move on the next exercise and begin writing the code to connect the Drone Lander app to the Azure Mobile App.
 
 <a name="Exercise3"></a>
-## Exercise 3: Create and publish Azure Mobile backend service ##
+## Exercise 3: Implement and deploy a back-end service ##
 
 Although an Azure Mobile App is, in many ways, just a placeholder service, much of the complexity of working with backend services is handled for you, centrally, in the Azure Mobile App service itself, like managing connection strings and authentication providers. Allowing an Azure Mobile App to manage these tricky pieces has clear advantages, and allows a developer to focus primarily on writing code for business logic and features, instead of worrying about configuration and administration.
 
 In this exercise you will be creating an Azure Mobile Backend using an Azure Mobile App "Quick Start" project you will add to your Drone Lander solution, and then writing code to take advantage of the built-in Mobile table and API features of Azure Mobile Apps.
 
-1. In Visual Studio 2017, open the **DroneLander** solution, if not already open from previous the lab.
-1. Right-click the **DroneLander** solution and use the **Add** > **Existing Project...** command to add **DroneLander.Backend.csproj** from the lab's "Resources\Quick Start\DroneLander.Backend" folder. This is the C# "Quick Start" project file for the Azure Mobile App backend you will be working with in this exercise.
+1. In Visual Studio 2017, open the **DroneLander** solution that you built in previous labs.
 
-	![The DroneLander solution with the addition of the Azure Mobile App backend project](Images/vs-new-backend-project.png)
+1. Right-click the **DroneLander** solution and use the **Add** > **Existing Project...** command to add **DroneLander.Backend.csproj** from the lab's "Resources\Quick Start\DroneLander.Backend" folder. This is a quick-start project for creating a back-end service to be hosted in the Azure Mobile App you created in Exercise 1.
 
-    _The DroneLander solution with the addition of the Azure Mobile App backend project_
-
-	>The Azure Mobile App Quick Start section provides a large number of additional Quick Start projects for various scenarios,  including Xamarin Forms, however many of the provided Quick Starts contain files, code, and configurations that are unnecessary for this lab. The Quick Start being used in this exercise has been tailored specifically to the services and logic used in the Drone Lander app.
+	> You can click **Quickstart** in the blade for an Azure Mobile App in the Azure Portal and download quick-start projects of various types. Because these projects contain infrastructure you don't need and would have to be modified anyway, you are importing a project that has been specifically prepared for this lab.
  
+	![The DroneLander solution with the quick-start project added](Images/vs-new-backend-project.png)
+
+    _The DroneLander solution with the quick-start project added_
+
 1. Right-click the "Controllers" folder in the **DroneLander.Backend** project and use the **Add** > **Class** command to add a class file named "ActivityItemController.cs." Then replace the contents of the file with the following code:
 
 	```C#
@@ -190,11 +189,9 @@ In this exercise you will be creating an Azure Mobile Backend using an Azure Mob
 	}
 	```
 
-	This controller class will communicate with your data connection to read and write values to an "ActivityItem" table to store drone landing activity later in this lab. 
+	This controller uses the data connection you created in the previous exercise to access an "ActivityItem" table in the database. ```ActivityItemController``` derives from ```TableController```, which provides a base implementation for controllers in Azure Mobile Apps and makes it easy to perform create, read, update, and delete (CRUD) operations on data stores connected to those apps.
 
-1. Observe the use of the ```TableController``` implementation on the ActivityItemController class definition. The TableController class provides a common ```ApiController``` abstraction for Azure Mobile App Controllers and makes it easy to call create, read, updated, and delete (CRUD) methods against data storage using the Azure Mobile App-integrated service created in the previous exercise.
-
-1. Once again, right-click the "Controllers" folder and use the **Add** > **Class** command to add a class file named "TelemetryController.cs." Then replace the contents of the file with the following code:
+1. Right-click the "Controllers" folder again and use the **Add** > **Class** command to add a class file named "TelemetryController.cs." Then replace the contents of the file with the following code:
 
 	```C#
 	using System.Web.Http;
@@ -224,42 +221,37 @@ In this exercise you will be creating an Azure Mobile Backend using an Azure Mob
 	        public async Task<string> Post(TelemetryItem telemetry)
 	        {
 	            await Helpers.TelemetryHelper.SendToMissionControlAsync(telemetry);
-	
 	            return $"Telemetry for {telemetry.UserId} received by Mission Control.";
 	        }
 	    }
 	}
-
 	```
-1. Observe the use of the ```[MobileAppController]``` attribute assigned to the class. The MobileAppController simply designates a standard ApiController as an Azure Mobile App controller, meaning it can be accessed and managed through the Azure Mobile SDK using the API invocation methods you will be using later in this lab. The Telemetry Controller will be responsible for sending your real-time drone landing telemetry to Earth-based "Mission Control" so they can monitor the progress of your resupply attempts. 
+
+	Note the ```[MobileAppController]``` attribute decorating the class definition. This attribute designates an ```ApiController``` as an Azure Mobile App controller, meaning it can be accessed through the Azure Mobile SDK using standard APIs. The Telemetry Controller is responsible for sending real-time telemetry to Earth-based Mission Control to monitor the progress of landing attempts. 
  
-Communication with Mission Control is only possible by sending secure, authorized transmissions. The ensure your transmissions are authorized and routed to Mission Control, you need to insert the Mission Event name. The Mission Event name was provided to you at the beginning of the event, during registration.
-1. Open **Common\CoreConstants.cs** in the **DroneLander.Backend** project, locate the "MissionEventName" constant, and replace "[ENTER_MISSION_EVENT_NAME]" with the value given to you by the event facilitator during registration.
+1. To ensure that your transmissions are properly routed to Mission Control, you need to insert the mission event name. Open **CoreConstants.cs** in the "Common" folder of the **DroneLander.Backend** project, locate the field named ```MissionEventName```, and replace "[ENTER_MISSION_EVENT_NAME]" with the value given to you at the start of the event.
 
-	![The MissionEventName constant in CoreConstants.cs](Images/vs-mission-name.png)
+	![Updating the mission event name](Images/vs-mission-name.png)
 
-    _The MissionEventName constant in CoreConstants.cs_
+    _Updating the mission event name_
 
+1. The next step is to publish the service to the cloud. Right-click the **DroneLander.Backend** project and select **Publish...** from the context menu. Then choose **Select Existing** and click **Publish**. 
 
-With your Activity table controller and Telemetry API controller in place, all that's left to do is publish your changes to your Azure Mobile App.
+	![Publishing an Azure Mobile App](Images/vs-publish-to-existing.png)
 
-1. Right-click the **DroneLander.Backend** project, select **Publish...** then choose **Select Existing** and click **Publish** to browse your available Azure Mobile Apps. 
+    _Publishing an Azure Mobile App_ 
 
-	![Publishing a backend service to an existing App Service](Images/vs-publish-to-existing.png)
-
-    _Publishing a backend service to an existing App Service_ 
-
-1. Expand the **DroneLanderResources** node and select the Azure Mobile App created earlier in this lab (such as dronelandermobile001) then click **OK** to start the publishing process. 
+1. Select the Azure Mobile App you created in Exercise 1. Then click **OK** to begin the publishing process. 
  
-	After a short delay your default browser will open to the default Azure Mobile App landing page, which indicates your backend has been published successfully.
+1. Wait until your browser opens to the default Azure Mobile App landing page, indicating that the service was successfully deployed.
 
-	![Successfully publishing an Azure Mobile App backend service](Images/web-mobile-app-success.png)
+	![The default Azure Mobile App landing page](Images/web-mobile-app-success.png)
 
-    _Successfully publishing an Azure Mobile App backend service_ 
+    _The default Azure Mobile App landing page_ 
 
 Your mobile backend is now in place, including the ability to read and write landing activity and send telemetry to Mission Control. There's only one problem: anyone can read and write your landing data, and use your telemetry API if they get their hands on the mobile service address. This might be fine in testing, but certainly not in production, and especially not with so many other astronauts counting on you.
 
-In the next exercise you will be adding authorization and authentication to your backend service to make certain only authorized users can access your mobile backend services.
+In the next exercise you will add authorization and authentication to your backend service to make certain only authorized users can access it.
 
 <a name="Exercise4"></a>
 ## Exercise 4: Add Mobile App authentication to a backend service ##
