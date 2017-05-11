@@ -44,7 +44,7 @@ This lab includes the following exercises:
 - [Exercise 1: Create an Azure Mobile App](#Exercise1)
 - [Exercise 2: Add a data connection](#Exercise2)
 - [Exercise 3: Implement and deploy a back-end service](#Exercise3)
-- [Exercise 4: Add Mobile App authentication to a backend service](#Exercise4)
+- [Exercise 4: Register the service and enable authentication](#Exercise4)
 - [Exercise 5: Add Mobile App authentication support to a Xamarin Forms app](#Exercise5)
 - [Exercise 6: Call Mobile App services from a Xamarin Forms app](#Exercise6)
 - [Exercise 7 (optional): Send telemetry to Mission Control](#Exercise7)
@@ -254,67 +254,71 @@ Your mobile backend is now in place, including the ability to read and write lan
 In the next exercise you will add authorization and authentication to your backend service to make certain only authorized users can access it.
 
 <a name="Exercise4"></a>
-## Exercise 4: Add Mobile App authentication to a backend service ##
+## Exercise 4: Register the service and enable authentication ##
 
 One of the advantages of using Azure Mobile App authentication is that your authentication services and processes can easily be centralized and managed in a single location, without requiring any code changes in the app backend. This provides an easy way to protect your app data, as well as work with user-specific data.
 
 Azure Mobile Apps use the same authentication as any other Azure App Service, via federated identity provides, in which a 3rd-party identity provider ("IDP") stores accounts and authenticates users, and the app uses this identity instead of its own. Azure Mobile Apps support five identity providers out of the box: Azure Active Directory, Facebook, Google, Microsoft Account, and Twitter. You can also expand this support for your apps by integrating another identity providers, or even your own custom identity solutions.
 
-In this exercise you will be creating a Microsoft App registration and adding code to the Drone Lander backend service to require Microsoft account authentication prior to accessing the activity and telemetry services you created in the previous exercise.
+In this exercise, you will create a Microsoft App registration and adding code to the Drone Lander backend service to require Microsoft account authentication prior to accessing the activity and telemetry services you created in the previous exercise.
  
-1. Open a browser to the Microsoft App Registration portal at [https://apps.dev.microsoft.com/](https://apps.dev.microsoft.com/ "https://apps.dev.microsoft.com/") and login with your Microsoft account.
-1. Scroll down to the **Live SDK application** section and click **Add an app**.
+1. Navigate to the [Microsoft Application Registration portal](https://apps.dev.microsoft.com/) in your browser and sign in with your Microsoft account.
 
-	![The Live SDK application section of the Microsoft App registration portal](Images/web-add-an-app.png)
+1. Click **Add an app** at the top of the "Live SDK applications" section.
 
-    _The Live SDK application section of the Microsoft App registration portal_ 
+	![Registering an app](Images/web-add-an-app.png)
 
-1. Enter "Drone Lander" as the name in the "New Application Registration" and click **Create Application**.
-1. Scroll down to the "Redirect URLs" section of the "Platforms" panel and click **Add URL**.
-1. Copy and paste the following URL in the **Redirect URLs** entry, replacing the value "[YOUR_MOBILE_APP_NAME]" with the name of the Azure Mobile App created in Exercise 1, such as "dronelandermobile001". 
+    _Registering an app_ 
+
+1. Enter "Drone Lander" as the app name and click **Create Application**.
+
+1. Scroll down and click the **Add URL** button next to "Redirect URLs." Then enter the following URL, replacing "[YOUR_MOBILE_APP_NAME]" with the name of the Azure Mobile App you created in Exercise 1. 
 
 	```
 	https://[YOUR_MOBILE_APP_NAME].azurewebsites.net/.auth/login/microsoftaccount/callback
 	```
 
-	![Adding a Redirect URL to a Microsoft App registration](Images/web-add-redirect.png)
+	![Adding a redirect URL](Images/web-add-redirect.png)
 
-    _Adding a Redirect URL to a Microsoft App registration_ 
+    _Adding a redirect URL_ 
 
-1. Click Save changes. After a short delay your Microsoft App registration will be updated. 
+1. Click the **Save** button at the bottom of the page. 
 
-	![Saving Microsoft App registration changes](Images/web-save-registration-changes.png)
+	![Saving registration changes](Images/web-save-registration-changes.png)
 
-    _Saving Microsoft App registration changes_ 
+    _Saving registration changes_ 
 
-1. Open a **new** browser tab or window to the [Azure Portal](https://portal.azure.com) and return to the Azure Mobile App you created in Exercise 1, and select **Authentication/Authorization** in the "SETTINGS" group.
-1. Turn "App Service Authentication" **On** to reveal the "Authentication Providers" list, then select the **Microsoft** provider panel.  
+1. Scroll to the top of the page and copy the application ID and the application secret into Notepad or your favorite text editor.
 
-	![Selecting the Microsoft Authentication Provider](Images/web-select-microsoft-authentication.png)
+	![Copying the application ID and application secret](Images/copy-application-id.png)
 
-    _Selecting the Microsoft Authentication Provider_ 
+    _Copying the application ID and application secret_ 
 
-1. Return to the browser window or tab displaying the Microsoft App Drone Lander Registration information, and copy the **Application Id** value to your clipboard, then go back to the Azure Portal and paste this value into the **Client Id** entry in the "Microsoft Account Authentication Settings" panel.
-1. Repeat this process, this time copying the **Application Secret** value and pasting it into the **Client Secret** entry. 
-1. Make sure the values you pasted from the clipboard do not have any leading or trailing spaces, then click **OK**.
+1. Return to the [Azure Portal](https://portal.azure.com) and to the blade for the Azure Mobile App you created in Exercise 1. Click **Authentication / Authorization** in the menu on the left. Then turn "App Service Authentication" **On** and select **Microsoft** from the list of authentication providers.  
 
-	![Saving Microsoft Authentication Provider settings](Images/web-save-authentication-settings.png)
+	![Selecting the Microsoft authentication provider](Images/web-select-microsoft-authentication.png)
 
-    _Saving Microsoft Authentication Provider settings_ 
+    _Selecting the Microsoft authentication provider_ 
 
-1. After a short delay, you will be returned to the previous screen. Click **Save**, at which time your Microsoft account settings will be verified and saved to your Azure Mobile App configuration.
+1. Paste the application ID into the **Client Id** and the application secret into the **Client Secret** field in the "Microsoft Account Authentication Settings" blade. Make sure the values you entered do not have any leading or trailing spaces, and then click **OK**.
 
-	Azure Mobile App authentication can be applied to an entire mobile service, or at a more granular level, such as at a single class or method call. You will be applying authentication at the class level, by adding special authorization attributes to the controller classes you created in the previous exercise.
+	![Entering client secrets](Images/web-save-authentication-settings.png)
 
-1. Open the **DroneLander** solution in Visual Studio 2017, if not already open from the previous exercise.
-1. Open **ActivityItemController.cs** in the **DroneLander.Backend** project "Controllers" folder and locate the ```ActivityItemController``` class definition near the top of the file, then add an ```[Authorize]``` attribute directly above the **ActivityItemController** class definition:
+    _Entering client secrets_ 
 
-	![Adding the Authorize attribute to the ActivityItemController class](Images/vs-add-authorize-attribute.png)
+1. Click **Save** at the top of the blade for the Azure Mobile to save the settings that you just entered.
 
-    _Adding the Authorize attribute to the ActivityItemController class_ 
+1. Azure Mobile App authentication can be applied at any level, from an entire mobile service to a single method. You will apply it at the class level by adding special attributes to the controller classes you created in the previous exercise.
 
-1. Repeat this process in **TelemetryController.cs**, but instead add the attribute directly above the ```[MobileAppController]``` attribute that already exists above the class definition.
-1. Right-click the **DroneLander.Backend** project and use the **Publish...** command to view the "Publishing" profile screen, then click **Publish** to publish your changes to your Azure Mobile backend.
+	Return to the DroneLander solution in Visual Studio 2017. Open **ActivityItemController.cs** in the **DroneLander.Backend** project's "Controllers" folder and locate the ```ActivityItemController``` class near the top of the file. Then add an ```[Authorize]``` attribute to the class:
+
+	![Attributing the controller class](Images/vs-add-authorize-attribute.png)
+
+    _Attributing the controller class_ 
+
+1. Open **TelemetryController.cs** and add an ```[Authorize]``` attribute to the ```TelemetryController``` class, directly above the ```[MobileAppController]``` attribute that is already there.
+
+1. Right-click the **DroneLander.Backend** project and use the **Publish...** command to publish your changes to Azure.
 
 With Azure Mobile App authentication in place, and your backend service updated and published to require authorization, the next step is to update your Xamarin Forms projects to support mobile authentication and authorization flow, using the Azure Mobile SDK.
 
@@ -326,7 +330,9 @@ By using the Azure Mobile SDK, users can sign in to an experience that integrate
 In this exercise you will be adding a sign in and authentication experience to your Drone Lander projects using the Azure Mobile App SDK, by adding and accessing a platform-specific code in each project.
 
 1. Open the **DroneLander** solution in Visual Studio 2017, if not already open from previous exercises, then right-click the solution and select **Manage NuGet Packages for Solution...**. 
+
 1. Ensure that "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Client" into the search box. Select the **Microsoft.Azure.Mobile.Client** package. Then check the **Project** box to add the package to all of the projects in the solution, and click **Install**. When prompted to review changes, click **OK**. 
+
 1. Open "CoreConstants.cs" in the **DroneLander (Portable)** **Common** folder, and add the following class directly below the ```CoreConstants``` class, replacing the value "[YOUR_MOBILE_APP_NAME]" with the name of the Azure Mobile App created in Exercise 1, such as "dronelandermobile001".
 
 	```C#
