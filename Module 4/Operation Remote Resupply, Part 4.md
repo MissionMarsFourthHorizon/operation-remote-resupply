@@ -47,7 +47,7 @@ This lab includes the following exercises:
 - [Exercise 4: Register the service and enable authentication](#Exercise4)
 - [Exercise 5: Add Mobile App authentication support to a Xamarin Forms app](#Exercise5)
 - [Exercise 6: Call Mobile App services from a Xamarin Forms app](#Exercise6)
-- [Exercise 7 (optional): Send telemetry to Mission Control](#Exercise7)
+- [Exercise 7: Send telemetry to Mission Control](#Exercise7)
  
 Estimated time to complete this lab: **45** minutes.
 
@@ -329,11 +329,11 @@ By using the Azure Mobile SDK, users can sign in to an experience that integrate
 
 In this exercise you will be adding a sign in and authentication experience to your Drone Lander projects using the Azure Mobile App SDK, by adding and accessing a platform-specific code in each project.
 
-1. Open the **DroneLander** solution in Visual Studio 2017, if not already open from previous exercises, then right-click the solution and select **Manage NuGet Packages for Solution...**. 
+1. In Visual Studio, open the Nuget Package Manager by right-clicking the **DroneLander** solution and selecting **Manage NuGet Packages for Solution...**. 
 
-1. Ensure that "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Client" into the search box. Select the **Microsoft.Azure.Mobile.Client** package. Then check the **Project** box to add the package to all of the projects in the solution, and click **Install**. When prompted to review changes, click **OK**. 
+1. Ensure "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Client" into the search box. Select the **Microsoft.Azure.Mobile.Client** package. Then check the **Project** box to add the package to all of the projects in the solution, and click **Install**. When prompted to review changes, click **OK**. 
 
-1. Open "CoreConstants.cs" in the **DroneLander (Portable)** **Common** folder, and add the following class directly below the ```CoreConstants``` class, replacing the value "[YOUR_MOBILE_APP_NAME]" with the name of the Azure Mobile App created in Exercise 1, such as "dronelandermobile001".
+1. Open **CoreConstants.cs** in the **DroneLander (Portable)** project's "Common" folder, and add the following class directly below the ```CoreConstants``` class, replacing "[YOUR_MOBILE_APP_NAME]" with the name of the Azure Mobile App created in Exercise 1.
 
 	```C#
 	public static class MobileServiceConstants
@@ -342,13 +342,11 @@ In this exercise you will be adding a sign in and authentication experience to y
     }
 	```
 
-	![Adding MobileServiceCostants class to CoreConstants.cs](Images/vs-mobile-service-constants.png)
+	![Updating the app URL](Images/vs-mobile-service-constants.png)
 	
-	_Adding MobileServiceCostants class to CoreConstants.cs_ 
+	_Updating the app URL_ 
 
-	This constant will be used by the Azure Mobile SDK to specify the location of your mobile service.
-
-1. Right-click the **DroneLander (Portable)** project and use the **Add** > **New Folder** command to add a folder named "Data" to the project, then right-click the "Data" folder that you just added and use the **Add** > **Class** command to add a class file named "TelemetryManager.cs." Then replace the current class definition with the following code:
+1. Right-click the **DroneLander (Portable)** project and use the **Add** > **New Folder** command to add a folder named "Data" to the project. Right-click the "Data" folder and use the **Add** > **Class** command to add a class file named "TelemetryManager.cs." Then replace the contents of the file with the following code:
 
 	```C#
 	using System;
@@ -389,14 +387,13 @@ In this exercise you will be adding a sign in and authentication experience to y
 	        {
 	            get { return client; }
 	        }
-	 
 	    }
 	}
 	```
  
-	The TelemetryManager will be act as a type of "helper" class to make it easy for you to access Azure SDK methods, including authentication services, from platform-specific code.
+	```TelemetryManager``` is a helper class for calling Azure SDK methods from platform-specific code.
 
-1. Right-click the **Services** folder in the **DroneLander (Portable)** project and use the **Add** > **Class** command to add a class file named "IAuthenticationService.cs." Then replace the current class definition with the following code:
+1. Right-click the "Services" folder in the **DroneLander (Portable)** project and use the **Add** > **Class** command to add a class file named "IAuthenticationService.cs." Then replace the ```IAuthenticationService``` class with the following interface definition:
 
 	```C#
 	public interface IAuthenticationService
@@ -405,7 +402,7 @@ In this exercise you will be adding a sign in and authentication experience to y
         Task<bool> SignOutAsync();
     }
 	```
-1. Still in the **DroneLander (Portable)** project, open **App.xaml.cs** and add the following code directly above the ```App``` class initializer to provide authentication initialization:
+1. Still in the **DroneLander (Portable)** project, open **App.xaml.cs** and add the following statements above the ```App``` constructor:
 
 	```C#
 	public static IAuthenticationService Authenticator { get; private set; }
@@ -416,11 +413,7 @@ In this exercise you will be adding a sign in and authentication experience to y
     }
 	```
 
-	![_Adding authentication initialization to the Portable project](Images/vs-add-auth-init.png)
-	
-	_Adding authentication initialization to the Portable project_ 
-
-1.  Open **MainActivity.cs** in the **DroneLander.Android** project and add the following using statements to the top of the file:
+1.  Open **MainActivity.cs** in the **DroneLander.Android** project and add the following ```using``` statements to the top of the file:
 
 	```C#
 	using Microsoft.WindowsAzure.MobileServices;
@@ -428,13 +421,13 @@ In this exercise you will be adding a sign in and authentication experience to y
 	using DroneLander.Services;
 	```
 
-1. Still in **MainActivity.cs**, update the ```MainActivity``` class definition to implement the ```IAuthenticationService``` interface by adding the following code (including the leading comma) to the end of the class definition:
+1. Still in **MainActivity.cs**, update the ```MainActivity``` class to implement the ```IAuthenticationService``` interface by adding the following code (including the leading comma) to the end of the class definition:
 
 	```C#
 	, IAuthenticationService
 	```
 
-1. Replace the entire ```OnCreate``` method with the following code, which includes new ```SignInAsync``` and ```SignOutAsync``` methods to initialize authentication and provide a mechanism to sign in and out of the mobile service:
+1. Replace the ```OnCreate``` method with the following implementation:
 
 	```C#
 	protected override void OnCreate(Bundle bundle)
@@ -449,7 +442,11 @@ In this exercise you will be adding a sign in and authentication experience to y
         global::Xamarin.Forms.Forms.Init(this, bundle);
         LoadApplication(new App());
     }
+	```
 
+1. Add the following statements to support signing in and out of the mobile service on Android:
+
+	```C#
     MobileServiceUser user = null;
 
     public async Task<bool> SignInAsync()
@@ -481,24 +478,21 @@ In this exercise you will be adding a sign in and authentication experience to y
     }
 	```
 
-	This platform-specific code provides everything necessary for Azure Mobile App sign in and sign out on an Android device, and it's just as simple for both iOS and Windows:
-
-	To add Azure Mobile App sign in and sign out services for iOS:
-
-1. Open **AppDelegate.cs** in the **DroneLander.iOS** project and add the following using statements to the top of the file:
+1. Now let's add support for signing in and out to the iOS version of DroneLander. Open **AppDelegate.cs** in the **DroneLander.iOS** project and add the following ```using``` statements to the top of the file:
 
 	```C#
 	using Microsoft.WindowsAzure.MobileServices; 
 	using System.Threading.Tasks;
 	using DroneLander.Services;
 	```
-1. Still in **AppDelegate.cs**, update the ```AppDelegate``` class definition to implement the ```IAuthenticationService``` interface by adding the following code (including the leading comma) to the end of the class definition:
+
+1. Still in **AppDelegate.cs**, update the ```AppDelegate``` class to implement the ```IAuthenticationService``` interface by adding the following code (including the leading comma) to the end of the class definition:
 
 	```C#
 	, IAuthenticationService
 	```
 
-1. Replace the entire ```FinishedLaunching``` method with the following code:
+1. Replace the ```FinishedLaunching``` method with the following implementation:
 
 	```C#
 	public override bool FinishedLaunching(UIApplication app, NSDictionary options)
@@ -510,7 +504,11 @@ In this exercise you will be adding a sign in and authentication experience to y
 
         return base.FinishedLaunching(app, options);
     }
+	```
 
+1. Add the following statements to support signing in and out of the mobile service on iOS:
+
+	```C#
     MobileServiceUser user = null;
 
     public async Task<bool> SignInAsync()
@@ -543,32 +541,34 @@ In this exercise you will be adding a sign in and authentication experience to y
     }
 	```
 
-	And finally, to add Azure Mobile App sign in and sign out services for Windows:
-
-1. Open **MainPage.xaml.cs** in the **DroneLander.UWP (Universal Windows)** project and add the following using statements to the top of the file:
+1. Open **MainPage.xaml.cs** in the **DroneLander.UWP** project and add the following ```using``` statements to the top of the file:
 
 	```C#
 	using Microsoft.WindowsAzure.MobileServices; 
 	using System.Threading.Tasks;
 	using DroneLander.Services;
 	``` 
-1. Still in **MainPage.xaml.cs**, update the ```MainPage``` class definition to implement the ```IAuthenticationService``` interface by adding the following code (including the leading colon) to the end of the class definition:
+
+1. Still in **MainPage.xaml.cs**, update the ```MainPage``` class to implement the ```IAuthenticationService``` interface by adding the following code (including the leading colon) to the end of the class definition:
 
 	```C#
 	: IAuthenticationService
 	```
-1. Replace the entire ```MainPage``` class initializer with the following code:
+
+1. Replace the ```MainPage``` constructor with the following implementation:
 
 	```C#
 	public MainPage()
     {
         this.InitializeComponent();
-
         DroneLander.App.InitializeAuthentication((IAuthenticationService)this);
-
         LoadApplication(new DroneLander.App());
     }
+	```
 
+1. Add the following statements to support signing in and out of the mobile service on Windows:
+
+	```C#
     MobileServiceUser user = null;
 
     public async Task<bool> SignInAsync()
@@ -578,7 +578,6 @@ In this exercise you will be adding a sign in and authentication experience to y
         try
         {
             user = await TelemetryManager.DefaultManager.CurrentClient.LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount);
-
             successful = user != null;
         }
         catch { }
@@ -601,17 +600,14 @@ In this exercise you will be adding a sign in and authentication experience to y
     }
 	```
 
-
 That may seem like a lot of code, however notice how the platform-specific code to access Azure Mobile SDK services is virtually identical in every project. Since the Xamarin Forms platform compiles as native platform code, you can now easily call methods in your shared code to sign users in and out of the mobile service, as well as access the activity and telemetry services you created earlier in the mobile service backend.
-
-You will be doing all of this, and putting it all together, in the user experience in the next exercise.
 
 <a name="Exercise6"></a>
 ## Exercise 6: Call Mobile App services from a Xamarin Forms app ##
 
 With an Azure Mobile App created, authentication configured, and backend data and logic created and published, accessing theses mobile services is as easy as adding a few lines of code to your user interface and common logic.
 
-1. In Visual Studio 2017, right-click the **Data** folder in the **DroneLander (Portable)** project and add a new class named "ActivityItem.cs." Then replace the contents of the file with the following code:
+1. Right-click the "Data" folder in the **DroneLander (Portable)** project and add a new class file named **ActivityItem.cs**. Then replace the contents of the file with the following code:
 
 	```C#
 	using System;
@@ -627,9 +623,8 @@ With an Azure Mobile App created, authentication configured, and backend data an
 	    }
 	}
 	```
-	You may have noticed this class looks almost identical to the ```ActivityItem``` class added to the backend project earlier in this lab.
-
-1. Once more, right-click the **Data** folder and add a new class named "TelemetryItem.cs." Then replace the contents of the file with the following code:
+	
+1. Add another class file named **TelemetryItem.cs** to the "Data" folder and replace its contents with the following code:
 
 	```C#
 	using System;
@@ -648,7 +643,8 @@ With an Azure Mobile App created, authentication configured, and backend data an
 	    }
 	}
 	``` 
-1. Still in the **Data** folder, open **TelemetryManager.cs**, and replace the TelemetryManager class initializer with the following code to initialize an instance of the ```ActivityItem``` mobile service table:
+
+1. Open **TelemetryManager.cs** and replace the ```TelemetryManager``` constructor with the following code to initialize an instance of the ```ActivityItem``` mobile-service table:
 
 	```C#
 	IMobileServiceTable<ActivityItem> activitiesTable;
@@ -656,11 +652,11 @@ With an Azure Mobile App created, authentication configured, and backend data an
     private TelemetryManager()
     {
         this.client = new MobileServiceClient(Common.MobileServiceConstants.AppUrl);
-
         this.activitiesTable = client.GetTable<ActivityItem>();
     }
 	``` 
-1. Finally, add the following methods directly above the ```TelemetryManager``` class initializer to easily add new activities and get a list of all activities, via your Azure Mobile backend:
+
+1. Add the following methods to the ```TelemetryManager``` class for adding add new activities and getting a list activities from the back-end service:
 
 	```C#
 	public async Task AddActivityAsync(ActivityItem item)
@@ -678,7 +674,6 @@ With an Azure Mobile App created, authentication configured, and backend data an
         try
         {
             IEnumerable<ActivityItem> items = await activitiesTable.ToEnumerableAsync();
-
             activity = new List<ActivityItem>(items.OrderByDescending(o => o.ActivityDate));
         }
         catch { }
@@ -686,7 +681,8 @@ With an Azure Mobile App created, authentication configured, and backend data an
         return activity;
     }
 	```
-1. Right-click the **Helpers** folder and add a new class named "ActivityHelper.cs." Then replace the contents of the file with the following code:
+
+1. Add a class file named **ActivityHelper.cs** to the "Helpers" folder and replace its contents with the following code:
 
 	```C#
 	using DroneLander.Data;
@@ -715,20 +711,18 @@ With an Azure Mobile App created, authentication configured, and backend data an
 	            catch {}	            
 	            return;
 	        }
-	        
 	    }
 	}
 	```
-	The ```ActivityHelper``` class is not technically required, but simply makes it easier to add landing activity information via the mobile backend by calling the ```AddActivityAsync``` method with a single ```LandingResultType``` parameter.
 
-1. Open **MainViewModel.cs** in the **DroneLander (Portable)** project ViewModels folder, and add the following using statements to the top of the file:
+1. Open **MainViewModel.cs** in the **DroneLander (Portable)** project's "ViewModels" folder and add the following ```using``` statements to the top of the file:
 
 	```C#
 	using DroneLander.Data;
 	using System.Collections.ObjectModel;
 	```
 
-1. Still in **MainViewModel.cs** add the following code directly below the ```MainViewModel``` class initializer, to provide properties and methods in the view model to continue following the MVVM pattern from the first lab:
+1. Now add the following properties to the ```MainViewModel``` class:
 
 	```C#
     private bool _isAuthenticated;
@@ -779,12 +773,10 @@ With an Azure Mobile App created, authentication configured, and backend data an
         }
         
         this.IsBusy = false;
-        
     }
 	```
-	This code creates a few new properties that will be bound to user interface elements later in this exercise, as well as a method to populate a list of current landing activity any time a user is successfully signed in.
 
-1. Scroll down to the ```AttemptLandingCommand``` property and add the following command property directly above it:
+1. Scroll down to the ```AttemptLandingCommand``` property and add the following property directly above it:
 
 	```C#
 	public System.Windows.Input.ICommand SignInCommand
@@ -833,13 +825,14 @@ With an Azure Mobile App created, authentication configured, and backend data an
                 {
                     if (activityToolbarItem != null) this.ActivityPage.ToolbarItems.Remove(activityToolbarItem);
                 }
-
             });
         }
     }
 	```
-	Similar to the ```AttemptLandingCommand```, the ```SignInCommand``` can be data bound to a ```Command``` property in XAML to maintain the MVVM pattern used throughout the app. 
-1. Locate the **StartLanding** method and replace the entire method with the following code, observing the use of the new ```AddActivityAsync``` method before the call to the ```MessageCenter.Send``` method:
+
+	This is the view-model property that will be be bound to a ```Command``` property in the view to enable users to sign in and out.
+
+1. Replace the ```StartLanding``` method with the following implementation:
 
 	```C#
 	public void StartLanding()
@@ -887,31 +880,28 @@ With an Azure Mobile App created, authentication configured, and backend data an
                 
                 return false;
             }
-            
         });
-        }
+	}
 	```
 
-1. Finally, add the following lines of code inside the ```MainViewModel``` class initializer to set a default values for the ```SignInLabel``` and ```CurrentActivity``` properties:
+1. Add the following statements to the ```MainViewModel``` constructor to assign default values to the ```SignInLabel``` and ```CurrentActivity``` properties:
 
 	```C#
 	this.CurrentActivity = new ObservableCollection<Data.ActivityItem>();
     this.SignInLabel = "Sign In";
 	```
 
-	![The updated MainViewModel class initializer](Images/vs-add-sign-in-label.png)
+	![Updating the MainViewModel constructor](Images/vs-add-sign-in-label.png)
 	
-	_The updated MainViewModel class initializer_ 
+	_Updating the MainViewModel constructor_ 
 
-	You're almost there, just a few more user interface additions, and you'll have everything in place to start accessing Azure Mobile App authentication and calling your backend services.
+1. Right-click the **DroneLander (Portable)** project and use the **Add New Item...** command to add a new **Forms Blank Content Page Xaml** page named "ViewActivityPage.xaml" to the project.
 
-1. Right-click the **DroneLander (Portable)** project and use the **Add New Item...** command to add a new Cross- Platform > **Forms Blank Content Page Xaml** page, named "ViewActivityPage.xaml" to the project.
-
-	![Adding a new Forms Blank Content Page Xaml page to the project](Images/vs-add-new-page.png)
+	![Adding a page to the app](Images/vs-add-new-page.png)
 	
-	_Adding a new Forms Blank Content Page Xaml page to the project_ 
+	_Adding a page to the app_ 
 
-1. Replace the entire contents of **ViewActivityPage.xaml** with the following code:
+1. Replace the contents of **ViewActivityPage.xaml** with the following code:
 
 	```Xaml
 	<?xml version="1.0" encoding="utf-8" ?>
@@ -920,7 +910,6 @@ With an Azure Mobile App created, authentication configured, and backend data an
 	             BackgroundImage="drone_lander_back.jpg"
 	             x:Class="DroneLander.ViewActivityPage">
 	    <Grid Margin="40">
-	
 	        <StackLayout>
 	            <Label FontAttributes="Bold" Style="{DynamicResource TitleStyle}" Text="Recent Activity"/>
 	            <Label Style="{DynamicResource SubtitleStyle}" Text="The following is a list of your most recent landing attempts:"/>
@@ -942,53 +931,47 @@ With an Azure Mobile App created, authentication configured, and backend data an
 	        </StackLayout>
 	
 	        <ActivityIndicator Color="#D90000" WidthRequest="100" HeightRequest="100" VerticalOptions="Center" HorizontalOptions="Center" IsRunning="{Binding IsBusy}" IsEnabled="{Binding IsBusy}"/>
-	
 	    </Grid>
-	
 	</ContentPage>
 	```
 
-1. Open **ViewActivityPage.xaml.cs** and add the following method directly below the ```ViewMainPage``` class initializer:
+1. Open **ViewActivityPage.xaml.cs** and add the following method to the ```ViewMainPage``` class:
 
 	```C#
 	protected override void OnAppearing()
     {
         base.OnAppearing();
-
         this.BindingContext = App.ViewModel;
-
         App.ViewModel.LoadActivityAsync();
     }
 	```
-	You did it! Now it's time to test your code to make sure you can authenticate against your Azure Mobile App using your Microsoft account, as well as read and write activity data via your mobile backend.
 
-1. Ensure that the Android project is selected as the startup project by right-clicking the **DroneLander.Android** project in Solution Explorer and selecting **Set as StartUp Project**, then click the **Run** button to launch the Android version of Drone Lander in the selected Android emulator.
-1. Click **Sign In** in the app toolbar menu, enter your Microsoft account credentials, then click **Sign In** again. If prompted to allow Drone Lander to access your profile and contact list, click **Yes**.
+1. Launch the Android version of the app. Click **Sign In** and sign in using your Microsoft account. If prompted to allow Drone Lander to access your profile and contact list, click **Yes**. Note that your *profile and contact information will not be used in any way*.
 
-	**NOTE: No profile or contact information will actually be accessed or transmitted at any time during this lab. This dialog is required to be shown when using Microsoft account integration.**
+	![Signing in](Images/app-click-sign-in.png)
 
-	![Signing in to authenticate a user](Images/app-click-sign-in.png)
+    _Signing in_
 
-    _Signing in to authenticate a user_
-
-1. After successful sign in, the new Activity toolbar menu item will appear, allowing you to view landing activity:
+1. Confirm that following a successful sign in, an **Activity** item appears in the toolbar. Then attempt a landing or two (or three) and click **Activity**.
 
 	![The new Activity toolbar menu item](Images/app-click-new-menu.png)
 
     _The new Activity toolbar menu item_
 
-1. Attempt a landing or two (or three). Remember, landing a drone is hard. Even though you might not be an expert yet, you are likely much better now than you were at the start. Thanks to Azure Mobile Apps and all your hard work, you can now easily view a record of your recent landing activity by clicking **Activity** in the app:
+1. Confirm that a list of you recent landing attempts appears:
 
 	![Viewing recent landing activity](Images/app-current-activity.png)
 
     _Viewing recent landing activity_
- 
+
+[Closing]
+
 <a name="Exercise7"></a>
-## Exercise 7 (optional): Send telemetry to Mission Control ##
+## Exercise 7: Send telemetry to Mission Control ##
 
-Have some extra time and want to try an additional challenge? As you may recall, your mobile backend is all set to send real time telemetry to Mission Control, including your altitude, fuel levels, and descent rate. **THIS NEEDS MORE INFORMATION**.
+Now comes the fun part: modifying the Drone Lander app to transmit telemetry data — altitude, descent rate, fuel remaining, and thrust — to Mission Control in real time. In this exercise, you will modify the app to do just that, and then compete with other teams to be the first to fly a successful supply mission to Mars.
 
-1. Open "CoreConstants.cs" in the **DroneLander (Portable)** **Common** folder, and add the following class directly below the ```CoreConstants``` class:
+1. Open **CoreConstants.cs** in the **DroneLander (Portable)** project's "Common" folder, and add the following class:
 
 	```C#
 	public static class TelemetryConstants
@@ -997,9 +980,12 @@ Have some extra time and want to try an additional challenge? As you may recall,
         public const string Tagline = "";
     }
 	```
-1. Enter a short value, such as your first or given name, as the value of **DisplayName**. If you were assigned a team name for this session, enter the team name as the value of **DisplayName**. This value will be seen by Mission Control as they track your landing attemptsl
-1. To add a bit of flair, feel free to enter a tagline as well, by entering something unique to you as the value of **Tagline**. The value of your tagline **will be seen by other astronauts**, so make sure you come up with something great!  
-1. Open **ActivityHelper.cs** in the **DroneLander (Portable)** Helpers folder, and add the following code directly inside the ```ActivityHelper``` class:
+
+1. Enter a string, such as your first name or a nickname, for the value of ```DisplayName```. If you were assigned a team name for this session, enter the team name instead. This is the name that will appear on the big screen (the Mission Control screen at the front of the room) each time you fly a supply mission.
+
+1. Enter a string for ```TagLine``` as well. This value will appear on the big screen when you successfully land a supply mission. Keep it clean (please!), but feel free to talk a little smack to the other teams when you nail a landing.
+
+1. Open **ActivityHelper.cs** in the **DroneLander (Portable)** project's "Helpers" folder, and add the following method to the ```ActivityHelper``` class:
 
 	```C#
 	public static async void SendTelemetryAsync(string userId, double altitude, double descentRate, double fuelRemaining, double thrust)
@@ -1022,14 +1008,14 @@ Have some extra time and want to try an additional challenge? As you may recall,
         catch { }
     }
 	```
-	Notice the use of the build in Azure Mobile SDK ```InvokeApiAsync``` method, and passing a parameter of "telemetry". Calling the InvokeApiAsync method is similar to calling a REST API, however the method assumes the "api/" value and you can simply call the name of the controller. In this case, since the controller is named "TelemetryController", you simply pass the value "telemetry". InvokeApiAsync is also **POST** method by default, so calling it automatically uses the ```Post``` method.
 
+	Notice the call to ```InvokeApiAsync```. This method, which comes from the Azure Mobile SDK, places a REST call to the ```Post``` method of the ```TelemetryController``` controller that you implemented in [Exercise 3](#Exercise3) (see below). The body of the request contains a JSON-encoded ```TelemetryItem``` object with current status of your drone.
 
-	![The TelemetryController in the DroneLander.Backend project](Images/vs-post-in-controller.png)
+	![The TelemetryController class hosted in your Azure Mobile App](Images/vs-post-in-controller.png)
 
-    _The TelemetryController in the DroneLander.Backend project_
+    _The TelemetryController class hosted in your Azure Mobile App_
 
-1. Open **MainViewModel.cs** in the **DroneLander (Portable)** ViewModels folder, locate the StartLanding method, and replace the entire method with the following code and observe the additional of the new calls to the ```SendTelemetryAsync``` method if a user has been authenticated:
+1. Open **MainViewModel.cs** in the **DroneLander (Portable)** project's "ViewModels" folder and replace the ```StartLanding``` method with the following implementation. This revised ```StartLanding``` method transmits telemetry on each timer tick by calling the ```SendTelemetryAsync``` method added in the previous step:
 
 	```C#
 	public void StartLanding()
@@ -1085,17 +1071,14 @@ Have some extra time and want to try an additional challenge? As you may recall,
         });
     }
 	```
-1. Once again, ensure that the Android project is selected as the startup project by right-clicking the **DroneLander.Android** project in Solution Explorer and selecting **Set as StartUp Project**, then click the **Run** button to launch the Android version of Drone Lander in the selected Android emulator.
-1. Click **Sign In** in the app toolbar menu, enter your Microsoft account credentials.
+1. Launch the Android or Windows version of the app. Then sign in and attempt a landing. As you descend, watch the big screen at the front of the room and confirm that your "mission" shows up there and that it is updated in real time.
 
-	>Remember, now that authentication has been added to your mobile backend, only authorized users can add activity and send telemetry.
-	
-1. Continue to attempt resupply landings and observe the Mission Control remote monitoring screen to view real-time landing attempt information for yourself, as well as your fellow mission pilots.
+	![Mission status shown by Mission Control](Images/app-mission-control.png)
 
-	![Real-time landing telemetry monitored by Mission Control](Images/app-mission-control.png)
+    _Mission status shown by Mission Control_
 
-    _Real-time landing telemetry monitored by Mission Control_
- 
+If you don't land successfully the first time, try again and keep trying until you do. Keep an eye on the Mission Control screen at the front of the room to see how other pilots are doing. More importantly, don't be the last to land! The astronauts are counting on you!
+
 <a name="Summary"></a>
 ## Summary ##
 
