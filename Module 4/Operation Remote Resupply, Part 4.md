@@ -118,12 +118,12 @@ Every front end needs a great back end, and back ends frequently store data and 
 
     _Adding a data connection_
  
-Provisioning the database and database server will take a few minutes, but there's no need to wait. You can move on to the next exercise and begin writing the code for the back-end service that you will deploy to the Azure Mobile App.
+Provisioning the database and database server will take a few minutes, but there's no need to wait. You can move on to the next exercise and begin writing the back-end service that you will deploy to the Azure Mobile App.
 
 <a name="Exercise3"></a>
 ## Exercise 3: Implement and deploy a back-end service ##
 
-In this exercise, you will use Visual Studio to write a service and deploy it to the Azure Mobile App. The service will include two MVC controllers: one that exposes REST-callable methods for writing information about landing attempts to the database you created in the previous step (and for retrieving that information once written), and one that exposes REST-callable methods for transmitting telemetry data — altitude, descent rate, fuel remaining, thrust, and so on — to Mission Control, where it can be displayed on the big screen at the front of the room.
+In this exercise, you will use Visual Studio to write a service and deploy it to the Azure Mobile App. The service will include two MVC controllers: one that exposes REST-callable methods for writing information about landing attempts to the database you created in the previous step (and for retrieving that information once written), and one that exposes REST-callable methods for transmitting telemetry data — altitude, descent rate, fuel remaining, thrust, and so on — to Mission Control, where it can be displayed for all to see on the big screen at the front of the room.
 
 1. In Visual Studio 2017, open the **DroneLander** solution that you built in previous labs.
 
@@ -131,11 +131,7 @@ In this exercise, you will use Visual Studio to write a service and deploy it to
 
 	> You can click **Quickstart** in the blade for an Azure Mobile App in the Azure Portal and download quick-start projects of various types. Because these projects contain infrastructure you don't need and would have to be modified anyway, you are importing a project that has been specifically prepared for this lab.
  
-	![The DroneLander solution with the quick-start project added](Images/vs-new-backend-project.png)
-
-    _The DroneLander solution with the quick-start project added_
-
-1. Right-click the "Controllers" folder in the **DroneLander.Backend** project and use the **Add** > **Class** command to add a class file named **ActivityItemController.cs**. Then replace the contents of the file with the following code:
+1. Add a folder named "Controllers" to the **DroneLander.Backend** project. Right-click the "Controllers" folder and use the **Add** > **Class** command to add a class file named **ActivityItemController.cs**. Then replace the contents of the file with the following code:
 
 	```C#
 	using System.Linq;
@@ -252,12 +248,12 @@ In this exercise, you will use Visual Studio to write a service and deploy it to
 
     _The default Azure Mobile App landing page_ 
 
-The mobile back-end is now in place, and it contains methods that double as REST endpoints that can be called from the Drone Lander app to record landing attempts and transmit telemetry data during descents to the Mars surface. In a moment, you will modify the client app to call these endpoints. But first, we need to think about authentication.
+The mobile back-end is now in place, and it contains methods that double as REST endpoints that can be called from the Drone Lander app to record landing attempts and transmit telemetry data. In a few minutes, you will modify the client app to call these endpoints. But first, let's talk about authentication.
 
 <a name="Exercise4"></a>
 ## Exercise 4: Configure the service to support authentication ##
 
-Many mobile apps — especially enterprise apps — require users to sign in before accessing their services. Authentication can be complicated, especially if you wish to use protocols such as [OAuth](https://en.wikipedia.org/wiki/OAuth) and support sign-ins using Microsoft accounts and social-media accounts. Azure Mobile Apps simplify the creation of apps that require authentication by providing built-in support for popular federated-identity providers, including Azure Active Directory, Facebook, Google, Microsoft, and Twitter. In this exercise, you will configure the service you deployed in the previous exercise to support authentication and to ignore calls from unauthenticated users.   
+Many mobile apps — especially enterprise apps — require users to sign in before accessing features and services. Authentication can be complicated, especially if you wish to use protocols such as [OAuth](https://en.wikipedia.org/wiki/OAuth) and support sign-ins using Microsoft accounts and social-media accounts. Azure Mobile Apps simplify the creation of apps that require authentication by providing built-in support for popular federated-identity providers, including Azure Active Directory, Facebook, Google, Microsoft, and Twitter. In this exercise, you will configure the service you deployed in the previous exercise to support authentication and modify it to ignore calls from unauthenticated users.   
  
 1. Navigate to the [Microsoft Application Registration portal](https://apps.dev.microsoft.com/) in your browser and sign in with your Microsoft account.
 
@@ -319,12 +315,12 @@ Many mobile apps — especially enterprise apps — require users to sign in bef
 
 1. Right-click the **DroneLander.Backend** project and use the **Publish...** command to publish your changes to Azure.
 
-With authentication support in place in the back-end service, the next step is to update your Xamarin Forms solution to support authentication as well.
+With authentication support in place on the back end, the next step is to update your Xamarin Forms solution to leverage that support.
 
 <a name="Exercise5"></a>
 ## Exercise 5: Add authentication logic to Drone Lander ##
 
-The [Azure Mobile Client SDK](https://www.nuget.org/packages/Microsoft.Azure.Mobile.Client/) simplifies the process of adding authentication support to Xamarin Forms apps. A single call is sufficient to sign a user in using an SDK-provided login page that is customized for individual identity providers, or to sign a user out. Moreover, you can retrieve information about authenticated users in order to customize the user experience. For more information about how the process works, see [Authentication and Authorization in Azure Mobile Apps](https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-auth).
+The [Azure Mobile Client SDK](https://www.nuget.org/packages/Microsoft.Azure.Mobile.Client/) simplifies the process of adding authentication support to Xamarin Forms apps. When paired with an Azure Mobile App on the server, a single call is sufficient to sign a user in using an SDK-provided login page that is customized for individual identity providers, or to sign a user out. Moreover, you can retrieve information about authenticated users in order to customize the user experience. For more information about how the process works, see [Authentication and Authorization in Azure Mobile Apps](https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-auth).
 
 In this exercise, you will add logic to the Drone Lander app to support signing users in and out. In Exercise 6, you will close the circle by modifying the app's UI to support this logic.
 
@@ -648,6 +644,7 @@ In this exercise, you will update the Drone Lander app to allow users to authent
         }
         catch { }
     }
+
     public async Task<List<ActivityItem>> GetAllActivityAync()
     {
         List<ActivityItem> activity = new List<ActivityItem>();
@@ -1004,13 +1001,13 @@ Now comes the fun part: modifying the Drone Lander app to transmit telemetry dat
     }
 	```
 
-	Notice the call to ```InvokeApiAsync```. This method, which comes from the Azure Mobile SDK, places a REST call to the ```Post``` method of the ```TelemetryController``` controller that you implemented in [Exercise 3](#Exercise3) (see below). The body of the request contains a JSON-encoded ```TelemetryItem``` object with current status of your drone.
+	Notice the call to ```InvokeApiAsync```. This method, which comes from the Azure Mobile Client SDK, places a REST call to the ```Post``` method of the ```TelemetryController``` that you implemented in [Exercise 3](#Exercise3) (see below). The body of the request contains a JSON-encoded ```TelemetryItem``` object with current status of your drone.
 
-	![The TelemetryController class hosted in your Azure Mobile App](Images/vs-post-in-controller.png)
+	![The TelemetryController class in the Azure Mobile App](Images/vs-post-in-controller.png)
 
-    _The TelemetryController class hosted in your Azure Mobile App_
+    _The TelemetryController class in the Azure Mobile App_
 
-1. Open **MainViewModel.cs** in the **DroneLander (Portable)** project's "ViewModels" folder and replace the ```StartLanding``` method with the following implementation. This revised ```StartLanding``` method transmits telemetry on each timer tick by calling the ```SendTelemetryAsync``` method added in the previous step.
+1. Open **MainViewModel.cs** in the **DroneLander (Portable)** project's "ViewModels" folder and replace the ```StartLanding``` method with the following implementation. The revised ```StartLanding``` method transmits telemetry on each timer tick by calling the ```SendTelemetryAsync``` method added in the previous step.
 
 	```C#
 	public void StartLanding()
@@ -1063,6 +1060,7 @@ Now comes the fun part: modifying the Drone Lander app to transmit telemetry dat
         });
     }
 	```
+
 1. Launch the Android or Windows version of the app. Then sign in and attempt a landing. As you descend, watch the big screen at the front of the room and confirm that your "mission" shows up there and that it is updated in real time.
 
 	![Mission status shown by Mission Control](Images/app-mission-control.png)
