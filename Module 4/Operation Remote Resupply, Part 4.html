@@ -789,7 +789,6 @@ vertical-align:1px;
 <span class="pl-k">using</span> <span class="pl-en">System.Text</span>;
 <span class="pl-k">using</span> <span class="pl-en">System.Threading.Tasks</span>;
 <span class="pl-k">using</span> <span class="pl-en">Microsoft.WindowsAzure.MobileServices</span>;
-<span class="pl-k">using</span> <span class="pl-en">DroneLander.Data</span>;
 
 <span class="pl-k">namespace</span> <span class="pl-en">DroneLander</span>
 {
@@ -833,9 +832,9 @@ vertical-align:1px;
 </li>
 <li>
 <p>Still in the <strong>DroneLander (Portable)</strong> project, open <strong>App.xaml.cs</strong> and add the following statements above the <code>App</code> constructor:</p>
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-en">IAuthenticationService</span> Authenticator { <span class="pl-k">get</span>; <span class="pl-en">private</span> <span class="pl-en">set</span>; }
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-en">Services.IAuthenticationService</span> Authenticator { <span class="pl-k">get</span>; <span class="pl-en">private</span> <span class="pl-en">set</span>; }
 
-<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">InitializeAuthentication</span>(<span class="pl-en">IAuthenticationService</span> <span class="pl-smi">authenticator</span>)
+<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">InitializeAuthentication</span>(Services.<span class="pl-en">IAuthenticationService</span> <span class="pl-smi">authenticator</span>)
 {
     Authenticator = authenticator;
 }</pre></div>
@@ -1013,7 +1012,7 @@ vertical-align:1px;
 <p>Right-click the "Data" folder in the <strong>DroneLander (Portable)</strong> project and add a new class file named <strong>ActivityItem.cs</strong>. Then replace the contents of the file with the following code:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System</span>;
 
-<span class="pl-k">namespace</span> <span class="pl-en">DroneLander.Data</span>
+<span class="pl-k">namespace</span> <span class="pl-en">DroneLander</span>
 {   
     <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ActivityItem</span>
     {
@@ -1062,8 +1061,7 @@ vertical-align:1px;
 </li>
 <li>
 <p>Add a class file named <strong>ActivityHelper.cs</strong> to the "Helpers" folder and replace its contents with the following code:</p>
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">DroneLander.Data</span>;
-<span class="pl-k">using</span> <span class="pl-en">Newtonsoft.Json.Linq</span>;
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">Newtonsoft.Json.Linq</span>;
 <span class="pl-k">using</span> <span class="pl-en">System</span>;
 <span class="pl-k">using</span> <span class="pl-en">System.Collections.Generic</span>;
 <span class="pl-k">using</span> <span class="pl-en">System.Linq</span>;
@@ -1091,12 +1089,11 @@ vertical-align:1px;
 }</pre></div>
 </li>
 <li>
-<p>Open <strong>MainViewModel.cs</strong> in the <strong>DroneLander (Portable)</strong> project's "ViewModels" folder and add the following <code>using</code> statements to the top of the file:</p>
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">DroneLander.Data</span>;
-<span class="pl-k">using</span> <span class="pl-en">System.Collections.ObjectModel</span>;</pre></div>
+<p>Open <strong>MainViewModel.cs</strong> in the <strong>DroneLander (Portable)</strong> project's "ViewModels" folder and add the following <code>using</code> statement to the top of the file:</p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System.Collections.ObjectModel</span>;</pre></div>
 </li>
 <li>
-<p>Now add the following properties to the <code>MainViewModel</code> class:</p>
+<p>Now add the following properties and method to the <code>MainViewModel</code> class:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">private</span> <span class="pl-k">bool</span> <span class="pl-en">_isAuthenticated</span>;
 <span class="pl-k">public</span> <span class="pl-k">bool </span><span class="pl-en">IsAuthenticated</span>
 {
@@ -1245,7 +1242,7 @@ vertical-align:1px;
 </li>
 <li>
 <p>Add the following statements to the <code>MainViewModel</code> constructor to assign default values to <code>SignInLabel</code> and <code>CurrentActivity</code>:</p>
-<div class="highlight highlight-source-cs"><pre><span class="pl-c1">this</span>.<span class="pl-en">CurrentActivity</span> = new ObservableCollection&lt;Data.ActivityItem&gt;();
+<div class="highlight highlight-source-cs"><pre><span class="pl-c1">this</span>.<span class="pl-en">CurrentActivity</span> = new <span class="pl-en">ObservableCollection</span>&lt;<span class="pl-en">ActivityItem</span>&gt;();
 <span class="pl-c1">this</span>.<span class="pl-en">SignInLabel</span> = "Sign In";</pre></div>
 <p><a href="Images/vs-add-sign-in-label.png" target="_blank"><img src="Images/vs-add-sign-in-label.png" alt="Updating the MainViewModel constructor" style="max-width:100%;"></a></p>
 <p><em>Updating the MainViewModel constructor</em></p>
@@ -1263,6 +1260,7 @@ vertical-align:1px;
              <span class="pl-e">BackgroundImage</span>=<span class="pl-s"><span class="pl-pds">"</span>drone_lander_back.jpg<span class="pl-pds">"</span></span>
              <span class="pl-e">x</span><span class="pl-e">:</span><span class="pl-e">Class</span>=<span class="pl-s"><span class="pl-pds">"</span>DroneLander.ViewActivityPage<span class="pl-pds">"</span></span>&gt;
     &lt;<span class="pl-ent">Grid</span> <span class="pl-e">Margin</span>=<span class="pl-s"><span class="pl-pds">"</span>40<span class="pl-pds">"</span></span>&gt;
+
         &lt;<span class="pl-ent">StackLayout</span>&gt;
             &lt;<span class="pl-ent">Label</span> <span class="pl-e">FontAttributes</span>=<span class="pl-s"><span class="pl-pds">"</span>Bold<span class="pl-pds">"</span></span> <span class="pl-e">Style</span>=<span class="pl-s"><span class="pl-pds">"</span>{DynamicResource TitleStyle}<span class="pl-pds">"</span></span> <span class="pl-e">Text</span>=<span class="pl-s"><span class="pl-pds">"</span>Recent Activity<span class="pl-pds">"</span></span>/&gt;
             &lt;<span class="pl-ent">Label</span> <span class="pl-e">Style</span>=<span class="pl-s"><span class="pl-pds">"</span>{DynamicResource SubtitleStyle}<span class="pl-pds">"</span></span> <span class="pl-e">Text</span>=<span class="pl-s"><span class="pl-pds">"</span>The following is a list of your most recent landing attempts:<span class="pl-pds">"</span></span>/&gt;
@@ -1284,7 +1282,9 @@ vertical-align:1px;
         &lt;/<span class="pl-ent">StackLayout</span>&gt;
 
         &lt;<span class="pl-ent">ActivityIndicator</span> <span class="pl-e">Color</span>=<span class="pl-s"><span class="pl-pds">"</span>#D90000<span class="pl-pds">"</span></span> <span class="pl-e">WidthRequest</span>=<span class="pl-s"><span class="pl-pds">"</span>100<span class="pl-pds">"</span></span> <span class="pl-e">HeightRequest</span>=<span class="pl-s"><span class="pl-pds">"</span>100<span class="pl-pds">"</span></span> <span class="pl-e">VerticalOptions</span>=<span class="pl-s"><span class="pl-pds">"</span>Center<span class="pl-pds">"</span></span> <span class="pl-e">HorizontalOptions</span>=<span class="pl-s"><span class="pl-pds">"</span>Center<span class="pl-pds">"</span></span> <span class="pl-e">IsRunning</span>=<span class="pl-s"><span class="pl-pds">"</span>{Binding IsBusy}<span class="pl-pds">"</span></span> <span class="pl-e">IsEnabled</span>=<span class="pl-s"><span class="pl-pds">"</span>{Binding IsBusy}<span class="pl-pds">"</span></span>/&gt;
+
     &lt;/<span class="pl-ent">Grid</span>&gt;
+
 &lt;/<span class="pl-ent">ContentPage</span>&gt;</pre></div>
 </li>
 <li>
@@ -1295,6 +1295,15 @@ vertical-align:1px;
     <span class="pl-c1">this</span>.BindingContext = App.ViewModel;
     App.ViewModel.LoadActivityAsync();
 }</pre></div>
+</li>
+<li>
+<p>Finally, open <strong>MainPage.xaml</strong> and add the following XAML directly above the opening <code>&lt;Grid&gt;</code> tag to provide a "Sign In" toolbar item:</p>
+<pre><code>&lt;ContentPage.ToolbarItems&gt;       
+   &lt;ToolbarItem AutomationId="SignInLabel" Text="{Binding SignInLabel}" Command="{Binding SignInCommand}"/&gt;
+&lt;/ContentPage.ToolbarItems&gt;
+</code></pre>
+<p><a href="Images/vs-add-sign-in-item.png" target="_blank"><img src="Images/vs-add-sign-in-item.png" alt="Adding a &quot;Sign in&quot; toolbar item" style="max-width:100%;"></a></p>
+<p><em>Adding a "Sign in" toolbar item</em></p>
 </li>
 <li>
 <p>Launch the Android version of the app. Click <strong>Sign In</strong> and sign in using your Microsoft account. If prompted to allow Drone Lander to access your profile and contact list, click <strong>Yes</strong>. Note that your <em>profile and contact information is not used in any way</em>.</p>
@@ -1335,7 +1344,7 @@ vertical-align:1px;
 <p>Right-click the "Data" folder in the <strong>DroneLander (Portable)</strong> project and add a new class file named <strong>TelemetryItem.cs</strong>. Then replace its contents with the following code:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System</span>;
 
-<span class="pl-k">namespace</span> <span class="pl-en">DroneLander.Data</span>
+<span class="pl-k">namespace</span> <span class="pl-en">DroneLander</span>
 {
     <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">TelemetryItem</span>
     {
@@ -1361,7 +1370,7 @@ vertical-align:1px;
         Fuel = fuelRemaining,
         Thrust = thrust,
         Tagline = Common.TelemetryConstants.Tagline,
-        TeamName = Common.TelemetryConstants.TeamName,
+        DisplayName = Common.TelemetryConstants.DisplayName,
         UserId = userId,
     };
 

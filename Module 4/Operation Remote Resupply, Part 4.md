@@ -352,8 +352,7 @@ In this exercise, you will add logic to the Drone Lander app to support signing 
 	using System.Text;
 	using System.Threading.Tasks;
 	using Microsoft.WindowsAzure.MobileServices;
-	using DroneLander.Data;
-
+	
 	namespace DroneLander
 	{
 	    public partial class TelemetryManager
@@ -400,9 +399,9 @@ In this exercise, you will add logic to the Drone Lander app to support signing 
 1. Still in the **DroneLander (Portable)** project, open **App.xaml.cs** and add the following statements above the ```App``` constructor:
 
 	```C#
-	public static IAuthenticationService Authenticator { get; private set; }
+	public static Services.IAuthenticationService Authenticator { get; private set; }
 
-    public static void InitializeAuthentication(IAuthenticationService authenticator)
+    public static void InitializeAuthentication(Services.IAuthenticationService authenticator)
     {
         Authenticator = authenticator;
     }
@@ -607,7 +606,7 @@ In this exercise, you will update the Drone Lander app to allow users to authent
 	```C#
 	using System;
 	
-	namespace DroneLander.Data
+	namespace DroneLander
 	{   
 	    public class ActivityItem
 	    {
@@ -663,7 +662,6 @@ In this exercise, you will update the Drone Lander app to allow users to authent
 1. Add a class file named **ActivityHelper.cs** to the "Helpers" folder and replace its contents with the following code:
 
 	```C#
-	using DroneLander.Data;
 	using Newtonsoft.Json.Linq;
 	using System;
 	using System.Collections.Generic;
@@ -692,14 +690,13 @@ In this exercise, you will update the Drone Lander app to allow users to authent
 	}
 	```
 
-1. Open **MainViewModel.cs** in the **DroneLander (Portable)** project's "ViewModels" folder and add the following ```using``` statements to the top of the file:
+1. Open **MainViewModel.cs** in the **DroneLander (Portable)** project's "ViewModels" folder and add the following ```using``` statement to the top of the file:
 
 	```C#
-	using DroneLander.Data;
 	using System.Collections.ObjectModel;
 	```
 
-1. Now add the following properties to the ```MainViewModel``` class:
+1. Now add the following properties and method to the ```MainViewModel``` class:
 
 	```C#
     private bool _isAuthenticated;
@@ -857,7 +854,7 @@ In this exercise, you will update the Drone Lander app to allow users to authent
 1. Add the following statements to the ```MainViewModel``` constructor to assign default values to ```SignInLabel``` and ```CurrentActivity```:
 
 	```C#
-	this.CurrentActivity = new ObservableCollection<Data.ActivityItem>();
+	this.CurrentActivity = new ObservableCollection<ActivityItem>();
     this.SignInLabel = "Sign In";
 	```
 
@@ -880,6 +877,7 @@ In this exercise, you will update the Drone Lander app to allow users to authent
 	             BackgroundImage="drone_lander_back.jpg"
 	             x:Class="DroneLander.ViewActivityPage">
 	    <Grid Margin="40">
+	
 	        <StackLayout>
 	            <Label FontAttributes="Bold" Style="{DynamicResource TitleStyle}" Text="Recent Activity"/>
 	            <Label Style="{DynamicResource SubtitleStyle}" Text="The following is a list of your most recent landing attempts:"/>
@@ -901,7 +899,9 @@ In this exercise, you will update the Drone Lander app to allow users to authent
 	        </StackLayout>
 	
 	        <ActivityIndicator Color="#D90000" WidthRequest="100" HeightRequest="100" VerticalOptions="Center" HorizontalOptions="Center" IsRunning="{Binding IsBusy}" IsEnabled="{Binding IsBusy}"/>
+	
 	    </Grid>
+	
 	</ContentPage>
 	```
 
@@ -915,6 +915,17 @@ In this exercise, you will update the Drone Lander app to allow users to authent
         App.ViewModel.LoadActivityAsync();
     }
 	```
+1. Finally, open **MainPage.xaml** and add the following XAML directly above the opening ```<Grid>``` tag to provide a "Sign In" toolbar item:  
+
+	```
+	<ContentPage.ToolbarItems>       
+       <ToolbarItem AutomationId="SignInLabel" Text="{Binding SignInLabel}" Command="{Binding SignInCommand}"/>
+    </ContentPage.ToolbarItems>
+	```
+
+	![Adding a "Sign in" toolbar item](Images/vs-add-sign-in-item.png)
+
+    _Adding a "Sign in" toolbar item_
 
 1. Launch the Android version of the app. Click **Sign In** and sign in using your Microsoft account. If prompted to allow Drone Lander to access your profile and contact list, click **Yes**. Note that your *profile and contact information is not used in any way*.
 
@@ -960,7 +971,7 @@ Now comes the fun part: modifying the Drone Lander app to transmit telemetry dat
 	```C#
 	using System;
 	
-	namespace DroneLander.Data
+	namespace DroneLander
 	{
 	    public class TelemetryItem
 	    {
@@ -989,7 +1000,7 @@ Now comes the fun part: modifying the Drone Lander app to transmit telemetry dat
             Fuel = fuelRemaining,
             Thrust = thrust,
             Tagline = Common.TelemetryConstants.Tagline,
-            TeamName = Common.TelemetryConstants.TeamName,
+            DisplayName = Common.TelemetryConstants.DisplayName,
             UserId = userId,
         };
 

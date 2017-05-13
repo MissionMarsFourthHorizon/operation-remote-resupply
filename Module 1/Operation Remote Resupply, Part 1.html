@@ -1085,6 +1085,12 @@ vertical-align:1px;
                 });
             });
         }
+
+        <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">OnDisappearing</span>()
+        {
+            <span class="pl-c1">base</span>.OnDisappearing();
+            MessagingCenter.Unsubscribe&lt;MainPage, LandingResultType&gt;(<span class="pl-c1">this</span>, <span class="pl-s"><span class="pl-pds">"</span>ActivityUpdate<span class="pl-pds">"</span></span>);
+        }
     }
 }</pre></div>
 </li>

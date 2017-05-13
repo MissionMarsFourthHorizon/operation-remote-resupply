@@ -662,6 +662,12 @@ In this exercise, you will add a view to the Portable project and bind it to the
 	                });
 	            });
 	        }
+
+	        protected override void OnDisappearing()
+	        {
+	            base.OnDisappearing();
+	            MessagingCenter.Unsubscribe<MainPage, LandingResultType>(this, "ActivityUpdate");
+	        }
 	    }
 	}
 	```
