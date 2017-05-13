@@ -1,0 +1,1196 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Azure.Mobile.Server</name>
+    </assembly>
+    <members>
+        <member name="P:Microsoft.Azure.Mobile.AssemblyUtils.AssemblyFileVersion">
+            <summary>
+            Gets a string containing the <see cref="T:System.Reflection.AssemblyFileVersionAttribute"/> version information
+            for the current assembly. 
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Properties.CommonResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.ArgMustBeGreaterThanOrEqualTo">
+            <summary>
+              Looks up a localized string similar to Argument must be greater than or equal to {0}..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.ArgumentOutOfRange_InvalidEnum">
+            <summary>
+              Looks up a localized string similar to The value must be from the &apos;{0}&apos; enumeration..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.Assembly_UnknownFileVersion">
+            <summary>
+              Looks up a localized string similar to &lt;unknown&gt;.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.DomainManager_Conflict">
+            <summary>
+              Looks up a localized string similar to The operation failed due to a conflict: &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.HttpHeaderToken_Invalid">
+            <summary>
+              Looks up a localized string similar to The format of value &apos;{0}&apos; is invalid. The character &apos;{1}&apos; is not a valid HTTP header token character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.CommonResources.Property_CannotBeNull">
+            <summary>
+              Looks up a localized string similar to &apos;{0}&apos; cannot be null..
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Properties.RResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.ApplyTo_CalledTwice">
+            <summary>
+              Looks up a localized string similar to ApplyTo cannot be called multiple times on the same HttpConfiguration instance..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.CachePolicy_BadProvider">
+            <summary>
+              Looks up a localized string similar to The &apos;{0}&apos; caused an error: {1}..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.ExtensionProvider_AlreadyExists">
+            <summary>
+              Looks up a localized string similar to A provider of type {0} has already been registered..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.HttpBadRequest">
+            <summary>
+              Looks up a localized string similar to The request is invalid as submitted..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.HttpNotFound">
+            <summary>
+              Looks up a localized string similar to No HTTP resource was found that matches the request URI &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.HttpUnauthorized">
+            <summary>
+              Looks up a localized string similar to Authorization has been denied for this request..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.Settings_KeyNotFound">
+            <summary>
+              Looks up a localized string similar to No service setting was found with key &apos;{0}&apos;. Please ensure that your service is initialized with the correct application settings and connection strings..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.Version_Required">
+            <summary>
+              Looks up a localized string similar to No API version was specified in the request, this request needs to specify a ZUMO-API-VERSION of &apos;{0}&apos;.  For more information and supported clients see: {1}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Properties.RResources.Version_Unsupported">
+            <summary>
+              Looks up a localized string similar to An invalid API version was specified in the request, this request needs to specify a ZUMO-API-VERSION of &apos;{0}&apos;.  For more information and supported clients see: {1}.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Cache.CacheOptionsHelper">
+            <summary>
+            Utility class used to validate <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CacheOptions" /> enumeration values./>
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Cache.CacheOptions">
+            <summary>
+            Defines the set of HTTP response cache control options that can be used with the HTTP Cache-Control header field for an 
+            <see cref="T:System.Net.Http.HttpResponseMessage"/>. This is used by the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider"/> to define which HTTP caching 
+            response headers to use if no HTTP caching response headers have been set on an <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Cache.CacheOptions.None">
+            <summary>
+            Don't include any cache control directives.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Cache.CacheOptions.NoCache">
+            <summary>
+            The "no-cache" response directive indicates that the response MUST NOT be used to satisfy a subsequent 
+            request without successful validation on the origin server.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Cache.CacheOptions.NoStore">
+            <summary>
+            The "no-store" response directive indicates that a cache MUST NOT store any part of either the immediate 
+            request or response. This directive applies to both private and shared caches. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Cache.CacheOptions.MustRevalidate">
+            <summary>
+            The "must-revalidate" response directive indicates that once it has become stale, a cache MUST NOT use 
+            the response to satisfy subsequent requests without successful validation on the origin server.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Cache.CacheOptions.ProxyRevalidate">
+            <summary>
+            The "proxy-revalidate" response directive has the same meaning as the must-revalidate response directive, 
+            except that it does not apply to private caches.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Cache.CacheOptions.NoTransform">
+            <summary>
+            The "no-transform" response directive indicates that an intermediary (regardless of whether it 
+            implements a cache) MUST NOT transform the payload.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Cache.CacheOptions.Private">
+            <summary>
+            The "private" response directive indicates that the response message is intended for a single user and MUST 
+            NOT be stored by a shared cache.  A private cache MAY store the response and reuse it for later
+            requests, even if the response would normally be non-cacheable.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Cache.CacheOptions.Public">
+            <summary>
+            The "public" response directive indicates that any cache MAY store the response, even if the response would 
+            normally be non-cacheable or cacheable only within a private cache.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicy">
+            <summary>
+            Defines a cache policy describing which HTTP cache response headers to include in an <see cref="T:System.Net.Http.HttpResponseMessage"/>. 
+            The <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicy"/> is used by the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider"/> which defines a default caching policy if no HTTP 
+            caching headers have been applied to a given <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Cache.CachePolicy.Options">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CacheOptions"/> to include with the <c>Cache-Control</c> HTTP header field.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Cache.CachePolicy.MaxAge">
+            <summary>
+            Gets or sets the timespan after which the response no longer can be considered fresh. If set then include a 
+            <c>Cache-Control</c> header field with a <c>Max-Age</c> property set to the value. For backwards compatibility 
+            with HTTP/1.0 caches, the <c>Expires</c> header field is also set to an equivalent absolute time stamp.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider">
+            <summary>
+            Default implementation of <see cref="T:Microsoft.Azure.Mobile.Server.Cache.ICachePolicyProvider"/> with a set of possible default HTTP caching policies.
+            If no HTTP caching headers have been set on a response then this abstraction is called allowing for a default
+            set of HTTP caching headers to be applied.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider"/> class with a default <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicy"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider.#ctor(Microsoft.Azure.Mobile.Server.Cache.CachePolicy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider"/> class with the given <paramref name="policy"/>.
+            </summary>
+            <param name="policy">The <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicy"/> to use if no HTTP caching response headers have been set on
+            an <see cref="T:System.Net.Http.HttpResponseMessage"/>.</param>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider.Policy">
+            <summary>
+            Gets the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicy"/> being applied if no HTTP caching response headers have been set on
+            an <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider.SetCachePolicy(System.Net.Http.HttpResponseMessage)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider.SetCacheOptions(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Applies the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicy"/> options to the given <paramref name="response"/>.
+            </summary>
+            <param name="response">The current <see cref="T:System.Net.Http.HttpResponseMessage"/>.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider.SetMaxAge(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Applies the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicy"/> <c>MaxAge</c> value to the given <paramref name="response"/>.
+            </summary>
+            <param name="response">The current <see cref="T:System.Net.Http.HttpResponseMessage"/>.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider.ForceNoCache(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            For backwards compatibility with HTTP/1.0 caches, set the Expires header and Pragma headers
+            to force no cache.
+            </summary>
+            <param name="response">The current <see cref="T:System.Net.Http.HttpResponseMessage"/>.</param>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Cache.ICachePolicyProvider">
+            <summary>
+            Provides an abstraction for adding default HTTP caching headers to a given <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            If no HTTP caching headers have been set on a response then this abstraction is called allowing for a default
+            set of HTTP caching headers to be applied. By default, the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.CachePolicyProvider"/> implementation is 
+            registered with the dependency injection engine but other implementations can be registered as well. If
+            no <see cref="T:Microsoft.Azure.Mobile.Server.Cache.ICachePolicyProvider"/> is registered then no default caching headers will be added to an
+            <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Cache.ICachePolicyProvider.SetCachePolicy(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Applies the default caching header policy to a given <paramref name="response"/>.
+            </summary>
+            <param name="response">The current <see cref="T:System.Net.Http.HttpResponseMessage"/>.</param>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.AppConfiguration">
+            <summary>
+            A default abstract implementation of <see cref="T:Microsoft.Azure.Mobile.Server.Config.IAppConfiguration" />.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.AppConfiguration.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Config.AppConfiguration" /> class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Config.AppConfiguration.ConfigProviders">
+            <summary>
+            Gets a list of registered <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider" />.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.AppConfiguration.RegisterConfigProvider(Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.AppConfiguration.ApplyTo(System.Web.Http.HttpConfiguration)">
+            <inheritdoc />
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppControllerConfigProvider">
+            <summary>
+            Provides an abstraction for performing configuration customizations for controllers with the <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerAttribute"/>.
+            An implementation can be registered via the <see cref="T:System.Web.Http.HttpConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.IMobileAppControllerConfigProvider.Configure(System.Web.Http.Controllers.HttpControllerSettings,System.Web.Http.Controllers.HttpControllerDescriptor)">
+            <summary>
+            Configures the settings specific for controllers using <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerAttribute"/>.
+            </summary>
+            <param name="controllerSettings">The <see cref="T:System.Web.Http.Controllers.HttpControllerSettings"/> for this controller type.</param>
+            <param name="controllerDescriptor">The <see cref="T:System.Web.Http.Controllers.HttpControllerDescriptor"/> for this controller type.</param>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider">
+            <summary>
+            Provides a way to initialize the <see cref="T:System.Web.Http.HttpConfiguration"/> during Mobile App configuration.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider.Initialize(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Initializes the extension.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerAttribute">
+            <summary>
+            Specifies that this controller is for use by an Azure Mobile App client. Specific settings
+            are applied to ensure the controller interacts correctly with the client.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerAttribute.Initialize(System.Web.Http.Controllers.HttpControllerSettings,System.Web.Http.Controllers.HttpControllerDescriptor)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerAttribute.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerAttribute.OnActionExecuted(System.Web.Http.Filters.HttpActionExecutedContext)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerAttribute.HasCachingHeaders(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Determines whether caching headers have already been applied. We look for "Cache-Control" and "Expires".
+            We don't look for just "Pragma" as this is not a reliable header for control caching.
+            </summary>
+            <param name="response">The <see cref="T:System.Net.Http.HttpResponseMessage"/>.</param>
+            <returns><c>true</c> if either "Cache-Control" or "Expires" has been set.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration">
+            <summary>
+            Configures the specified <see cref="T:System.Web.Http.HttpConfiguration" /> with settings used by
+            Azure Mobile Apps.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration" /> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration.ApplyTo(System.Web.Http.HttpConfiguration)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration.MapApiControllers">
+            <summary>
+            Maps all controllers with the <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerAttribute"/> to the route
+            template "api/{controller}/{id}".
+            </summary>
+            <returns>The current <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration.WithMobileAppControllerConfigProvider(Microsoft.Azure.Mobile.Server.Config.IMobileAppControllerConfigProvider)">
+            <summary>
+            Registers the specified <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppControllerConfigProvider" /> with the <see cref="T:System.Web.Http.HttpConfiguration"/>.
+            Use this to override the default controller configuration.
+            </summary>
+            <param name="provider">The provider to register.</param>
+            <returns>The current <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration.AddBaseRouteExclusion(System.String)">
+            <summary>
+            Adds a controller name to be excluded from the default route of 'api/{controller}/{id}'.
+            </summary>
+            <param name="exclusion">The controller name to exclude from the route. Do not include 'Controller' at the end of the string.</param>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerConfigProvider">
+            <summary>
+            A default implementation of <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppControllerConfigProvider" /> that configures the JSON
+            serializer settings for use with Mobile App clients.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerConfigProvider.Configure(System.Web.Http.Controllers.HttpControllerSettings,System.Web.Http.Controllers.HttpControllerDescriptor)">
+            <inheritdoc />
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.IAppConfiguration">
+            <summary>
+            Provides a mechanism for modifying the <see cref="T:System.Web.Http.HttpConfiguration"/> of a Mobile App.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.IAppConfiguration.RegisterConfigProvider(Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider)">
+            <summary>
+            Adds an <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider" /> to the list of providers that will be
+            called by the <see cref="M:Microsoft.Azure.Mobile.Server.Config.AppConfiguration.ApplyTo(System.Web.Http.HttpConfiguration)" /> method.
+            </summary>
+            <param name="provider">The <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider" /> to register.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.IAppConfiguration.ApplyTo(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Calls <see cref="M:Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider.Initialize(System.Web.Http.HttpConfiguration)" /> on every registered
+            <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider" />.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/> passed to each invocation of
+            <see cref="M:Microsoft.Azure.Mobile.Server.Config.IMobileAppExtensionConfigProvider.Initialize(System.Web.Http.HttpConfiguration)" />.</param>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.RouteNames">
+            <summary>
+            This class defines the route names for known routes registered by the service. This can 
+            for example be used to create links to the routes using the <see cref="T:System.Web.Http.UrlHelper"/> class
+            which is available on a <see cref="T:System.Web.Http.ApiController"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Config.RouteNames.Home">
+            <summary>
+            Gets the route name of the Home Controller which provides the home page.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Config.RouteNames.Tables">
+            <summary>
+            Gets the route name for all TableController instances.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Config.RouteNames.Apis">
+            <summary>
+            Gets the route name for any custom <see cref="T:System.Web.Http.ApiController"/> instances.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsKeys">
+            <summary>
+            Defines the keys we look for in <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> to identify known settings.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsKeys.HostName">
+            <summary>
+            The key identifying the application setting containing the host name of the mobile service.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsKeys.SubscriptionId">
+            <summary>
+            The key identifying the application setting containing the subscription id for the service.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsKeys.TableConnectionString">
+            <summary>
+            The key identifying the connection string setting containing the default connection string for table controllers.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsKeys.NotificationHubConnectionString">
+            <summary>
+            The key identifying the connection string setting containing the connection string for the Azure Notification Hub
+            associated with this service.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsKeys.NotificationHubName">
+            <summary>
+            The key identifying the application setting containing the name of the Azure Notification Hub associated with this service.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsKeys.SkipVersionCheck">
+            <summary>
+            The key identifying whether the system will enforce version checks on all incoming Mobile App API calls
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsProvider">
+            <summary>
+            Provides a default implementation of <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppSettingsProvider"/> which gets the
+            settings for the service from the global <see cref="T:System.Configuration.ConfigurationManager"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsProvider.GetMobileAppSettings">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsProvider.InitializeSettings">
+            <summary>
+            Initializes the <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> provided in response to <see cref="M:GetMobileAppSettings"/>.
+            </summary>
+            <returns>A fully initialized <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.MobileAppSettingsProvider.GetAppSettings">
+            <summary>
+            Gets the current application settings in a mockable manner.
+            </summary>
+            <returns>A <see cref="T:System.Collections.Specialized.NameValueCollection"/> containing the application settings.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppSettingsProvider">
+            <summary>
+            Provides an abstraction for getting the <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> for
+            a service. The <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> contains settings such
+            as the name and other parameters for the service.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.IMobileAppSettingsProvider.GetMobileAppSettings">
+            <summary>
+            Gets the <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> for this service.
+            </summary>
+            <returns>An initialized <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> instance.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Config.SetRouteConstraint`1">
+            <summary>
+            A route constraint that constrains a route parameter value to be either included or excluded 
+            from a set of values of type <typeparamref name="TSet"/>.
+            </summary>
+            <typeparam name="TSet">Type of set of values to include or exclude.</typeparam>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.SetRouteConstraint`1.#ctor(System.Collections.Generic.HashSet{`0},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Config.SetRouteConstraint`1"/> class. Using
+            the <paramref name="matchOnExcluded"/> to indicate whether the constraint requires
+            the parameter value to be included or excluded from the provided set of values.
+            </summary>
+            <param name="set">The set of values to match against.</param>
+            <param name="matchOnExcluded">Indicates that the parameter value should be included or excluded from the set.</param>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Config.SetRouteConstraint`1.Excluded">
+            <summary>
+            Indicates whether the matching parameter name should be included or excluded in the value set in order
+            to be a match.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.Config.SetRouteConstraint`1.Set">
+            <summary>
+            Gets the set of excluded or included values.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Config.SetRouteConstraint`1.Match(System.Net.Http.HttpRequestMessage,System.Web.Http.Routing.IHttpRoute,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Web.Http.Routing.HttpRouteDirection)">
+            <inheritdoc />
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Content.StaticHtmlActionResult">
+            <summary>
+            Generates an HTML-formatted <see cref="T:System.Web.Http.IHttpActionResult"/> from an embedded resource.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Content.StaticHtmlActionResult.#ctor(System.String,System.Object[])">
+            <summary>
+            Gets an embedded resource string from the calling assembly and returns it as HTML.
+            Optionally uses <see cref="M:System.String.Format(System.String,System.Object[])"/> to replace values in the resource.
+            </summary>
+            <param name="resourceName">The resource name to return as Html.</param>
+            <param name="replacements">Optional replacement values to pass to <see cref="M:System.String.Format(System.String,System.Object[])"/>.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Content.StaticHtmlActionResult.ExecuteAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.LogCategories">
+            <summary>
+            Optional log categories which can be used by the service when logging messages.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Prefix">
+            <summary>
+            Provides a common prefix for all log categories defined by <see cref="T:Microsoft.Azure.Mobile.Server.LogCategories"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Action">
+            <summary>
+            Log category identifying logs coming from an <see cref="T:System.Web.Http.ApiController"/> action.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Config">
+            <summary>
+            Log category identifying logs coming from a configuration component.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Controllers">
+            <summary>
+            Log category identifying logs coming from an <see cref="T:System.Web.Http.ApiController"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.JobsController">
+            <summary>
+            Log category identifying logs coming from the <see cref="F:Microsoft.Azure.Mobile.Server.LogCategories.JobsController"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Filters">
+            <summary>
+            Log category identifying logs coming from an ASP.NET Web API Filter (see <see cref="T:System.Web.Http.Filters.IFilter"/>).
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Formatting">
+            <summary>
+            Log category identifying logs coming from an ASP.NET Web API <see cref="T:System.Net.Http.Formatting.MediaTypeFormatter"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Hosting">
+            <summary>
+            Log category identifying logs coming from the hosting layer.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.MessageHandlers">
+            <summary>
+            Log category identifying logs coming from an ASP.NET Web API Message Handler (see <see cref="T:System.Net.Http.DelegatingHandler"/>).
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.ModelBinding">
+            <summary>
+            Log category identifying logs coming from an ASP.NET Web API Model Binding.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.NotificationControllers">
+            <summary>
+            Log category identifying logs coming from the installation registration controller for Notification Hub.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Request">
+            <summary>
+            Log category identifying logs coming from a part of the ASP.NET Web API Request flow.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Routing">
+            <summary>
+            Log category identifying logs coming from an ASP.NET Web API Routing.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.Security">
+            <summary>
+            Log category identifying logs coming from security related processing.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.TableControllers">
+            <summary>
+            Log category identifying logs coming from a Table Controller.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.Mobile.Server.LogCategories.HealthReporter">
+            <summary>
+            Log category identifying logs coming from a Health Reporter.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.Serialization.ServiceContractResolver">
+            <summary>
+            Represents the default <see cref="T:Newtonsoft.Json.Serialization.IContractResolver"/> used by <see cref="T:System.Net.Http.Formatting.JsonMediaTypeFormatter"/> but with the addition of supporting
+            camel cased serialization. It uses the formatter's <see cref="T:System.Net.Http.Formatting.IRequiredMemberSelector"/> to select required members and recognizes the 
+            <see cref="T:System.SerializableAttribute"/> type annotation.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Serialization.ServiceContractResolver.#ctor(System.Net.Http.Formatting.MediaTypeFormatter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.Serialization.ServiceContractResolver"/> with a given <paramref name="formatter"/> 
+            to use for resolving required members.
+            </summary>
+            <param name="formatter">The <see cref="T:System.Net.Http.Formatting.MediaTypeFormatter"/> used to resolve required members.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.Serialization.ServiceContractResolver.ResolvePropertyName(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary">
+            <summary>
+            Contains settings for a service such as the connection strings, host name, subscription ID, etc.
+            The <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> provides typed properties for known settings such as <see cref="M:HostName"/>
+            and <see cref="M:SubscriptionId"/> as well as <see cref="T:System.Collections.Generic.IDictionary`2"/> access for all other settings.
+            </summary>
+            <remarks>Any property values set on an instance will only stay in effect for the lifetime of the current <see cref="T:System.AppDomain"/>.
+            To change the settings in a persistent manner, please update them using a mechanism provided by the service host.</remarks>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> class with the specified serialization information and streaming context.
+            </summary>
+            <param name="info">A <see cref="T:System.Runtime.Serialization.SerializationInfo"/> containing information about the <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> to be initialized.</param>
+            <param name="context">A <see cref="T:System.Runtime.Serialization.StreamingContext"/> that indicates the source destination and context information of a serialized stream.</param>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary.Connections">
+            <summary>
+            Gets the set of connection strings for the service.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary.HostName">
+            <summary>
+            Gets or sets the host name of the service.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary.SubscriptionId">
+            <summary>
+            Gets or sets the SubscriptionId of the service.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary.NotificationHubName">
+            <summary>
+            Gets or sets the name of the Notification Hub associated with this service for handling
+            push notifications.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary.SkipVersionCheck">
+            <summary>
+            Gets or sets a value indicating whether ZUMO-API-VERSION header checks are skipped for all
+            calls to MobileApp controllers.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary.Item(System.String)">
+            <summary>
+            Gets or sets the value associated with the specified key.
+            </summary>
+            <param name="key">The key of the value to get or set.</param>
+            <returns>The value associated with the specified key. If the specified key is not found, a get operation throws a <see cref="T:System.Collections.Generic.KeyNotFoundException"/>, and a set operation creates a new element with the specified key.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.Server.ConnectionSettings">
+            <summary>
+            This class provides configuration information for connection strings.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.Server.ConnectionSettings.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.Mobile.Server.ConnectionSettings"/> with a given <paramref name="name"/>
+            and <paramref name="connectionString"/>.
+            </summary>
+            <param name="name">The name of the connection string setting.</param>
+            <param name="connectionString">The actual connection string.</param>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.ConnectionSettings.Name">
+            <summary>
+            Gets or sets the name of the connection string.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.ConnectionSettings.ConnectionString">
+            <summary>
+            Gets or sets the actual connection string.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Mobile.Server.ConnectionSettings.Provider">
+            <summary>
+            Gets or sets the provider to be used by this connection string, e.g. <c>System.Data.SqlClient</c>.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.EnumHelper`1">
+            <summary>
+            Defines a helper class for evaluating whether an enumeration value is valid or invalid. 
+            </summary>
+            <typeparam name="TEnum">The type of the enumeration.</typeparam>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.EnumHelper`1.#ctor">
+            <summary>
+            Constructs a new instance
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.EnumHelper`1.IsDefined(`0)">
+            <summary>
+            Indicates whether the given value is defined in the enumeration.
+            </summary>
+            <param name="value">The parameter to validate.</param>
+            <returns><c>true</c> if value is valid; false otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.EnumHelper`1.Validate(`0,System.String)">
+            <summary>
+            Verifies that a enumeration value is valid and if not throws an <see cref="T:System.ArgumentOutOfRangeException"/>
+            exception.
+            </summary>
+            <param name="value">Value to validate.</param>
+            <param name="parameterName">The name of the parameter holding the value.</param>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.HttpHeaderUtils">
+            <summary>
+            Utility class for various HTTP header manipulations
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.HttpHeaderUtils.IsTokenChar(System.Char)">
+            <summary>
+            Checks whether the given character is a valid HTTP header token character.
+            </summary>
+            <param name="character">The character to check.</param>
+            <returns>true if the character is a token character.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.HttpHeaderUtils.ValidateToken(System.String)">
+            <summary>
+            Validates whether a given <paramref name="token"/> is a valid HTTP header token.
+            </summary>
+            <param name="token">The <see cref="T:System.String"/> to validate.</param>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.HttpHeaderUtils.GetQuotedString(System.String)">
+            <summary>
+            Creates a quoted string (starting and ending with '"').
+            </summary>
+            <remarks>This method does not validate whether there are additional quotes ('"') within the string. It only
+            checks whether the string starts and ends with a quote, and if not then quotes it.</remarks>
+            <param name="value">The string to quote.</param>
+            <returns>The quoted string</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.HttpHeaderUtils.GetUnquotedString(System.String)">
+            <summary>
+            Removes a quote pair from a string if present.
+            </summary>
+            <param name="value">The string to unquote.</param>
+            <returns>The unquoted string.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.ServiceLogCategories">
+            <summary>
+            Category names traced by the service infrastructure. By separating it out from the default Web API 
+            categories and from other user categories it is possible to filter them out in the tracing
+            logic.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.MobileAppSettingsDictionaryExtensions">
+            <summary>
+            Provides various extension methods for the <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.MobileAppSettingsDictionaryExtensions.GetConnectionString(Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary,System.String)">
+            <summary>
+            Gets a connection string by first looking under connection strings and then if not found
+            under application settings.
+            </summary>
+            <param name="settings">The <see cref="T:Microsoft.Azure.Mobile.Server.MobileAppSettingsDictionary"/> to extract the connection string from.</param>
+            <param name="name">The name of the connection string to look up.</param>
+            <returns>The connection string; or null if not present.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Mobile.StringUtils">
+            <summary>
+            Provides various string utilities.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.StringUtils.ToCamelCase(System.String)">
+            <summary>
+            Converts a string to a camel case representation, e.g. <c>thisIsCamelCasing</c> with
+            an initial lower case character.
+            </summary>
+            <param name="value">The string to convert.</param>
+            <returns>The camel cased string; or the original string if no modifications were necessary.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.StringUtils.ToPascalCase(System.String)">
+            <summary>
+            Converts a string to a Pascal case representation, e.g. <c>ThisIsPascalCasing</c> with 
+            an initial upper case character.
+            </summary>
+            <param name="value">The string to convert.</param>
+            <returns>The Pascal cased string; or the original string if no modifications were necessary.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.TypeUtils.IsType``1(System.Type)">
+            <summary>
+            Checks whether <paramref name="type"/> is of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type to test against</typeparam>
+            <param name="type">The type to test.</param>
+            <returns><c>true</c> if the type is of type <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.TypeUtils.GetTypes(System.Collections.Generic.IEnumerable{System.Runtime.InteropServices._Assembly},System.Predicate{System.Type})">
+            <summary>
+            Finds types matching the <paramref name="predicate"/> in a given set of <paramref name="assemblies"/>.
+            </summary>
+            <param name="assemblies">The assemblies to look through.</param>
+            <param name="predicate">The predicate to apply to the search.</param>
+            <returns>An <see cref="T:System.Collections.Generic.ICollection`1"/> of types found.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Mobile.TypeUtils.CreateInvoker``1(System.Type,System.Reflection.MethodInfo)">
+            <summary>
+            Creates a Linq expression for invoking a method with a given <typeparamref name="TReturn"/> return type but 
+            no parameters on a given type.
+            </summary>
+            <param name="instanceType">The instance type containing the method to invoke.</param>
+            <param name="method">The <see cref="T:System.Reflection.MethodInfo"/> which is to be invoked.</param>
+            <returns>A delegate which can be used to invoke the method given a type instance.</returns>
+        </member>
+        <member name="M:System.CloneableExtensions.Clone``1(``0)">
+            <summary>
+            Cloning an object that implement <see cref="T:System.ICloneable"/> using an explicit interface implementation.
+            </summary>
+            <typeparam name="T">The type of the object to clone.</typeparam>
+            <param name="value">The object to clone.</param>
+            <returns>A clone of <paramref name="value"/>.</returns>
+        </member>
+        <member name="T:System.Collections.Generic.DictionaryExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.TryGetValue``1(System.Collections.Generic.IDictionary{System.Object,System.Object},System.Object,``0@)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance where both <c>TKey</c> and <c>TValue</c> are of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <param name="value">When this method returns, the value with the specified key if found; otherwise the default value.</param>
+            <returns><c>true</c> if key was found and value is of type <typeparamref name="TValue"/> and non-null; otherwise false.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault``1(System.Collections.Generic.IDictionary{System.Object,System.Object},System.Object)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance where both <c>TKey</c> and <c>TValue</c> are of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise the default value.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.TryGetValue``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,``0@)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.String"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <param name="value">When this method returns, the value with the specified key if found; otherwise the default value.</param>
+            <returns><c>true</c> if key was found and value is of type <typeparamref name="TValue"/> and non-null; otherwise false.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.String"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise the default value.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.TryGetValue``1(System.Collections.Generic.IDictionary{System.Type,System.Object},System.Type,``0@)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.Type"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <param name="value">When this method returns, the value with the specified key if found; otherwise the default value.</param>
+            <returns><c>true</c> if key was found and value is of type <typeparamref name="TValue"/> and non-null; otherwise false.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault``1(System.Collections.Generic.IDictionary{System.Type,System.Object},System.Type)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.Type"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise the default value.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.SetOrClearValue``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,``0)">
+            <summary>
+            Sets the entry with the given key to the given value. If value is the default value
+            then the entry is removed.
+            </summary>
+            <typeparam name="T">Type of value to be set or cleared.</typeparam>
+            <param name="dictionary">The dictionary to insert of clear a value from.</param>
+            <param name="key">The key of the entry.</param>
+            <param name="value">The value (or default value).</param>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault(System.Collections.Generic.IDictionary{System.String,System.String},System.String)">
+            <summary>
+            Gets the value with the given key, or null if the key is not present. 
+            </summary>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <c>string</c >and <c>TValue</c> of type <c>string</c>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise null.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.GetValueOrDefault``1(System.Collections.Generic.IDictionary{System.String,System.String},System.String)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <c>string</c >and <c>TValue</c> of type <c>string</c>.</param>
+            <param name="key">The key whose value to get.</param>
+            <returns>the value with the specified key if found; otherwise null.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.DictionaryExtensions.TryGetValue``1(System.Collections.Generic.IDictionary{System.String,System.String},System.String,``0@)">
+            <summary>
+            Gets the value of <typeparamref name="TValue"/> with the given key, or the <c>default</c> value 
+            if the key is not present or the value is not of type <typeparamref name="TValue"/>. 
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2"/> instance <c>TKey</c> is of type <see cref="T:System.String"/> and <c>TValue</c> of type <see cref="T:System.Object"/>.</param>
+            <param name="key">The key whose value to get.</param>
+            <param name="value">When this method returns, the value with the specified key if found; otherwise the default value.</param>
+            <returns><c>true</c> if key was found and value is of type <typeparamref name="TValue"/>; otherwise false.</returns>
+        </member>
+        <member name="M:System.StringExtensions.FormatForUser(System.String,System.Object[])">
+            <summary>
+            Formats the input string to be user visible using <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>.
+            </summary>
+        </member>
+        <member name="M:System.StringExtensions.FormatInvariant(System.String,System.Object[])">
+            <summary>
+            Formats the input string to be user visible using <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
+            </summary>
+        </member>
+        <member name="M:System.StringExtensions.SplitAndTrim(System.String,System.Char[])">
+            <summary>
+            Splits a string into segments based on a given <paramref name="separator"/>. The segments are 
+            trimmed and empty segments are removed.
+            </summary>
+            <param name="input">The string to split.</param>
+            <param name="separator">An array of Unicode characters that delimit the substrings in this instance, an empty array that contains no delimiters, or null.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing the resulting segments.</returns>
+        </member>
+        <member name="T:System.Web.Http.HttpConfigurationExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:System.Web.Http.HttpConfiguration"/> class.
+            </summary>
+        </member>
+        <member name="M:System.Web.Http.HttpConfigurationExtensions.GetMobileAppConfiguration(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration"/> registered with the current <see cref="T:System.Web.Http.HttpConfiguration" />.
+            </summary>
+            <param name="config">The current <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The registered instance.</returns>
+        </member>
+        <member name="M:System.Web.Http.HttpConfigurationExtensions.SetMobileAppConfiguration(System.Web.Http.HttpConfiguration,Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration)">
+            <summary>
+            Registers a <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppConfiguration"/> with the current <see cref="T:System.Web.Http.HttpConfiguration" />.
+            </summary>
+            <param name="config">The current <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="options">The instance to register.</param>
+        </member>
+        <member name="M:System.Web.Http.HttpConfigurationExtensions.GetMobileAppSettingsProvider(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppSettingsProvider"/> registered with the current <see cref="T:System.Web.Http.HttpConfiguration" />.
+            </summary>
+            <param name="config">The current <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The registered instance.</returns>
+        </member>
+        <member name="M:System.Web.Http.HttpConfigurationExtensions.SetMobileAppSettingsProvider(System.Web.Http.HttpConfiguration,Microsoft.Azure.Mobile.Server.Config.IMobileAppSettingsProvider)">
+            <summary>
+            Registers an <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppSettingsProvider"/> with the current <see cref="T:System.Web.Http.HttpConfiguration" />.
+            </summary>
+            <param name="config">The current <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="provider">The instance to register.</param>
+        </member>
+        <member name="M:System.Web.Http.HttpConfigurationExtensions.GetCachePolicyProvider(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the <see cref="T:Microsoft.Azure.Mobile.Server.Cache.ICachePolicyProvider"/> registered with the current <see cref="T:System.Web.Http.HttpConfiguration" />.
+            </summary>
+            <param name="config">The current <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The registered instance.</returns>
+        </member>
+        <member name="M:System.Web.Http.HttpConfigurationExtensions.SetCachePolicyProvider(System.Web.Http.HttpConfiguration,Microsoft.Azure.Mobile.Server.Cache.ICachePolicyProvider)">
+            <summary>
+            Registers an <see cref="T:Microsoft.Azure.Mobile.Server.Cache.ICachePolicyProvider"/> with the current <see cref="T:System.Web.Http.HttpConfiguration" />.
+            </summary>
+            <param name="config">The current <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="provider">The instance to register.</param>
+        </member>
+        <member name="M:System.Web.Http.HttpConfigurationExtensions.GetMobileAppControllerConfigProvider(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppControllerConfigProvider"/> registered with the current <see cref="T:System.Web.Http.HttpConfiguration" />.
+            </summary>
+            <param name="config">The current <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The registered instance.</returns>
+        </member>
+        <member name="M:System.Web.Http.HttpConfigurationExtensions.SetMobileAppControllerConfigProvider(System.Web.Http.HttpConfiguration,Microsoft.Azure.Mobile.Server.Config.IMobileAppControllerConfigProvider)">
+            <summary>
+            Registers an <see cref="T:Microsoft.Azure.Mobile.Server.Config.IMobileAppControllerConfigProvider"/> with the current <see cref="T:System.Web.Http.HttpConfiguration" />.
+            The registered class provides the base settings for controllers using the <see cref="T:Microsoft.Azure.Mobile.Server.Config.MobileAppControllerAttribute" />.
+            </summary>
+            <param name="config">The current <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="configProvider">The instance to register.</param>
+        </member>
+        <member name="T:System.Web.Http.TraceWriterExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Web.Http.Tracing.ITraceWriter"/> providing easy usable methods for logging.
+            </summary>
+        </member>
+        <member name="M:System.Web.Http.TraceWriterExtensions.Debug(System.Web.Http.Tracing.ITraceWriter,System.String,System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Writes a <see cref="T:System.Web.Http.Tracing.TraceRecord"/> at <see cref="F:System.Web.Http.Tracing.TraceLevel.Debug"/> with the given message.
+            </summary>
+            <param name="traceWriter">The <see cref="T:System.Web.Http.Tracing.ITraceWriter"/></param>
+            <param name="message">The message to log.</param>
+            <param name="request">Request used for message correlation. Defaults to null.</param>
+            <param name="category">The category for the trace. Defaults to the method or property name of the caller.</param>
+        </member>
+        <member name="M:System.Web.Http.TraceWriterExtensions.Info(System.Web.Http.Tracing.ITraceWriter,System.String,System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Writes a <see cref="T:System.Web.Http.Tracing.TraceRecord"/> at <see cref="F:System.Web.Http.Tracing.TraceLevel.Info"/> with the given message.
+            </summary>
+            <param name="traceWriter">The <see cref="T:System.Web.Http.Tracing.ITraceWriter"/></param>
+            <param name="message">The message to log.</param>
+            <param name="request">Request used for message correlation. Defaults to null.</param>
+            <param name="category">The category for the trace. Defaults to the method or property name of the caller.</param>
+        </member>
+        <member name="M:System.Web.Http.TraceWriterExtensions.Warn(System.Web.Http.Tracing.ITraceWriter,System.String,System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Writes a <see cref="T:System.Web.Http.Tracing.TraceRecord"/> at <see cref="F:System.Web.Http.Tracing.TraceLevel.Warn"/> with the given message.
+            </summary>
+            <param name="traceWriter">The <see cref="T:System.Web.Http.Tracing.ITraceWriter"/></param>
+            <param name="message">The message to log.</param>
+            <param name="request">Request used for message correlation. Defaults to null.</param>
+            <param name="category">The category for the trace. Defaults to the method or property name of the caller.</param>
+        </member>
+        <member name="M:System.Web.Http.TraceWriterExtensions.Error(System.Web.Http.Tracing.ITraceWriter,System.String,System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Writes a <see cref="T:System.Web.Http.Tracing.TraceRecord"/> at <see cref="F:System.Web.Http.Tracing.TraceLevel.Error"/> with the given message.
+            </summary>
+            <param name="traceWriter">The <see cref="T:System.Web.Http.Tracing.ITraceWriter"/></param>
+            <param name="message">The message to log.</param>
+            <param name="request">Request used for message correlation. Defaults to null.</param>
+            <param name="category">The category for the trace. Defaults to the method or property name of the caller.</param>
+        </member>
+        <member name="M:System.Web.Http.TraceWriterExtensions.Error(System.Web.Http.Tracing.ITraceWriter,System.Exception,System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Writes a <see cref="T:System.Web.Http.Tracing.TraceRecord"/> at <see cref="F:System.Web.Http.Tracing.TraceLevel.Error"/> with the given <paramref name="exception"/>.
+            </summary>
+            <param name="traceWriter">The <see cref="T:System.Web.Http.Tracing.ITraceWriter"/></param>
+            <param name="exception">The exception to log.</param>
+            <param name="request">Request used for message correlation. Defaults to null.</param>
+            <param name="category">The category for the trace. Defaults to the method or property name of the caller.</param>
+        </member>
+        <member name="M:System.Web.Http.TraceWriterExtensions.Error(System.Web.Http.Tracing.ITraceWriter,System.String,System.Exception,System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Writes a <see cref="T:System.Web.Http.Tracing.TraceRecord"/> at <see cref="F:System.Web.Http.Tracing.TraceLevel.Error"/> with the given message and exception.
+            </summary>
+            <param name="traceWriter">The <see cref="T:System.Web.Http.Tracing.ITraceWriter"/></param>
+            <param name="message">The message to log.</param>
+            <param name="exception">The exception to log.</param>
+            <param name="request">Request used for message correlation. Defaults to null.</param>
+            <param name="category">The category for the trace. Defaults to the method or property name of the caller.</param>
+        </member>
+        <member name="M:System.Web.Http.TraceWriterExtensions.Trace(System.Web.Http.Tracing.ITraceWriter,System.Web.Http.Tracing.TraceLevel,System.String,System.Exception,System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Writes a single <see cref="T:System.Web.Http.Tracing.TraceRecord"/> to the given <see cref="T:System.Web.Http.Tracing.ITraceWriter"/> if the trace writer
+            is enabled for the given <paramref name="category"/> and <paramref name="level"/>.
+            </summary>
+            <param name="traceWriter">The <see cref="T:System.Web.Http.Tracing.ITraceWriter"/></param>
+            <param name="level">The <see cref="T:System.Web.Http.Tracing.TraceLevel"/> for the trace.</param>
+            <param name="message">The message to log (or null).</param>
+            <param name="exception">The exception to log (or null).</param>
+            <param name="request">Request used for message correlation. Defaults to null.</param>
+            <param name="category">The category for the trace. Defaults to the method or property name of the caller.</param>
+        </member>
+        <member name="T:System.Net.Http.HttpRequestMessageExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Net.Http.HttpRequestMessage"/> providing various utilities.
+            </summary>
+        </member>
+        <member name="M:System.Net.Http.HttpRequestMessageExtensions.GetHeaderOrDefault(System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Gets the first HTTP header value as a single value or <c>null</c> if not present.
+            </summary>
+            <param name="request">The request for where to look for the header.</param>
+            <param name="name">The name of the header.</param>
+            <returns>The first HTTP header value or <c>null</c> if not present.</returns>
+        </member>
+        <member name="M:System.Net.Http.HttpRequestMessageExtensions.IsIfNoneMatch(System.Net.Http.HttpRequestMessage,System.Net.Http.Headers.EntityTagHeaderValue)">
+            <summary>
+            Checks if the request is conditional having a <c>If-None-Match</c> HTTP header field with a value that matches the
+            <paramref name="current"/> value. In the case of <c>true</c> this can be used to indicate that a
+            304 (Not Modified) or a 412 (Precondition Failed) status code should be used.
+            </summary>
+            <param name="request">The request to match.</param>
+            <param name="current">The current etag for the resource. If there is no current etag (i.e. the resource does not yet
+            exist) then use <c>null</c>.</param>
+            <returns>Returns <c>true</c> if one of the <c>If-None-Match</c> values match the current etag; or the
+            <c>If-None-Match</c> value is "*" and <paramref name="current"/> is not null; otherwise false.</returns>
+        </member>
+        <member name="M:System.Net.Http.HttpRequestMessageExtensions.CreateNotFoundResponse(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Creates an <see cref="T:System.Net.Http.HttpResponseMessage"/> with an <see cref="F:System.Net.HttpStatusCode.NotFound"/> status code and a default
+            <see cref="T:System.Web.Http.HttpError"/> as HTTP response body.
+            </summary>
+            <param name="request">The current <see cref="T:System.Net.Http.HttpRequestMessage"/>.</param>
+            <returns>An initialized <see cref="T:System.Net.Http.HttpResponseMessage"/>.</returns>
+        </member>
+        <member name="M:System.Net.Http.HttpRequestMessageExtensions.CreateNotFoundResponse(System.Net.Http.HttpRequestMessage,System.String,System.Object[])">
+            <summary>
+            Creates an <see cref="T:System.Net.Http.HttpResponseMessage"/> with an <see cref="F:System.Net.HttpStatusCode.NotFound"/> status code and a
+            <see cref="T:System.Web.Http.HttpError"/> containing the provided message as HTTP response body.
+            </summary>
+            <param name="request">The current <see cref="T:System.Net.Http.HttpRequestMessage"/>.</param>
+            <param name="format">A composite format string.</param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <returns>An initialized <see cref="T:System.Net.Http.HttpResponseMessage"/>.</returns>
+        </member>
+        <member name="M:System.Net.Http.HttpRequestMessageExtensions.CreateUnauthorizedResponse(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Creates an <see cref="T:System.Net.Http.HttpResponseMessage"/> with an <see cref="F:System.Net.HttpStatusCode.Unauthorized"/> status code and a  default
+            <see cref="T:System.Web.Http.HttpError"/> as HTTP response body.
+            </summary>
+            <param name="request">The current <see cref="T:System.Net.Http.HttpRequestMessage"/>.</param>
+            <returns>An initialized <see cref="T:System.Net.Http.HttpResponseMessage"/>.</returns>
+        </member>
+        <member name="M:System.Net.Http.HttpRequestMessageExtensions.CreateUnauthorizedResponse(System.Net.Http.HttpRequestMessage,System.String,System.Object[])">
+            <summary>
+            Creates an <see cref="T:System.Net.Http.HttpResponseMessage"/> with an <see cref="F:System.Net.HttpStatusCode.Unauthorized"/> status code and a
+            <see cref="T:System.Web.Http.HttpError"/> containing the provided message as HTTP response body.
+            </summary>
+            <param name="request">The current <see cref="T:System.Net.Http.HttpRequestMessage"/>.</param>
+            <param name="format">A composite format string.</param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <returns>An initialized <see cref="T:System.Net.Http.HttpResponseMessage"/>.</returns>
+        </member>
+        <member name="M:System.Net.Http.HttpRequestMessageExtensions.CreateBadRequestResponse(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Creates an <see cref="T:System.Net.Http.HttpResponseMessage"/> with an <see cref="F:System.Net.HttpStatusCode.BadRequest"/> status code and a  default
+            <see cref="T:System.Web.Http.HttpError"/> as HTTP response body.
+            </summary>
+            <param name="request">The current <see cref="T:System.Net.Http.HttpRequestMessage"/>.</param>
+            <returns>An initialized <see cref="T:System.Net.Http.HttpResponseMessage"/>.</returns>
+        </member>
+        <member name="M:System.Net.Http.HttpRequestMessageExtensions.CreateBadRequestResponse(System.Net.Http.HttpRequestMessage,System.String,System.Object[])">
+            <summary>
+            Creates an <see cref="T:System.Net.Http.HttpResponseMessage"/> with an <see cref="F:System.Net.HttpStatusCode.BadRequest"/> status code and a
+            <see cref="T:System.Web.Http.HttpError"/> containing the provided message as HTTP response body.
+            </summary>
+            <param name="request">The current <see cref="T:System.Net.Http.HttpRequestMessage"/>.</param>
+            <param name="format">A composite format string.</param>
+            <param name="args">An object array that contains zero or more objects to format.</param>
+            <returns>An initialized <see cref="T:System.Net.Http.HttpResponseMessage"/>.</returns>
+        </member>
+    </members>
+</doc>
