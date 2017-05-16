@@ -10,9 +10,9 @@ Not only have modern mobile apps changed the way developers design, build, and d
 
 To address this need, tools and services have been created to mitigate these problems, often by removing the need for an IDE, such as in Roslyn, the Microsoft open source .NET compiler service, Jupyter, and [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/ "Xamarin Workbooks"), where an "immersive" experience is created for a developer, without the extra overhead of solutions and projects. Xamarin Workbooks combines these concepts by allowing interactive documentation to be combined with live coding, making it simple for a developer to learn and experiment with a native platform, including support for Android, iOS, Mac and Windows desktop apps.
 
-Even well designed mobile apps have hidden or problematic performance issues, difficult to diagnose through simple user testing processes, Working with cross-platform solutions compounds these challenges, as some problems may exist for one platform, but not another. To provide the type of rich diagnostic profiling and instrumentation needed for cross-platform development, the Xamarin platform includes the [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/ "Xamarin Profiler"). The Xamarin Profiler provides a graphical interface for the [Mono log profiler](http://www.mono-project.com/docs/debug+profile/profile/profiler/ "Mono log profiler"), seamlessly integrated into your existing Xamarin toolchain, to collect information about your Xamarin apps. The Xamarin Profiler is the ideal tool to diagnose memory leaks and resolve potential performance bottlenecks. 
+Even well-designed mobile apps have hidden or problematic performance issues, difficult to diagnose through simple user testing processes, Working with cross-platform solutions compounds these challenges, as some problems may exist for one platform, but not another. To provide the type of rich diagnostic profiling and instrumentation needed for cross-platform development, the Xamarin platform includes the [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/ "Xamarin Profiler"). The Xamarin Profiler provides a graphical interface for the [Mono log profiler](http://www.mono-project.com/docs/debug+profile/profile/profiler/ "Mono log profiler"), seamlessly integrated into your existing Xamarin toolchain, to collect information about your Xamarin apps. The Xamarin Profiler is the ideal tool to diagnose memory leaks and resolve potential performance bottlenecks. 
 
-In this lab, you will use Xamarin Workbooks to create a rich, interactive document to detail and execute the process of converting Earth time to Mars time, based on the calculations displayed by Mission Control, as well as using the Xamarin UI Inspector, Previewer and Profiler to to inspect, adjust a Xamarin Forms app user interface and diagnose potential performance issues.
+In this lab, you will use Xamarin Workbooks to create a rich, interactive document to convert Earth time to Mars time based on calculations provided by Mission Control. You will also get first-hand experience using the Xamarin UI Inspector, Xamarin Previewer, and the Xamarin Profiler to tweak a Xamarin Forms user interface and diagnose potential performance issues.
 
 <a name="Objectives"></a>
 ### Objectives ###
@@ -34,7 +34,7 @@ The following are required to complete this lab:
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
 - [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/install/ "Xamarin Workbooks") for Windows
 - [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/#Download_and_Install "Xamarin Profiler") for Windows
-- [Visual Studio Enterprise 2017](https://www.visualstudio.com/vs/) for profiling instrumentation using Xamarin Profiler. (optional)
+- [Visual Studio Enterprise 2017](https://www.visualstudio.com/vs/) for profiling instrumentation using Xamarin Profiler (optional)
 
 If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
 
@@ -55,66 +55,74 @@ Estimated time to complete this lab: **45** minutes.
 
 <a name="Exercise1"></a>
 ## Exercise 1: Create a Xamarin Workbook for Android ##
- 
+
 Xamarin Workbooks are essentially "markdown" files with a ".workbook" extension, making them both portable and easy to manage. A workbook can be created for Android, iOS, Windows console, and desktop (WPF) apps, with full support for package management, including platform-specific NuGet packages. Rich code block support, using the standard markup "triple-backtick" pattern, is also used, making it easy to convert a standard markdown file to a Xamarin Workbook for a more interactive learning experience.
 
-In this exercise you will create a Xamarin Workbook targeting Android devices to document the process and logic of converting Earth time to Mars time, including the use of interactive code blocks. 
+In this exercise, you will create a Xamarin Workbook targeting Android devices and learn the basics of working with cells. 
 
-1. Open Xamarin Workbooks, select **Android** as the supported framework option and click **Create**. 
+1. Launch Xamarin Workbooks, select **Android** as the framework, and click **Create**. 
     
-	![Creating a workbook targeting Android](Images/xw-select-android.png)
+	![Creating a workbook for Android](Images/xw-select-android.png)
 
-    _Creating a workbook targeting Android_
+    _Creating a workbook for Android_
 
-1. After a short delay, a blank Xamarin Workbook will be created, and Xamarin Workbooks will attempt to locate and start your default Visual Studio for Android emulator. 
+1. After a short delay, a blank Xamarin workbook will be created, and Xamarin Workbooks will launch your default Android emulator. Wait for the emulator to appear and display a default page.
  
-	![Connecting to the default emulator](Images/xw-connecting.png)
+	![A blank Xamarin workbook in the Android emulator](Images/app-blank-app.png)
 
-    _Connecting to the default emulator_
+    _A blank Xamarin workbook in the Android emulator_
 
-1. In the emulator, ensure you have unlocked the device (if in lockscreen mode) and observe a default "page" created for your workbook. 
+1. A Xamarin workbook is composed of *cells*. There are two types of cells: executable cells and documentation cells. Executable cells contain C# code that can be executed inside the workbook. Documentation cells contain text that can be formatted using markdown syntax. You build interactive workbooks by creating sequences of executable cells and documentation cells.
 
-	![A blank Xamarin Workbook in the Android emulator](Images/app-blank-app.png)
+	Return to Xamarin Workbooks and type the following line of code into the executable cell at the top of the workbook. Then press **Shift+Enter** to insert a blank line:
 
-    _A blank Xamarin Workbook in the Android emulator_
+	```C#
+	// This is an executable cell
+	```
 
-1. Return to Xamarin Workbooks and observe the default documentation cell created for a blank workbook. In the Xamarin Workbook editor you will be typically be working with cell documentation actions, located below and right of each cell context, with the following actions:
-
-	- Insert a new C# executable cell
-	- Insert a new documentation cell
-	- Delete cell
-
-	![The documentation action cell panel](Images/xw-cell-actions.png)
-
-    _The documentation action cell panel_
-
-	The default cell created for an Android workbook is an executable cell. To get familiar with using an executable cell you can use C# to get the current date and time:
-	
-1. Enter the following single line of code in the executable cell and click the **Run** icon, or press CTRL + RETURN on your keyboard to execute the cell code.
+1. Enter the following line of code on the second line:
 
 	```C#
 	DateTime.Now;
 	```
 
-	![Executing a code cell in the Xamarin Workbooks editor](Images/xw-click-run.png)
+1. Click the **Run** button (or press **Ctrl+Enter**) to execute the code. 
 
-    _Executing a code cell in the Xamarin Workbooks editor_
+	![Running an executable cell](Images/ex1-run-code.png)
 
-	>If you chose to type DateTime.Now manually, notice you have full IntelliSense support, right in the editor. This will be true for any supported assemblies in Xamarin Workbooks.
+    _Running an executable cell_
 
-1. Observe the execution and result displayed below the cell, as well as the ability to select various formats and options for displaying the results:
+1. Confirm that the result appears underneath the code. Use the drop-down under the **Default** button to try formatting the result in various ways.
 
-	![Executed code in the Xamarin Workbooks editor](Images/xw-code-result.png)
+	![Results of executing a cell](Images/ex1-execution-result.png)
 
-    _Executed code in the Xamarin Workbooks editor_
+    _Results of executing a cell_
 
-1. Remove the executable cell by selecting the **Delete cell** action and then confirming deletion, as you will not be using this cell as part of your Earth to Mars time documentation.
+1. The three buttons in the lower-right corner of each cell allow you to add an executable cell, add a documentation cell, and delete the current cell, in that order. Click the third button in the cell that was added when you executed the code in the previous cell to delete it.
 
-	![Deleting the executable cell](Images/xw-click-delete.png)
+	![Deleting the newly added cell](Images/ex1-delete-executable-cell.png)
 
-    _Deleting the executable cell_
- 
-You now have a blank Xamarin Workbook created, targeting the Android platform, and are familiar with the general layout and tasks associated with managing cells in the editor, it's time to create your interactive Earth to Mars time documentation.
+    _Deleting the newly added cell_
+
+1. Click the middle button in the remaining cell to add a documentation cell.
+
+	![Adding a documentation cell](Images/ex1-add-documentation-cell.png)
+
+    _Adding a documentation cell_
+
+1. Type "This is a documentation cell" into the documentation cell. Then highlight "documentation cell" and click the **Italics** button that appears above it.
+
+	![Italicizing text in a documentation cell](Images/ex1-italicize-text.png)
+
+    _Italicizing text in a documentation cell_
+
+1. Confirm that "documentation cell" is italicized. Then delete the documentation cell.
+
+	![Adding a documentation cell](Images/ex1-delete-documentation-cell.png)
+
+    _Adding a documentation cell_
+
+Now that you're familiar with basic workbook concepts, including adding, deleting, and executing cells, let's build something more impactful.
 
 <a name="Exercise2"></a>
 ## Exercise 2: Add documentation and live calculations to a Xamarin Workbook ##
