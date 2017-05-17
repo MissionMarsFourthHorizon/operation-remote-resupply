@@ -46,7 +46,7 @@ If you wish to build and run the iOS version of the app, you also have to have a
 This lab includes the following exercises:
 
 - [Exercise 1: Create a Xamarin Workbook for Android](#Exercise1)
-- [Exercise 2: Add documentation and live calculations to a Xamarin Workbook](#Exercise2)
+- [Exercise 2: Build an interactive workbook](#Exercise2)
 - [Exercise 3: Inspect code using the Xamarin UI Inspector](#Exercise3)
 - [Exercise 4: Use the XAML Previewer for Xamarin to view UI updates](#Exercise4)
 - [Exercise 5: Diagnose potential performance issues with Xamarin Profiler](#Exercise5)
@@ -125,135 +125,139 @@ In this exercise, you will create a Xamarin Workbook targeting Android devices a
 Now that you're familiar with basic workbook concepts, including adding, deleting, and executing cells, let's build something more impactful.
 
 <a name="Exercise2"></a>
-## Exercise 2: Add documentation and live calculations to a Xamarin Workbook ##
+## Exercise 2: Build an interactive workbook ##
 
 Xamarin Workbooks are typically comprised of both document cells and executable cells, with markdown-style formatting applied for readability and structure. In this exercise you will be using the skills and familiarity gained in the previous exercise to create an interactive document providing the steps, descriptions, and calculations required to convert Earth time to Mars time.
 
-1. Open Xamarin Workbooks to the blank document created earlier, if not already open from the previous exercise.
-1. Click the **Add documentation cell** icon in the actions panel to add a new documentation cell.
-1. Create a heading for your document by entering the following text in the new documentation cell:
+1. Add a documentation cell to the workbook. Then delete the executable cell above it.
 
-	```Text
-	What time is it on Mars?
-	``` 
-1. Format the value in the documentation cell by selecting **Format** > **Heading** > **Level 1** from the Xamarin Forms menu.
-
-	![Formatting a value as a Level 1 Heading](Images/xw-format-heading.png)
-
-    _Formatting a value as a Level 1 Heading_
- 
-	![A formatted Level 1 Heading value](Images/xw-completed-format.png)
-
-    _A formatted Level 1 Heading value_
- 
-1. Click the **Add documentation cell** icon in the actions panel to add another new documentation cell.
-1. Copy and paste the following content into the cell to create a document introduction: 
-
-	```TEXT
-	This might seem like a crazy question, since you probably don’t have an appointment on Mars, but understanding the way the Mars calendar and cycles work makes it easy to figure out what “time” it is on Mars, based on the Earth concept of time and time spans. Now, you might be thinking this is just arbitrary question, but remember: so is Earth Time. In general, a bunch of people just strarted to agree that days would be based on solar cycles, and be divided into (about) 24 hours. To make it easy to understand Martian Time, using the familiar concept of Earth Time, we just need to perform a few calculations based on what a bunch of people agreed on, related to when and how Mars Time is dervied.
-
-	Since the science community had to have a “starting point” for everything, they generally agreed to use what’s know as Epoch Time, or Unix Epoch Time, which is always  midnight January 1, 1970. Although you may not have realized it, midnight is not the end, but the start point for every day. Your starting point will be to figure out how many milliseconds have elaspsed since the Epoch.
-
-	To make sure our calculations can use both C# and Xamarin Forms, you need to include a few lines of code like this:
+1. Create a heading for your workbook by entering the following text in the documentation cell:
 
 	```
+	What time is it on Mars?
+	```
+
+1. Format the text in the cell by selecting **Format** > **Heading** > **Level 1** from the overhead menu.
+
+	![Formatting a documentation cell](Images/xw-format-heading.png)
+
+    _Formatting a documentation cell_
+
+1. Confirm that the heading takes on the format shown below.
+
+	![The formatted heading](Images/xw-completed-format.png)
+
+    _The formatted heading_
+ 
+1. Add another documentation cell to the workbook. Then paste the following text into the cell to serve as an introduction to the workbook: 
+
+	```
+	Have you ever considered what time it is on Mars? It's not an abstract question when you have settlers on Mars and need to communicate with them. tk. 
+
+	To make sure your calculations can use both C# and Xamarin Forms, you need to include a few lines of code like this:
+	```
+
 	At this point you're ready to start adding some code, and since you will be working with a Xamarin Forms for the remainder of this exercise, you need to add the Xamarin.Forms package to your workbook:
 
-1. Click the **Add executable cell** icon in the actions panel to add a new code cell.
-1. Select **File** > **Add Package...** from the Xamarin Workbooks menu, and enter "Xamarin.Forms" in the "Search NuGet" entry.
-1. Select the latest **Xamarin.Forms** package and click **Add Package**.
+1. Add an executable cell to the workbook. Then select **File** > **Add Package...** from the overhead menu and type "Xamarin.Forms" into the search box. Select the latest **Xamarin.Forms** package, and then click **Add Package** to add the package to the workbook.
 
-	![Adding the Xamarin.Forms NuGet package to a workbook](Images/xw-add-package.png)
+	> One of the most powerful features of Xamarin Workbooks is that you can import NuGet packages just like you can in Visual Studio. Once a package is imported, C# code that you add to the workbook can use the types in that package.
 
-    _Adding the Xamarin.Forms NuGet package to a workbook_
+	![Adding Xamarin.Forms to a workbook](Images/xw-add-package.png)
+
+    _Adding Xamarin.Forms to a workbook_
  
-1. Notice that Xamarin Workbooks added the package to your workbook, as well as adding required code to the code cell required to reference Xamarin Forms platform:
+1. Confirm that three ```#r``` statements appear referencing the assemblies imported from the package.
 
-	![Automatically added references for Xamarin Forms assemblies](Images/xw-references-added.png)
+	![Statements referencing Xamarin Forms assemblies](Images/xw-references-added.png)
 
-    _Automatically added references for Xamarin Forms assemblies_
+    _Statements referencing Xamarin Forms assemblies_
  
-1. Click the **Add executable cell** icon in the actions panel to add a new code cell, then insert the following ```using``` statement into the cell:
+1. In the new executable cell that appears in the workbook, insert the following ```using``` statement:
  
 	```C#
 	using Xamarin.Forms;
 	```
-1. Complete your first documentation section by clicking the **Add documentation cell**  section by and inserting the following content:
 
-	```Text
+1. Add a documentation cell to the workbook and insert the following text:
+
+	```
 	With that in place, you can start writing some code to calculate Martian Time, starting with the number of milliseconds since the epoch.
 
 	Milliseconds Since the Epoch
 
 	To calculate the number of milliseconds since midnight on January 1, 1970, in Universal Time:
 	```
-1. Highlight "Milliseconds Since the Epoch" in the documentation cell, then select **Format** > **Heading** > **Level 2** to format the content as a subheading:
-1. Insert a new **executable cell** (code cell) and enter the following code, then click **Run**, or press CTRL + RETURN on your keyboard to execute the code.
+
+1. Highlight "Milliseconds Since the Epoch" in the documentation cell. Then use the **Format** > **Heading** > **Level 2** command to format the text as a subheading.
+
+1. Insert a new executable cell and enter the following code. Then click the **Run** button or press **Ctrl+Enter** to execute it.
 
 	```C#
 	DateTime value = DateTime.UtcNow;
 	DateTime earthEpochDate = new System.DateTime(1970, 1, 1);
 	double elapsedMilliseconds = (value - earthEpochDate).TotalMilliseconds;
 	```
-1. Observe the conversion of the current date and time to an ```elapsedMilliseconds``` variable value displayed in the editor: 
 
-	![Executing the milliseconds since epoch code](Images/xw-since-epoch-code.png)
+1. Confirm that the result shows the number of milliseconds elapsed since January 1, 1970: 
 
-    _Executing the milliseconds since epoch code_
+	![Milliseconds elapsed since the epoch](Images/xw-since-epoch-code.png)
+
+    _Milliseconds elapsed since the epoch_
  
-1. Add a new **documentation cell** and insert the following content:
+1. Delete the executable cell that was added when you ran the code. Then add a documentation cell and insert the follow text:
 
-	```Text
+	```
 	Julian Date (UT)
 
 	Next you need to get the number of days (rather than milliseconds) since a much older epoch than Unix time.
 
 	To make this simple, and convert from the Gregorian date to the Julian date, by dividing milliseconds by 86,400,000 to get the number of days since the Unix epoch then you add that number to 2,440,587.5, which would be the exact Julian Date as of the Epoch.
-
 	```
-1. Highlight "Julian Date (UT)" in the documentation cell, then select **Format** > **Heading** > **Level 2** to format the content as a subheading:
-1. Insert a new **executable cell** and enter the following single line of code, then click **Run** (or CTRL + RETURN), to  execute the code and observe the result of ```epochJulianDate```.
+
+1. Highlight "Julian Date (UT)" and format it as a level-2 subheading.
+
+1. Insert a new executable cell and enter the following statement. Then run it to display the number of days that have elapsed since noon on January 1, 4713 B.C.
 
 	```C#
 	double epochJulianDate = 2440587.5 + (elapsedMilliseconds / (8.64 * Math.Pow(10, 7)));
 	```
-1. Add a new **documentation cell** and insert the following content:
 
-	```Text
+1. Delete the executable cell that was added when you ran the code. Then add a new documentation cell. Insert the following text, and then format "Julian Date" as a level-2 subheading:
+
+	```
 	Julian Date
 
 	Now that you have the Julian Date, you actually need the Terrestrial Time (TT) Julian Date rather than the UTC-based one, meaning you basically just add the leap seconds which, since January 1, 2017, are 37 + 32.184.
 	```
-1. Highlight "Julian Date" in the documentation cell, then select **Format** > **Heading** > **Level 2** to format the content as a subheading.
-1. Insert a new **executable cell** and enter the following single line of code, then click **Run** to  execute the code and observe the result of ```terrestrialJulianDate```.
+
+1. Insert a new executable cell and enter the following statement. Then run it to display the terrestrial Julian date:
 
 	```C#
 	double terrestrialJulianDate = epochJulianDate + (37 + 32.184) / 86400;
 	```
 
-1. Add a new **documentation cell** and insert the following content:
+1. Delete the executable cell that was added when you ran the code. Then add a new documentation cell. Insert the following text, and then format "Days Since J2000 Epoch" as a level-2 subheading:
 
-	```Text
+	```
 	Days Since J2000 Epoch
 
 	This is the number we're going to use as the input to many of our Mars calculations. It's the number of (fractional) days since midnight on January 1, 1970 in Terrestrial Time. We know what JDₜₜ was at the J2000 epoch (2,451,545.0) so it's a piece of cake to convert.
 	```
-1. Highlight "Days Since J2000 Epoch" in the documentation cell, then select **Format** > **Heading** > **Level 2** to format the content as a subheading.
-1. Insert a new **executable cell** and enter the following single line of code, then click **Run** to  execute the code and observe the result of ```martianEpochDifference```.
+
+1. Insert a new executable cell and enter the following statement. Then run it to display the number of days since the J2000 epoch:
 
 	```C#
 	double martianEpochDifference = terrestrialJulianDate - 2451545.0;
 	```
 
-	![Executing code to view the number of days in the J2000 epoch](Images/xw-days-since.png)
+	![Number of days in the J2000 epoch](Images/xw-days-since.png)
 
-    _Executing code to view the number of days in the J2000 epoch_
+    _Number of days in the J2000 epoch_
  
-	With the number of days since the J2000 epoch calculated, there are just a few more steps to converting Earth time to Mars time.
+1. Delete the executable cell that was added when you ran the code. Then add a new documentation cell. Insert the following text, and then format "Mars Sol Date" as a level-2 subheading:
 
-1. Add a new **documentation cell** and insert the following content:
-
-	```Text
+	```
 	Mars Sol Date
 
 	The equivalent of the Julian Date for Mars is the Mars Sol Date. At midnight on the 6th January 2000 (Δt J2000 = 4.5) it was midnight at the Martian prime meridian, so our starting point for Mars Sol Date is ΔJ2000 - 4.5.
@@ -262,23 +266,24 @@ Xamarin Workbooks are typically comprised of both document cells and executable 
 
 	There is a slight adjustment as the midnights weren't perfectly aligned, so the NASA Mars24 site gives us an adjustment of - 0.00096.
 	```
-1. Highlight "Mars Sol Date" in the documentation cell, then select **Format** > **Heading** > **Level 2** to format the content as a subheading.
-1. Insert a new **executable cell** and enter the following single line of code, then click **Run** to  execute the code and observe the result of ```martianSolDate```.
+
+1. Insert a new executable cell and enter the following statement. Then run it to display the Martian solar date:
 
 	```C#
 	double martianSolDate = (((martianEpochDifference - 4.5) / 1.027491252) + 44796.0 - 0.00096);
 	```
-1. Add a new **documentation cell** and insert the following content:
 
-	```Text
+1. Delete the executable cell that was added when you ran the code. Then add a new documentation cell. Insert the following text, and then format "Coordinated Mars Time" as a level-2 subheading:
+
+	```
 	Coordinated Mars Time
 
 	Coordinated Mars Time (or MTC) is like UTC but for Mars. Because it is just a mean time, you can  calculated it based on the Mars Sol Date like this:
 
-	There you have it! A some quick calculations to convert Earth Time to Martian Time! Now you can easily add some Xamarin Form controls to a page to display these calculations:
+	There you have it! Some quick calculations to convert Earth Time to Martian Time! Now you can easily add Xamarin Form controls to a page to display these calculations:
 	```
-1. Highlight "Coordinated Mars Time" in the documentation cell, then select **Format** > **Heading** > **Level 2** to format the content as a subheading.
-1. Insert a new **executable cell** and enter the following single line of code, then click **Run** to  execute the code and observe the result of ```mct``` or "Mars Coordinated Time."
+
+1. Insert a new executable cell and enter the following statement. Then run it to display the current time in Mars Coordinated Time (MTC):
 
 	```C#
 	var mct = System.TimeSpan.FromHours((martianSolDate % 1) * 24);
@@ -290,22 +295,25 @@ Xamarin Workbooks are typically comprised of both document cells and executable 
  
 	That's a lot of "rocket science, but you're finally getting close. In fact Mars Coordinated Time is actually human-readable now, and looks pretty much like time on Earth. To get you the rest of the way you can add a step to make it perfect for Earth people:
 
-1. Add a new **documentation cell** and insert the following content:
+1. Delete the executable cell that was added when you ran the code. Then add a new documentation cell and insert the following text:
 
-	```Text
+	```
 	You can even clean it up a bit to make it more readable for people used to seeing Earth Time:
 	```
-1. Insert a new **executable cell** and enter the following single line of code, then click **Run** to  execute the code and observe the Mars Coordinated Time in an "Earth-friendly" format:
+
+1. Insert a new executable cell and enter the following statement. Then run it to display the Mars Coordinated Time in an "Earth-friendly" format:
 
 	```C#
 	mct.ToString("hh\\:mm\\:ss");
 	```
-1. Add a new **documentation cell** and insert the following content:
 
-	```Text
-	And better yet, write a couple of quick DateTime extension methods to make it easier to convert:
+1. Delete the executable cell that was added when you ran the code. Then add a new documentation cell and insert the following text:
+
 	```
-1. Insert a new **executable cell** and enter the following code:
+	Better yet, write a couple of quick DateTime extension methods to make it easier to convert:
+	```
+
+1. Insert a new executable cell and enter the following statements:
 
 	```C#
 	static double ToMartianSolDate(this DateTime value)
@@ -325,7 +333,8 @@ Xamarin Workbooks are typically comprised of both document cells and executable 
 	    return System.TimeSpan.FromHours((value.ToMartianSolDate() % 1) * 24);
 	}
 	```
-	>Xamarin Workbooks support almost everything you could do in a real app, including the creation of static extension methods. These extension methods will come in handy when you start adding code to interact with the Android emulator in the next exercise.
+
+	You can do almost anything in a Xamarin Workbook that you do in a real app, including defining static extension methods. These extension methods will come in handy when you add code to interact with the Android emulator in the next exercise.
 
 That might seem like a lot of code, but it's mostly just documentation. Remember, Xamarin Workbooks are designed to be interactive, instructional documents, and since the concept of converting Earth to Mars time is typically beyond the average developer, your new Xamarin Workbooks document is an ideal way to teach both concepts and coding without requiring a learner to flip back and forth between a document and an IDE.
 
