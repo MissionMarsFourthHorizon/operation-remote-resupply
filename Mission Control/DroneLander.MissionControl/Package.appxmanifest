@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
+  <Identity Name="LiquidDaffodil.DroneLanderMissionControl" Publisher="CN=8934FEF0-6C8F-4AAD-89D6-5428965707BE" Version="1.1.0.0" />
+  <mp:PhoneIdentity PhoneProductId="5c1921b7-513b-4e47-9142-dda172cd6e34" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Drone Lander Mission Control</DisplayName>
+    <PublisherDisplayName>Liquid Daffodil</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="DroneLander.MissionControl.App">
+      <uap:VisualElements DisplayName="Drone Lander Mission Control" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\MissionControl_44x44.png" Description="DroneLander.MissionControl" BackgroundColor="#212121">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\MissionControl_71x71.png">
+        </uap:DefaultTile>
+        <uap:SplashScreen Image="Assets\MissionControl_splash.png" BackgroundColor="#212121" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

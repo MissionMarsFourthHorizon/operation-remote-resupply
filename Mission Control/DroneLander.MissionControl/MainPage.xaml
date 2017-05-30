@@ -1,0 +1,223 @@
+﻿<Page xmlns:controls="using:DroneLander.MissionControl.Controls"  
+    x:Class="DroneLander.MissionControl.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DroneLander.MissionControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"    
+    xmlns:telerikChart="using:Telerik.UI.Xaml.Controls.Chart"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <PaneThemeTransition Edge="Left"/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Image Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="Images/Backgrounds/background-image.jpg"/>
+
+        <Grid RequestedTheme="Dark">
+            <Grid.RowDefinitions>
+                <RowDefinition  Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Image VerticalAlignment="Top" HorizontalAlignment="Center" Margin="40" Source="Images/mission-status-operation-logo.png" />
+            <StackPanel VerticalAlignment="Top" Grid.Row="1">
+                <TextBlock LineHeight="28" LineStackingStrategy="BaselineToBaseline" FontSize="18" Opacity="0.6" VerticalAlignment="Center" TextAlignment="Center">
+                    <Run FontWeight="SemiBold" Text="DRONE FLEET COMMAND"/>
+                    <LineBreak/>
+                    <Run FontSize="28" FontWeight="SemiBold" Text="MISSION STATUS"/>
+                </TextBlock>
+
+            </StackPanel>
+
+            <StackPanel Margin="40" VerticalAlignment="Top" Grid.Row="2">
+                <TextBlock FontWeight="SemiBold" LineHeight="26" LineStackingStrategy="BaselineToBaseline" FontSize="28" Opacity="0.7" VerticalAlignment="Center" TextAlignment="Center">
+                    <Run Text="SUCCESSFUL"/>
+                    <LineBreak/>
+                    <Run Text="LANDINGS"/>
+                </TextBlock>
+                <TextBlock FontFamily="{ThemeResource DigitalFont}" FontWeight="SemiLight" Opacity="0.9" VerticalAlignment="Center" TextAlignment="Center" FontSize="102" Text="{Binding CurrentLandingsCount}" />
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Top" Grid.Row="3">
+                <TextBlock FontWeight="SemiBold" LineHeight="26" LineStackingStrategy="BaselineToBaseline" FontSize="28" Opacity="0.7" VerticalAlignment="Center" TextAlignment="Center">
+                    <Run Text="CRASHES"/>
+                </TextBlock>
+                <TextBlock FontFamily="{ThemeResource DigitalFont}" FontWeight="SemiLight" Opacity="0.9" VerticalAlignment="Center" TextAlignment="Center" FontSize="102" Text="{Binding CurrentCrashesCount}" />
+            </StackPanel>
+
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="0,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="0">
+                <Border HorizontalAlignment="Left" Width="30" Height="30" BorderBrush="#FFFFFFFF" BorderThickness="1,1,0,0" />
+                <Border HorizontalAlignment="Right" Width="30" Height="30" BorderBrush="#FFFFFFFF" BorderThickness="0,1,1,0" />
+            </Grid>
+            <GridView Margin="10,-20,10,-20" Grid.Row="1" x:Name="activityGridView"  ItemsSource="{Binding CurrentActivity}">
+                <GridView.Transitions>
+                    <TransitionCollection>
+                        <AddDeleteThemeTransition  />
+                    </TransitionCollection>
+                </GridView.Transitions>
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ActivityControl UserId="{Binding Id}" Margin="10" DataContext="{Binding}" />
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+
+            <TextBlock Visibility="{Binding HasActiveActivity, Converter={StaticResource BooleanToCollapsedConverter}}" Opacity="0.8" RequestedTheme="Dark" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{ThemeResource HeaderTextBlockStyle}">
+                <Run Text="{Binding MissionSettings.Status, Converter={StaticResource PrimaryMissionStatusLabelConverter}}"/>
+            </TextBlock>
+            
+            <Grid Grid.Row="2" Margin="0,0,0,20">
+                <Border HorizontalAlignment="Left" Width="30" Height="30" BorderBrush="#FFFFFFFF" BorderThickness="1,0,0,1" />
+                <Border HorizontalAlignment="Right" Width="30" Height="30" BorderBrush="#FFFFFFFF" BorderThickness="0,0,1,1" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Margin="20,20,20,0">
+                <Border HorizontalAlignment="Left" Width="30" Height="30" BorderBrush="#FFFFFFFF" BorderThickness="1,1,0,0" />
+                <Border HorizontalAlignment="Right" Width="30" Height="30" BorderBrush="#FFFFFFFF" BorderThickness="0,1,1,0" />
+            </Grid>
+
+            <Border Margin="30,-20,30,0" Grid.Row="1" BorderBrush="#FF999999" BorderThickness="1">
+                <Border.Background>
+                    <ImageBrush Stretch="UniformToFill" ImageSource="Images/Maps/mars_map_right.jpg" AlignmentX="Left"/>
+                </Border.Background>
+
+                <Grid x:Name="mapGrid">
+
+                    <Image Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" Source="Images/SupplyLocationIcon.png"/>
+                    <Image Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" Source="Images/SupplyLocationIcon.png" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <CompositeTransform TranslateX="140" TranslateY="-120"/>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" Source="Images/SupplyLocationIcon.png" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <CompositeTransform TranslateX="100" TranslateY="-200"/>
+                        </Image.RenderTransform>
+                    </Image>
+                    <Image Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" Source="Images/SupplyLocationIcon.png" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <CompositeTransform TranslateX="-100" TranslateY="300"/>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <Image Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center" Source="Images/SupplyLocationIcon.png" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <CompositeTransform TranslateX="150" TranslateY="100"/>
+                        </Image.RenderTransform>
+                    </Image>
+                </Grid>
+            </Border>
+            
+            <Grid Grid.Row="2" Margin="20,-20,20,0">
+                <Border HorizontalAlignment="Left" Width="30" Height="30" BorderBrush="#FFFFFFFF" BorderThickness="1,0,0,1" />
+                <Border HorizontalAlignment="Right" Width="30" Height="30" BorderBrush="#FFFFFFFF" BorderThickness="0,0,1,1" />
+            </Grid>
+
+            <Grid Margin="20,10" Grid.Row="3" RequestedTheme="Dark">
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock FontSize="18">
+                        <Run Text="MISSION CLOCK"/>
+                        <Run FontWeight="Bold" Foreground="{ThemeResource AppMainRedBrush}" Text="{Binding CurrentMissionTimer, Converter={StaticResource MissionClockLabelConverter},FallbackValue=00:00}"/>
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <TextBlock FontSize="18">
+                        <Run Text="MISSION DURATION"/>
+                        <Run FontWeight="Bold" Foreground="{ThemeResource AppMainRedBrush}" Text="{Binding SelectedMissionDuration, FallbackValue=3}"/><Run FontWeight="Bold" Foreground="{ThemeResource AppMainRedBrush}" Text="HRS"/>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+
+       
+        <Grid Grid.Row="1" Grid.ColumnSpan="3" Height="120" RequestedTheme="Dark" VerticalAlignment="Bottom" Background="{ThemeResource AppMainSemiDarkBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Margin="20,15,10,0" VerticalAlignment="Top" Text="" FontSize="24" FontFamily="{ThemeResource SegoeModernSymbolFont}"/>
+            <StackPanel Grid.Column="1" Margin="10">
+                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="earth time"/>
+                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="{ThemeResource DigitalFont}">
+                    <Run Text="{Binding CurrentEarthTime, Converter={StaticResource LocalTimeConverter}}"/>
+                    <Run FontSize="12" Text="(LOCAL)"/>
+                </TextBlock>
+                <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="mars time"/>
+                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="{ThemeResource DigitalFont}">
+                    <Run Text="{Binding CurrentMartianTime, Converter={StaticResource MartianTimeConverter}}"/>
+                    <Run FontSize="12" Text="(MCT)"/>
+                </TextBlock>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Center" RequestedTheme="Dark" Margin="80,0" VerticalAlignment="Center" Grid.Column="2">
+                <StackPanel.ChildrenTransitions>
+                    <TransitionCollection>
+                        <ContentThemeTransition VerticalOffset="200"/>
+                    </TransitionCollection>
+                </StackPanel.ChildrenTransitions>
+                <TextBlock Text="{Binding ImportantTitle}"/>
+                <TextBlock TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Margin="0,-10,0,0" Style="{ThemeResource ImportantMessageStyle}" Text="{Binding ImportantMessage}"/>
+            </StackPanel>
+            
+            <TextBlock Grid.Column="3" Margin="10,0,10,0" VerticalAlignment="Center" Text="" FontSize="36" FontFamily="{ThemeResource SegoeModernSymbolFont}"/>
+            <StackPanel Grid.Column="4" Margin="20,20">
+                <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Style="{ThemeResource CaptionTextBlockStyle}" Text="active drones"/>
+                <TextBlock HorizontalAlignment="Center" TextAlignment="Center" FontSize="48" Style="{ThemeResource SubtitleTextBlockStyle}" FontFamily="{ThemeResource DigitalFont}">
+                    <TextBlock.Transitions>
+                        <TransitionCollection>
+                            <ContentThemeTransition VerticalOffset="0" HorizontalOffset="80" />
+                        </TransitionCollection>
+                    </TextBlock.Transitions>
+                    <Run Text="{Binding ActiveDroneCount, FallbackValue=00,Converter={StaticResource DroneCountLabelConverter}}"/>
+                </TextBlock>
+            </StackPanel>
+
+            <Button Command="{StaticResource ShowSettingsCommand}" Background="Transparent" Grid.Column="5" FontSize="48" FontFamily="{ThemeResource SegoeModernSymbolFont}" Content=""/>
+
+        </Grid>
+
+    </Grid>
+</Page>
