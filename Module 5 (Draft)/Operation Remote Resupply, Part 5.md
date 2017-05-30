@@ -6,24 +6,21 @@
 <a name="Overview"></a>
 ## Overview ##
 
-Not only have modern mobile apps changed the way developers design, build, and distribute apps, but also the way code, processes, and concepts get analyzed, validated and recorded. Using standard "static" documentation tools such as web pages and printed materials, although helpful, are often challenging, especially to the uninitiated developer, unfamiliar with key concepts and platforms. The process of typing in (or even copying and pasting) code snippets and examples is useful, but more often than not, developers need to create entire projects simply to test a simple line of code, creating a barrier and distraction from actual learning.  
+One of the benefits of working with Xamarin Forms is rich tooling support. Visual Studio 2017 enables developers to build Xamarin Forms apps for iOS, Android, and Windows, and test those apps on real hardware as well as in emulators. It also includes the [Xamarin Forms Previewer](https://developer.xamarin.com/guides/xamarin-forms/xaml/xaml-previewer/) for previewing XAML UIs, and the [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/) for profiling performance and memory use. 
 
-To address this need, tools and services have been created to mitigate these problems, often by removing the need for an IDE, such as in Roslyn, the Microsoft open source .NET compiler service, Jupyter, and [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/ "Xamarin Workbooks"), where an "immersive" experience is created for a developer, without the extra overhead of solutions and projects. Xamarin Workbooks combines these concepts by allowing interactive documentation to be combined with live coding, making it simple for a developer to learn and experiment with a native platform, including support for Android, iOS, Mac and Windows desktop apps.
+Additional tooling is available outside of Visual Studio. In particular, [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/) enable developers to create rich, interactive workbooks that include a mix of documentation and executable code and that optionally send output to *agents* hosted in Windows consoles, WPF, or mobile emulators. Xamarin Workbooks are similar to the [Jupyter notebooks](http://jupyter.org/) that are widely used in academia and are ideal for building tutorials, presentations, and other interactive teaching materials.
 
-Even well-designed mobile apps have hidden or problematic performance issues, difficult to diagnose through simple user testing processes, Working with cross-platform solutions compounds these challenges, as some problems may exist for one platform, but not another. To provide the type of rich diagnostic profiling and instrumentation needed for cross-platform development, the Xamarin platform includes the [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/ "Xamarin Profiler"). The Xamarin Profiler provides a graphical interface for the [Mono log profiler](http://www.mono-project.com/docs/debug+profile/profile/profiler/ "Mono log profiler"), seamlessly integrated into your existing Xamarin toolchain, to collect information about your Xamarin apps. The Xamarin Profiler is the ideal tool to diagnose memory leaks and resolve potential performance bottlenecks. 
-
-In this lab, you will use Xamarin Workbooks to create a rich, interactive document to convert Earth time to Mars time based on calculations provided by Mission Control. You will also get first-hand experience using the Xamarin UI Inspector, Xamarin Previewer, and the Xamarin Profiler to tweak a Xamarin Forms user interface and diagnose potential performance issues.
+In this lab, you will use Xamarin Workbooks to create an interactive document that describes how to convert earth time to Mars time and that includes C# code to perform the conversion. You will also get first-hand experience using the Xamarin Previewer to preview XAML UIs and the Xamarin Profiler to analyze Xamarin Forms apps for potential trouble spots.
 
 <a name="Objectives"></a>
 ### Objectives ###
 
 In this lab, you will learn how to:
 
-- Create a Xamarin Workbook for Android
-- Add documentation and live calculations to a Xamarin Workbook
-- Inspect code using the Xamarin UI Inspector
-- Use the XAML Previewer for Xamarin to view UI updates
-- Diagnose potential performance issues with Xamarin Profiler
+- Build interactive presentations in Xamarin Workbooks
+- Use the Xamarin UI Inspector to examine and modify UIs created in Xamarin Workbooks
+- Use the Xamarin Forms Previewer to preview Xamarin Forms UIs in Visual Studio
+- Use the Xamarin Profiler to analyze performance and memory consumption in Xamarin Forms apps
 
 <a name="Prerequisites"></a>
 ### Prerequisites ###
@@ -32,9 +29,8 @@ The following are required to complete this lab:
 
 - [Visual Studio Community 2017](https://www.visualstudio.com/vs/) or higher
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
-- [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/install/ "Xamarin Workbooks") for Windows
-- [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/#Download_and_Install "Xamarin Profiler") for Windows
-- [Visual Studio Enterprise 2017](https://www.visualstudio.com/vs/) for profiling instrumentation using Xamarin Profiler (optional)
+- [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/install/) for Windows
+- [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/#Download_and_Install) for Windows
 
 If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
 
@@ -48,17 +44,15 @@ This lab includes the following exercises:
 - [Exercise 1: Create a Xamarin Workbook for Android](#Exercise1)
 - [Exercise 2: Build an interactive workbook](#Exercise2)
 - [Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector](#Exercise3)
-- [Exercise 4: Use the XAML Previewer for Xamarin Forms](#Exercise4)
-- [Exercise 5: Diagnose potential performance issues with the Xamarin Profiler](#Exercise5)
+- [Exercise 4: Use the Xamarin Forms Previewer to preview XAML UIs](#Exercise4)
+- [Exercise 5: Analyze memory use with the Xamarin Profiler](#Exercise5)
   
 Estimated time to complete this lab: **45** minutes.
 
 <a name="Exercise1"></a>
 ## Exercise 1: Create a Xamarin Workbook for Android ##
 
-Xamarin Workbooks are essentially markdown files with a ".workbook" extension, making them both portable and easy to manage. Workbooks can be created for Android, iOS, Windows console, and desktop (WPF) apps, with full support for NuGet packages. Rich code-block support, using the standard markup "triple-backtick" pattern, is also used, making it easy to convert a standard markdown file into a Xamarin Workbook for a more interactive learning experience.
-
-In this exercise, you will create a Xamarin Workbook targeting Android devices and learn the basics of working with cells. 
+Xamarin Workbooks are interactive documents created with the [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/install/) app. Versions are available for the Mac and for Windows. Workbooks can be saved as .workbook files and shared with other developers. If you haven't already downloaded and installed Xamarin Workbooks, please do so now. In this exercise, you will create a Xamarin Workbook targeting Android devices and learn the basics of working with cells. 
 
 1. Launch Xamarin Workbooks, select **Android** as the framework, and click **Create**. 
     
@@ -66,13 +60,13 @@ In this exercise, you will create a Xamarin Workbook targeting Android devices a
 
     _Creating a workbook for Android_
 
-1. After a short delay, a blank Xamarin workbook will be created, and Xamarin Workbooks will launch your default Android emulator. Wait for the emulator to appear and display a default page.
+1. After a short delay, a blank Xamarin Workbook will be created, and Xamarin Workbooks will launch the default Android emulator. Wait for the emulator to appear and display a blank page like the one shown below.
  
-	![A blank Xamarin workbook in the Android emulator](Images/app-blank-app.png)
+	![A blank Xamarin Workbook in the Android emulator](Images/app-blank-app.png)
 
-    _A blank Xamarin workbook in the Android emulator_
+    _A blank Xamarin Workbook in the Android emulator_
 
-1. A Xamarin workbook is composed of *cells*. There are two types of cells: executable cells and documentation cells. Executable cells contain C# code that can be executed inside the workbook. Documentation cells contain text that can be formatted using markdown syntax. You build interactive workbooks by creating sequences of executable cells and documentation cells.
+1. A Xamarin Workbook is composed of *cells*. There are two types of cells: executable cells and documentation cells. Executable cells contain C# code that can be executed inside the workbook. Documentation cells contain text that can be richly formatted. You build interactive workbooks by creating sequences of executable cells and documentation cells.
 
 	Return to Xamarin Workbooks and type the following line of code into the executable cell at the top of the workbook. Then press **Shift+Enter** to insert a blank line:
 
@@ -141,10 +135,10 @@ In this exercise, you will create a Xamarin Workbook that describes how to conve
 
     _The workbook heading_
  
-1. Add another documentation cell to the workbook. Then paste the following text into the cell to serve as an introduction to the workbook: 
+1. Add another documentation cell to the workbook. Then paste the following text into the cell to serve as an introduction: 
 
 	```
-	Have you ever considered what time it is on Mars? It's not an abstract question when you have settlers on Mars and need to communicate with them. Earth time can be converted to Mars time in a few simple steps.  
+	Have you ever asked yourself what time it is on Mars? It's not an abstract question when you have settlers on Mars and need to communicate with them. Earth time can be converted to Mars time in a few simple steps.  
 	```
 
 1. Add a documentation cell to the workbook and insert the text below. Then highlight "Milliseconds Since January 1, 1970" and use the **Format** > **Heading** > **Level 2** command to format the text as a subheading.
@@ -155,7 +149,7 @@ In this exercise, you will create a Xamarin Workbook that describes how to conve
 	The first step is to compute the number of milliseconds that have elapsed since January 1, 1970, in Universal Time:
 	```
 
-1. Insert a new executable cell and enter the code below.
+1. Insert a new executable cell and enter the following code:
 
 	```C#
 	DateTime value = DateTime.UtcNow;
@@ -201,9 +195,9 @@ In this exercise, you will create a Xamarin Workbook that describes how to conve
 	double terrestrialJulianDate = epochJulianDate + (37 + 32.184) / 86400;
 	```
 
-	![Converting a Julian date to Terrestrial Time](Images/xw-julian-date-terrestrial.png)
+	![Converting Universal Time to Terrestrial Time](Images/xw-julian-date-terrestrial.png)
 
-    _Converting a Julian date to Terrestrial Time_
+    _Converting Universal Time to Terrestrial Time_
 
 1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
 
@@ -282,12 +276,12 @@ In this exercise, you will create a Xamarin Workbook that describes how to conve
 
 	These extension methods will come in handy when you add code to interact with the Android emulator in the next exercise.
 
-Xamarin Workbooks like this one are great for creating interactive documents to teach concepts and let users try out code that implements those concepts. As yet, however, you haven't used the Workbooks app that appeared in the Android emulator when you launched Xamarin Workbooks. Let's modify the app to allow users to convert earth time to Martian time. 
+Xamarin Workbooks like this one are great for creating interactive documents to teach concepts and let users try out code implementing those concepts. Currently, however, the Android enulator still shows a blank page. Let's modify the workbook to use the emulator to show the current earth time and Mars time. 
 
 <a name="Exercise3"></a>
 ## Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector ##
 
-As you build a workbook, you can include code that creates a user interface from Xamarin Forms controls and displays them in the *agent* that was started along with the workbook — in this case, the app running in the Android emulator. Furthermore, you can use Xamarin Workbooks' integrated UI Inspector to examine the controls that you created and adjust control properties to fine-tune the UI.
+As you build a workbook, you can write code that creates a user interface from Xamarin Forms controls and displays them in the agent that was started with the workbook — in this case, the app running in the Android emulator. Furthermore, you can use Xamarin Workbooks' integrated UI Inspector to examine the controls that you created and adjust control properties to fine-tune the UI.
 
 In this exercise, you will enhance the workbook you built in Exercise 2 to show the current earth time and Mars time in the Android emulator, and learn how to use the Xamarin UI Inspector to inspect and modify control properties.
 
@@ -365,7 +359,7 @@ In this exercise, you will enhance the workbook you built in Exercise 2 to show 
 
 1. Run the cell and confirm that the times shown in the emulator update in real time.
 
-1. One of Xamarin Workbooks' more powerful features is the Xamarin UI Inspector, which lets you inspect values in the UI and adjust them without making permanent changes to your code. To open the inspector, click **View Inspector** in the lower-left corner of the Xamarin Workbooks window.
+1. The Xamarin Workbooks app includes a UI Inspector that lets you inspect values in the UI and adjust them without making permanent changes to your code. To open the inspector, click **View Inspector** in the lower-left corner of the Xamarin Workbooks window.
 
 	![Opening the Xamarin UI Inspector](Images/xw-select-inspector.png)
 
@@ -403,7 +397,7 @@ In this exercise, you will enhance the workbook you built in Exercise 2 to show 
 
     _Selecting the ContentPage_
 
-1. Go to the properties panel and set the page's **R**, **G**, and **B** values to 0 and the **A** value to 100% to change the page background color to black.
+1. Find the ```BackgroundColor``` property in the properties panel and set the **R**, **G**, and **B** values to 0 and the **A** value to 100% to change the background color to black.
 
 1. Return to the Android emulator and confirm that it now displays red text against a black background.
 
@@ -420,9 +414,9 @@ In this exercise, you will enhance the workbook you built in Exercise 2 to show 
 The UI Inspector is great for examining the controls that form an app's UI and tweaking those controls as needed. Not all UI properties can be manipulated directly from the inspector, but most of them can.
 
 <a name="Exercise4"></a>
-## Exercise 4: Use the XAML Previewer for Xamarin Forms ##
+## Exercise 4: Use the Xamarin Forms Previewer to preview XAML UIs ##
 
-When you create XAML UIs by typing text and angle brackets, you don't know precisely how the UI will look like until you run the app. Tweaking a UI often means repeatedly making changes to the XAML and rerunning the app to gauge the effect of those changes. But there is a better way. In this exercise, you will use Visual Studio 2017's integrated previewer for Xamarin Forms to see a live preview of the XAML that you enter. You will also learn how to use the XAML Previewer to see how the app will look on screens of various sizes.  
+When you create XAML UIs in Visual Studio by typing text and angle brackets, you don't know precisely how the UI will look until you run the app. Tweaking a UI often means repeatedly making changes to the XAML and rerunning the app to gauge the effect of those changes. But there is a better way. In this exercise, you will use Visual Studio 2017's integrated Xamarin Forms Previewer to see a live preview of the XAML that you enter. You will also learn how to use the previewer to see how the app will look on screens of various sizes.  
 
 1. Open the DroneLander solution in Visual Studio 2017. Then open **MainPage.xaml** in the **DroneLander (Portable)** project.
 
@@ -455,13 +449,13 @@ When you create XAML UIs by typing text and angle brackets, you don't know preci
 The Xamarin Forms Previewer streamlines the development process by allowing you to see UI changes as you make them, and to do so without launching the app over and over again. But there's another tool you should be familiar with if you're doing Xamarin Forms development: the Xamarin Profiler.
 
 <a name="Exercise5"></a>
-## Exercise 5: Diagnose potential performance issues with the Xamarin Profiler ##
+## Exercise 5: Analyze memory use with the Xamarin Profiler ##
 
-Performance is crucial to any app. If an app performs sluggishly, users are liable to abandon it in favor of competing apps. Accordingly, the Xamarin Profiler included in Visual Studio Enterprise 2017 provides tools for measuring performance and identifying potential trouble spots. In this exercise, you will use the Xamarin Profiler to analyze Drone Lander.
+Performance is crucial to any app. If an app performs sluggishly, users are liable to abandon it in favor of competing apps. In addition, memory leaks are a common cause of poor performance and even crashes and must be avoided at all costs. The Xamarin Profiler included in Visual Studio Enterprise 2017 provides tools for measuring performance, identifying performance bottlenecks, finding memory leaks, and generally identifying potential trouble spots. In this exercise, you will use the Xamarin Profiler to analyze memory usage in Drone Lander.
 
 > This exercise requires Visual Studio Enterprise 2017. If you are using the Community or Professional edition of Visual Studio 2017, simply read through this exercise to learn about the some of the profiler's features and capabilities.
 
-1. Use the **Tools** > **Xamarin Profiler** command in Visual Studio to produce a debug build of the DroneLander solution and start the Xamarin Profiler.
+1. Use the **Tools** > **Xamarin Profiler** command in Visual Studio to start the Xamarin Profiler.
 
 1. Select **Performance** as the "target" and click **Choose** to run the app and start a profiling session.
 
@@ -483,13 +477,13 @@ Performance is crucial to any app. If an app performs sluggishly, users are liab
 
 	Although a gradual memory increase in a specific assembly may not pose an immediate problem, over time these resources will need to be disposed of or resource constraints could lead to unexpected behavior or even crashes. The increase in memory use by Xamarin.Forms.Core.dll indicates that this portion of the app might need to be scrutinized more carefully.
 
-1. Experiment with other profile instruments. For example, click **Call tree** and then expand individual items to get a more granular view of resource allocations.
+1. Experiment with other profile instruments. For example, click **Call Tree** and then expand individual items to get a more granular view of resource allocations.
 
 	![Monitoring memory alocations for individual resources](Images/xp-call-tree.png)
 
     _Monitoring memory alocations for individual resources_ 
 
-1. Click the **Stop profiling** button in the Xamarin Profiler toolbar to end the profiling session.
+1. Click the **Stop Profiling** button in the Xamarin Profiler toolbar to end the profiling session.
 
 	![Ending a profiling session](Images/xp-stop-profiling.png)
 
@@ -500,6 +494,4 @@ There is much more that you can do with the Xamarin Profiler, but this is a star
 <a name="Summary"></a>
 ## Summary ##
 
-With Xamarin Workbooks you have a powerful documentation tool to provide rich, interactive documentation to colleagues and peers without the need for a creating projects, or even installing a development IDE. Combining the UI Inspector, XAML Previewer for Xamarin.Forms, and the Xamarin Profiler rounds out this toolkit to make sure you have everything you need, as a mobile app developer, to create polished, performant, scalable, and useful mobile apps with the Xamarin platform.
-
-That's it for Part 5 of Operation Remote Resupply. In Part 6, you will be bringing it all together by building on the Mobile Center concepts from Part 3 to integrate testing into your app lifecycle, as well as leveraging the power of Xamarin UI Tests and Xamarin Test Cloud to create and execute automated testing scenarios that validate the functionality your mobile app.
+Xamarin Workbooks, the Xamarin Forms Previewer, and the Xamarin Profiler are powerful tools in the hands of developers building Xamarin Forms apps. In the next and final lab, you will supplement what you have learned so far by learning about some of the options for testing Xamarin Forms apps — specifically, Xamarin UI Tests and the Xamarin Test Cloud.
