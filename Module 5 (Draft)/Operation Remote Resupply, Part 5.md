@@ -461,45 +461,41 @@ Performance is crucial to any app. If an app performs sluggishly, users are liab
 
 > This exercise requires Visual Studio Enterprise 2017. If you are using the Community or Professional edition of Visual Studio 2017, simply read through this exercise to learn about the some of the profiler's features and capabilities.
 
-1. In Visual Studio 2017, open the **DroneLander** solution created in the previous lab, if not already open from the previous exercise.
+1. Use the **Tools** > **Xamarin Profiler** command in Visual Studio to produce a debug build of the DroneLander solution and start the Xamarin Profiler.
 
-1. Use the **Tools** > **Xamarin Profiler** menu in Visual Studio to compile your project in debug mode and start the Xamarin Profiler.
+1. Select **Performance** as the "target" and click **Choose** to run the app and start a profiling session.
 
-1. Select **Performance** as the instrument "target" and click **Choose** to run the app and start a profiling session.
+	![Starting a profiling session](Images/xp-choose-performance.png)
 
-	![Choosing the Performance target in Xamarin Profiler](Images/xp-choose-performance.png)
+    _Starting a profiling session_ 
 
-    _Choosing the Performance target in Xamarin Profiler_ 
+1. In the Xamarin Profiler window, change the "Group by" filter to **Assembly** to see which assemblies consume the most memory.
 
-1. In the Xamarin Profiler window, change the "Group by" filter to **Assembly** and observe the top memory allocations related to app performance.
+	![Viewing top memory allocations by assembly](Images/xp-filter-assemblies.png)
 
-	![Filtering memory allocations by assembly](Images/xp-filter-assemblies.png)
+    _Viewing top memory allocations by assembly_ 
 
-    _Filtering memory allocations by assembly_ 
+1. Switch to the Android emulator and start a landing attempt. Then immediately switch back to the Xamarin Profiler and observe how the memory allocations change over time. In particular, notice the gradual increase in memory consumption for Xamarin.Forms.Core.dll. 
 
-1. Switch to **Drone Lander app** running in the emulator and start a landing attempt, then immediately switch back to the **Xamarin Profiler** and observe the changes to memory allocation based on assembly, such as the gradual increase in memory use for **Xamarin.Forms.Core.dll**. 
+	![Monitoring memory allocations in real time](Images/xp-gradual-increase.png)
 
-	![Observing the gradual increase in memory allocation in Xamarin.Forms.Core.dll](Images/xp-gradual-increase.png)
+    _Monitoring memory allocations in real time_ 
 
-    _Observing the gradual increase in memory allocation in Xamarin.Forms.Core.dll_ 
+	Although a gradual memory increase in a specific assembly may not pose an immediate problem, over time these resources will need to be disposed of or resource constraints could lead to unexpected behavior or even crashes. The increase in memory use by Xamarin.Forms.Core.dll indicates that this portion of the app might need to be scrutinized more carefully.
 
-	Although gradual memory increase in a specific assembly may not be an immediate problem, over time these resources will need to be disposed or device resource constraints could cause unexpected behavior or even a crash. The gradual increase of memory use by Xamarin.Forms.Core.dll indicated a possible opportunity to optimize code or processes.
+1. Experiment with other profile instruments. For example, click **Call tree** and then expand individual items to get a more granular view of resource allocations.
 
-1. Experiment with viewing profile instrumentation information in other ways, such as selecting the **Call tree** tab and then expanding individual symbols to get a more granular view of resource allocations.
+	![Monitoring memory alocations for individual resources](Images/xp-call-tree.png)
 
-	![Observing and expanding the Call tree in Xamarin Profiler](Images/xp-call-tree.png)
+    _Monitoring memory alocations for individual resources_ 
 
-    _Observing and expanding the Call tree in Xamarin Profiler_ 
+1. Click the **Stop profiling** button in the Xamarin Profiler toolbar to end the profiling session.
 
-1. Click the **Stop profiling** button in the Xamarin Profiler IDE toolbar to end your profiling session.
+	![Ending a profiling session](Images/xp-stop-profiling.png)
 
-	![Ending a profiling session in Xamarin Profiler](Images/xp-stop-profiling.png)
+    _Ending a profiling session_ 
 
-    _Ending a profiling session in Xamarin Profiler_ 
-
-This was just a quick example of using the Xamarin Profiler to diagnose potential performance issues in an app. The Xamarin Profiler is a powerful, comprehensive performance diagnostic tool in your mobile development toolkit. 
-
-In this exercise you experimented with viewing and diagnosing performance issues based on memory allocations. Other helpful areas to experiment with are the Time Profiler, which measures exactly how much time is spent in each method of an application and Cycles, which can easily track references to objects that are not properly disposed.
+There is much more that you can do with the Xamarin Profiler, but this is a start. Other helpful features include the Time Profiler, which measures the execution times for individual method calls, and Cycles, which tracks references to objects that are not properly disposed of.
 
 <a name="Summary"></a>
 ## Summary ##
