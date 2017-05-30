@@ -47,9 +47,9 @@ This lab includes the following exercises:
 
 - [Exercise 1: Create a Xamarin Workbook for Android](#Exercise1)
 - [Exercise 2: Build an interactive workbook](#Exercise2)
-- [Exercise 3: Inspect code using the Xamarin UI Inspector](#Exercise3)
-- [Exercise 4: Use the XAML Previewer for Xamarin to view UI updates](#Exercise4)
-- [Exercise 5: Diagnose potential performance issues with Xamarin Profiler](#Exercise5)
+- [Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector](#Exercise3)
+- [Exercise 4: Use the XAML Previewer for Xamarin Forms](#Exercise4)
+- [Exercise 5: Diagnose potential performance issues with the Xamarin Profiler](#Exercise5)
   
 Estimated time to complete this lab: **45** minutes.
 
@@ -271,7 +271,6 @@ In this exercise, you will create a Xamarin Workbook that describes how to conve
 	    double terrestrialJulianDate = epochJulianDate + (37 + 32.184) / 86400;
 	    double martianEpochDifference = terrestrialJulianDate - 2451545.0;
 	    double martianSolDate = (((martianEpochDifference - 4.5) / 1.027491252) + 44796.0 - 0.00096);
-	
 	    return martianSolDate;
 	}
 	
@@ -286,13 +285,11 @@ In this exercise, you will create a Xamarin Workbook that describes how to conve
 Xamarin Workbooks like this one are great for creating interactive documents to teach concepts and let users try out code that implements those concepts. As yet, however, you haven't used the Workbooks app that appeared in the Android emulator when you launched Xamarin Workbooks. Let's modify the app to allow users to convert earth time to Martian time. 
 
 <a name="Exercise3"></a>
-## Exercise 3: Inspect code using the Xamarin UI Inspector ##
+## Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector ##
 
-Xamarin Workbooks are not only interactive in the editor, but can also communicate with external processes, like a console window, WPF app, and iOS and Android emulator. Since an emulator gets started when a Xamarin Workbook is created, you only need to write a few lines of code to interact with it. Interaction with the emulator can come in various forms, such as creating UI controls to display on a page, as well as inspecting and adjusting control properties in the Xamarin UI Inspector.
+As you build a workbook, you can include code that creates a user interface from Xamarin Forms controls and displays them in the *agent* that was started along with the workbook — in this case, the app running in the Android emulator. Furthermore, you can use Xamarin Workbooks' integrated UI Inspector to examine the controls that you created and adjust control properties to fine-tune the UI.
 
-In this exercise you will be adding documentation and code to your workbook to display an Earth to Mars time converter in the emulator, as well as inspecting and adjusting properties using the Xamarin UI Inspector built into Xamarin Workbooks.
-
----
+In this exercise, you will enhance the workbook you built in Exercise 2 to show the current earth time and Mars time in the Android emulator, and learn how to use the Xamarin UI Inspector to inspect and modify control properties.
 
 1. Add an executable cell to the workbook. Then select **File** > **Add Package...** from the overhead menu and type "Xamarin.Forms" into the search box. Select the latest **Xamarin.Forms** package, and then click **Add Package** to add the package to the workbook.
 
@@ -308,22 +305,19 @@ In this exercise you will be adding documentation and code to your workbook to d
 
     _Statements referencing Xamarin Forms assemblies_
  
-1. In the new executable cell that appears in the workbook, insert the following ```using``` statement:
+1. In the new executable cell that appears in the workbook, insert the following ```using``` statement and then run it:
  
 	```C#
 	using Xamarin.Forms;
 	```
 
----
+1. Delete the executable cell that was added when you ran the code. Add a new documentation cell and insert the following text: 
 
-1. Open Xamarin Workbooks to the document created earlier, if not already open from the previous exercises.
-
-1. Scroll to the bottom of the document, add a new **documentation cell** and insert the following content: 
-
-	```Text
-	Now with all the “rocket science” code written, we can easily display these values in a Xamarin Forms app. Let’s start with showing the currert Earth Time, by adding a StackLayout and Label to a Xamarin Forms Content Page:
 	```
-1. Insert a new **executable cell** and enter the following code to create a Xamarin Forms ```StackLayout``` control and populate the control with additional controls for displaying calculations created earlier in your workbook:
+	Add controls to display the current time on earth and on Mars:
+	```
+
+1. Insert a new executable cell and enter the following statements:
  
 	```C#
 	var page = Xamarin.Forms.Application.Current.MainPage as ContentPage;
@@ -342,160 +336,135 @@ In this exercise you will be adding documentation and code to your workbook to d
 	
 	page.Content = layout;
 	```
-1. Observe the use of ```Xamarin.Forms.Application.Current.MainPage as ContentPage``` in the first line of code to instantiate the ```page``` variable. By using **Xamarin.Forms.Application.Current.MainPage** you can "talk to" the page displayed by Xamarin Workbooks in the emulator.
-1. Click **Run** to  execute the code and observe the result of ```Xamarin.Forms.StackLayout``` in the code editor.
 
-	![Executing code to create Xamarin Forms controls dynamically](Images/xw-add-stack-layout.png)
+1. Run the code and confirm that the following page appears in the Android emulator:
 
-    _Executing code to create Xamarin Forms controls dynamically_
+	![Android emulator showing earth time and Mars time](Images/app-view-earth-time.png)
+
+    _Android emulator showing earth time and Mars time_
  
-1. Return to the Android emulator that was started when you created your workbook, and notice all your calculations have come together perfectly, and populated controls on the page to display values:
-
-	![Viewing Earth to Mars conversion in the Android emulator](Images/app-view-earth-time.png)
-
-    _Viewing Earth to Mars conversion in the Android emulator_
- 
-	You have to admit that was pretty easy, and pretty cool, however in order to get real-time, up-to-the-second conversions you would have to execute the code in your workbook constantly. You can make it easier by adding a few lines of code to perform constant updates in the app just by adding a bit more documentation and code.
-
-1. Insert a new **documentation cell** and insert the following content: 	
+1. Now let's use a software timer to update the times shown on the page once a second. Begin by deleting the executable cell that was added when you ran the last cell and adding a documentation cell. Insert the following text into the documentation cell: 	
 	
-	```Text
-	Better yet, you can even make your Martian Time Calculator realtime, but taking advantage of the Xamarin Forms platform device timer, like this:
 	```
-1. Insert a new **executable cell** and enter the following code to leverage the Xamarin Forms ```Device.StartTimer``` to update your calculations and display every second:
+	Use a timer to refresh the display once per second:
+	```
+
+1. Insert a new executable cell and enter the following code to start a device timer and update the app's UI every second:
 
 	```C#
 	Device.StartTimer(TimeSpan.FromSeconds(1), () =>
 	{
-	    //YOUR LOCAL EARTH TIME
+	    // LOCAL EARTH TIME
 	    earthTimeLabel.Text = DateTime.Now.ToString("hh:mm:ss tt");
 	
-	    //EARTH UTC TO MARTIAN TIME
+	    // EARTH UTC TO MARTIAN TIME
 	    marsTimeLabel.Text = earthEpochDate.Add(DateTime.UtcNow.ToMartianTime()).ToString("hh:mm:ss tt");
 	    return true;
 	});
 	```
 
-	```Text
-	Now, next time someone asks you “What time is it on Mars?” not only will you know, but you can show them how to calculate it themselves…just in case you’re stuck in traffic in the Asteroid Belt.
-	```
-1. Insert one final **documentation cell** and insert the following content to finish out your documenation: 
+1. Run the cell and confirm that the times shown in the emulator update in real time.
 
-	Now that your Earth to Mars time conversion process is well documented and running well in the emulator, you may want to adjust the look and feel of the display without making permanent changes to your code. This is where the Xamarin UI Inspector comes in handy.
+1. One of Xamarin Workbooks' more powerful features is the Xamarin UI Inspector, which lets you inspect values in the UI and adjust them without making permanent changes to your code. To open the inspector, click **View Inspector** in the lower-left corner of the Xamarin Workbooks window.
 
-1. Still in your document in Xamarin Workbooks, select the **View Inspector** tab at the bottom left corner of the IDE.
+	![Opening the Xamarin UI Inspector](Images/xw-select-inspector.png)
 
-	![Selecting the Xamarin UI Inspector tab](Images/xw-select-inspector.png)
-
-    _Selecting the Xamarin UI Inspector tab_
+    _Opening the Xamarin UI Inspector_
  
-1. Change the inspector platform to **Xamarin.Forms** to view the document explorer in Xamarin Forms control semantics. 
+1. Select **Xamarin.Forms** from the drop-down list to view the Xamarin Forms control tree. 
 
-	![Changing the inspector platform to Xamarin.Forms](Images/xw-select-xf.png)
+	![Viewing the Xamarin Forms controls](Images/xw-select-xf.png)
 
-    _Changing the inspector platform to Xamarin.Forms_
+    _Viewing the Xamarin Forms controls_
  
-1. Adjust both **Xamarin Workbooks** and the **Android emulator** to view viewed side-by-side on your desktop.
+1. In the UI Inspector, click the first ```Label``` control to select that control. As an alternative, you can click the **select a view** button and then click "Earth Time" in the Android emulator. 
 
-	![Viewing the inspector and emulator side-by-side](Images/app-side-by-side.png)
+	![Selecting the "Earth Time" Label control](Images/xw-select-label.png)
 
-    _Viewing the inspector and emulator side-by-side_
- 
-1. In the UI Inspector, click **select a view** and then select the **Earth Time** Label in the emulator to set the ```Label``` as the selected view. 
+    _Selecting the "Earth Time" Label control_
 
-	![The select a view option in the inspector](Images/xw-click-select-view.png)
+1. Locate the ```TextColor``` property in the properties panel on the right and change the **R** value to 217 and the **A** (alpha transparency) property to 100%.
 
-    _The select a view option in the inspector_
+	![Changing the Label control's foreground color](Images/change-textcolor.png)
 
-1. Locate the **TextColor** property in the inspector properties "Text" panel and change the **R** value to "217" and the **A** (alpha transparency) property to **100%** to change the foreground color to red and observe the immediate updates in the emulator.
+    _Changing the Label control's foreground color_ 
 
-	![Changing the Earth Time label foreground color](Images/app-change-label-red.png)
+1. Return to the Android emulator and confirm that "Earth Time" changed to red.
 
-    _Changing the Earth Time label foreground color_ 
+	![Modified Label control in the emulator](Images/app-change-label-red.png)
 
-1. Repeat this process for the remaining three (3) labels to change the foreground color of the display to red.
+    _Modified Label control in the emulator_ 
 
-1. Once last time, click **select a view** and then immediately select **any open area around the outer edge** of the page in the emulator to set the ```ContentPage``` as the selected view.
-1. Locate the **BackgroundColor** property in the inspector properties "Visual Element" panel and make sure the **R**, **G**, and **B** values are set to "0" and then change the **A** (alpha transparency) property to **100%** to change the page background color to black.
+1. Repeat this process for the remaining three ```Label``` controls to change their text color to red.
 
-	![Changing the Background color of the ContentPage in the inspector](Images/app-change-background.png)
+1. Select the ```ContentPage``` control.
 
-    _Changing the Background color of the ContentPage in the inspector_ 
+	![Selecting the ContentPage](Images/xw-select-page.png)
 
-1. Observe the final. more "Mars-like" UI updates in the emulator.
+    _Selecting the ContentPage_
+
+1. Go to the properties panel and set the page's **R**, **G**, and **B** values to 0 and the **A** value to 100% to change the page background color to black.
+
+1. Return to the Android emulator and confirm that it now displays red text against a black background.
 
 	![The updated UI using the inspector](Images/app-color-change.png)
 
     _The updated UI using the inspector_ 
 
-1. To update the inspector UI view with recent changes, click **Refresh** and observe the updates in a three-dimensional view. Additionally, you can use your mouse to drag the view palette to find an alignment that works best for you.	
+1. Click the **refresh** button in the UI Inspector to update the preview shown there. If you would like, use your mouse to change the orientation of the preview.	
 
-	![Refreshing the inspector UI view with recent changes](Images/xw-click-refresh.png)
+	![Refreshing the UI preview](Images/xw-click-refresh.png)
 
-    _Refreshing the inspector UI view with recent changes_ 
+    _Refreshing the UI preview_ 
 
-Sending Xamarin Workbooks content directly to an emulator, and then tweaking the UI elements, is a great way to get familiar with the code and structure of an app, as well as create a quick prototype or proof-of-concept. Although not all properties can be manipulated directly from the inspector, a large number of properties are available for experimentation, including ```Scale``` and ```Rotation```.
-
-More importantly, you now have a comprehensive, interactive document to serve as a learning tool you can distribute to your peers, colleagues, and friends, who can then simply open your creation in Xamarin Workbooks and learn how to convert Earth time to Mars time, in a simple and interactive way, without writing a single line of code.
+The UI Inspector is great for examining the controls that form an app's UI and tweaking those controls as needed. Not all UI properties can be manipulated directly from the inspector, but most of them can.
 
 <a name="Exercise4"></a>
-## Exercise 4: Use the XAML Previewer for Xamarin.Forms to view UI updates ##
+## Exercise 4: Use the XAML Previewer for Xamarin Forms ##
 
-Creating a great mobile app experience is easy with Xamarin Forms, and creating a great UI is even easier. Using MVVM patterns and data binding concepts results in a clean design and separation logic, however working directly in the XAML code window often prevents you from seeing the impact of your changes until after you deploy your updates to an emulator or device. The XAML Previewer for Xamarin.Forms is designed to address this challenge by rendering page content and controls in an integrated window within the Visual Studio IDE.
+When you create XAML UIs by typing text and angle brackets, you don't know precisely how the UI will look like until you run the app. Tweaking a UI often means repeatedly making changes to the XAML and rerunning the app to gauge the effect of those changes. But there is a better way. In this exercise, you will use Visual Studio 2017's integrated previewer for Xamarin Forms to see a live preview of the XAML that you enter. You will also learn how to use the XAML Previewer to see how the app will look on screens of various sizes.  
 
-In this exercise you will be setting up your Visual Studio 2107 environment to use and experiment with the XAML Previewer for Xamarin.Forms to view and adjust UI elements in your Drone Lander app.
+1. Open the DroneLander solution in Visual Studio 2017. Then open **MainPage.xaml** in the **DroneLander (Portable)** project.
 
-1. In Visual Studio 2017, open the **DroneLander** solution created in the previous lab.
-1. Open **MainPage.xaml** in the **DroneLander (Portable)** project to view the XAML code window.
+	![MainPage.xaml in the XAML editor](Images/vs-main-page.png)
 
-	![The MainPage.xaml XAML code window in the DroneLander (Portable) project](Images/vs-main-page.png)
+    _MainPage.xaml in the XAML editor_ 
 
-    _The MainPage.xaml XAML code window in the DroneLander (Portable) project_ 
+1. Use Visual Studio's **View** > **Other Windows** > **Xamarin.Forms Previewer** command to open the Xamarin Forms Previewer. Then use the **Window** > **New Vertical Tab Group** command to position the preview window next to the XAML editor.
 
-1. Use the **View** > **Other Windows** > **Xamarin.Forms Previewer** menu in Visual Studio to open the preview window. 
-1. Use the **Window** > **New Vertical Tab Group** menu to position it side-by-side with MainPage.xaml.
+	![Previewing XAML in the Xamarin Forms Previewer](Images/vs-side-by-side.png)
 
-	![Showing the Xamarin.Forms Previewer side-by-side with a XAML code editor window](Images/vs-side-by-side.png)
+    _Previewing XAML in the Xamarin Forms Previewer_ 
 
-    _Showing the Xamarin.Forms Previewer side-by-side with a XAML code editor window_ 
+	Observe that the preview window shows not only the XAML elements declared in **MainPage.xaml**, but also changes made at run-time by custom renderers. Most controls render perfectly in the Xamarin Forms Previewer, but be aware that some platform-specific elements such as the custom effect used to change the font on Android will not be seen until run-time.
 
-1. Observe how many (but not all) user interface elements are rendered based on the XAML contained in MainPage.xaml, and also reflect runtime code changes, like implementation of both the ```FuelControlRenderer``` and ```ThrottleControlRenderer``` and the ```ActionLabel``` binding on the Start button.
+1. As an experiment, change the case of the "Altitude" and "Descent Rate" labels in the XAML editor, and check out the corresponding changes in the Xamarin Forms Previewer.
 
-	>Although most controls in the Xamarin.Forms Previewer render perfectly, some platform-specific code, such as the assignment of a custom font effect for Android, are not able to be seen until runtime.
+	![Changes displayed in the Xamarin Forms Previewer](Images/vs-change-to-upper.png)
 
-1. As an experiment, using the MainPage.xaml **XAML code editor**, change the case of both the **Altitude** and **Descent Rate** labels to upper case to see live, real-time changes in the Xamarin.Forms Previewer window.
+    _Changes displayed in the Xamarin Forms Previewer_ 
 
-	![The result of temporarily changing labels to upper case as displayed in the Xamarin.Forms Previewer](Images/vs-change-to-upper.png)
+1. The Xamarin Forms Previewer also allows you to preview the UI in different form factors and orientations. To demonstrate, click **Tablet** in the preview window, and then click the **landscape mode icon** in the upper-right corner of the window to preview **MainPage.xaml** in landscape mode on a tablet.
 
-    _The result of temporarily changing labels to upper case as displayed in the Xamarin.Forms Previewer_ 
+	![Previewing the UI on a tablet in landscape mode](Images/vs-change-orientation.png)
 
-	The Xamarin.Forms Previewer supports both Android and iOS devices, as well as generic phone and tablet form factors. Viewing a rendered version in any orientation for these devices is simple.
+    _Previewing the UI on a tablet in landscape mode_ 
 
-1. In the **Xamarin.Forms Previewer window**, select **Tablet** as the "Device" then click the **landscape mode icon** in the upper right corner of the window to view MainPage.xaml rendered in landscape mode on a tablet form factor.
+1. Finish up by undoing the case changes made to the labels in Step 3.
 
-	![Viewing MainPage.xaml on a tablet form factor in landscape mode](Images/vs-change-orientation.png)
-
-    _Viewing MainPage.xaml on a tablet form factor in landscape mode_ 
-
-	>If you prefer the look of your labels in upper case, feel free to change the remaining controls to match, otherwise you can undo your changes in the XAML code editor.
-
-Using the XAML Previewer for Xamarin.Forms can make quick work of user interface control and layout updates, to ensure you get your layout and design just right before running your app on a device or emulator.
-
-In the next exercise you will be switching gears a bit to get familiar with another great Xamarin Forms tool, the Xamarin Profiler.
+The Xamarin Forms Previewer streamlines the development process by allowing you to see UI changes as you make them, and to do so without launching the app over and over again. But there's another tool you should be familiar with if you're doing Xamarin Forms development: the Xamarin Profiler.
 
 <a name="Exercise5"></a>
-## Exercise 5: Diagnose potential performance issues with Xamarin Profiler ##
+## Exercise 5: Diagnose potential performance issues with the Xamarin Profiler ##
 
-**If you do not have Visual Studio Enterprise 2017, you will not be able to perform all the steps in this exercise. Xamarin Profiler IDE integration is available in all release versions of Xamarin, however, [Visual Studio Enterprise](https://www.xamarin.com/compare-visual-studio "Visual Studio Enterprise") is required for profiling. If you are using Visual Studio Community or Professional 2017 you can review this lab and use it as a reference for later.**
+Performance is crucial to any app. If an app performs sluggishly, users are liable to abandon it in favor of competing apps. Accordingly, the Xamarin Profiler included in Visual Studio Enterprise 2017 provides tools for measuring performance and identifying potential trouble spots. In this exercise, you will use the Xamarin Profiler to analyze Drone Lander.
 
-More often than not, the success of a mobile app depends on the end user experience. As a developer you might have implemented some really awesome features in your app, but if the app is sluggish or prone to crashes, most users will uninstall it.
- 
-To proactively address this challenge, the Xamarin Profiler provides a large of profiling "instruments" such as Allocations, Cycles, and Time Profiler to measure and analyze app performance.
-
-In this exercise you will use and experiment with the Xamarin Profiler to view and identify potential performance issue in your Drone Lander app.
+> This exercise requires Visual Studio Enterprise 2017. If you are using the Community or Professional edition of Visual Studio 2017, simply read through this exercise to learn about the some of the profiler's features and capabilities.
 
 1. In Visual Studio 2017, open the **DroneLander** solution created in the previous lab, if not already open from the previous exercise.
+
 1. Use the **Tools** > **Xamarin Profiler** menu in Visual Studio to compile your project in debug mode and start the Xamarin Profiler.
+
 1. Select **Performance** as the instrument "target" and click **Choose** to run the app and start a profiling session.
 
 	![Choosing the Performance target in Xamarin Profiler](Images/xp-choose-performance.png)
