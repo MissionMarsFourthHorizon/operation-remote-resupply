@@ -6,11 +6,11 @@
 <a name="Overview"></a>
 ## Overview ##
 
-In Part 4 of Operation Remote Resupply, you integrated both the build and distribute process of your development cycle with [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") to create a seamless, automated process for building and distributing apps, triggered by release commits to a source code repository, such as GitHub. Although a simple "load test" was performed during this process, true, automated UI acceptance testing is not yet currently part of the lifecycle.
+In Part 4 of Operation Remote Resupply, you integrated both the build and distribute process of your development cycle with [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") to create a seamless, automated process for building and distributing apps, triggered by commits to a source-code repository. Although a simple "load test" was performed during this process, true, automated UI acceptance testing is not yet currently part of the lifecycle.
 
 Although there are many types of tests that could, and should, be performed before your app is distributed to real users, such as unit, component, and integration testing, UI acceptance testing is a critical component of creating a well-testing and polished user experience, and is typically at the "top of the testing pyramid" providing incredible value to the overall understanding of how your app behaves and performs.   
 
-[Xamarin.UITest](https://developer.xamarin.com/guides/testcloud/uitest/ "Xamarin.UITest") is an automation library and testing framework, designed specifically to meet these needs, based on the open source [Calabash](http://calaba.sh/ "Calabash") initiative and leveraging the power of the [NUnit](http://www.nunit.org/ "NUnit") testing framework. Xamarin.UITest enables both scripted and recorded UI acceptance tests to be created, automated, and run against iOS and Android devices. Xamarin.UITest can also be tightly integrated with Xamarin.Forms, Xamarin.iOS, and Xamarin.Android projects, and used with iOS and Android projects written in other languages, such as Objective-C/Swift and Java. 
+[Xamarin.UITest](https://developer.xamarin.com/guides/testcloud/uitest/ "Xamarin.UITest") is an automation library and testing framework, designed specifically to meet these needs, based on the open source [Calabash](http://calaba.sh/ "Calabash") initiative and leveraging the power of the [NUnit](http://www.nunit.org/ "NUnit") testing framework. Xamarin.UITest enables both scripted and recorded UI acceptance tests to be created and run against iOS and Android devices. Xamarin.UITest can also be tightly integrated with Xamarin.Forms, Xamarin.iOS, and Xamarin.Android projects, and used with iOS and Android projects written in other languages, such as Objective-C/Swift and Java. 
 
 In this lab, you will use Xamarin.UITest to add scripted and recorded UI acceptance tests to the Android version of the Drone Lander solution, as well as integrate automated UI acceptance tests into your existing Visual Studio Mobile Center Build and Distribute lifecycle configured in an earlier lab.   
 
@@ -43,7 +43,7 @@ If you wish to build and run the iOS version of the app, you also have to have a
 
 This lab includes the following exercises:
 
-- [Exercise 1: Add a Xamarin.UITest project to a Xamarin Forms solution](#Exercise1)
+- [Exercise 1: Add a UI test project to a Xamarin Forms solution](#Exercise1)
 - [Exercise 2: Write cross-platform UI test scripts](#Exercise2)
 - [Exercise 3: Use the Xamarin Test Recorder to record scripts](#Exercise3)
 - [Exercise 4: Integrate automated UI tests with Visual Studio Mobile Center](#Exercise4)
@@ -51,7 +51,7 @@ This lab includes the following exercises:
 Estimated time to complete this lab: **45** minutes.
 
 <a name="Exercise1"></a>
-## Exercise 1: Add a Xamarin.UITest project to a Xamarin Forms solution ##
+## Exercise 1: Add a UI test project to a Xamarin Forms solution ##
  
 Although testing can be integrated into your development lifecycle at any time, the best time get started with testing, including UI testing, is during the development phase of a mobile app. Automated tests are typically "iterative" meaning they are often written as app features are being developed, and then adjusted and enhanced over the life of an app.
 
@@ -59,127 +59,101 @@ A Xamarin.UITest project can easily be added to an existing solution, and then a
 
 In this exercise you will add a Xamarin.UITest project to the **DroneLander** solution you have been developing, as well as confirming configuration and readiness for running UI tests. 
 
-1. In Visual Studio 2017, open the **Drone Lander** solution created in the previous lab.
+1. Open the DroneLander solution in Visual Studio 2017.
 
-1. In Solution Explorer, right-click the **DroneLander** solution and use the **Add** > **New Project** command to add a **UI Test App (Xamarin.UITest | Cross-Platform)** project named "DroneLander.UITest" to the solution. 
+1. In Solution Explorer, right-click the solution and use the **Add** > **New Project** command to add a **UI Test App (Xamarin.UITest | Cross-Platform)** project named "DroneLander.UITest" to the solution. 
  
-	![Adding a new Xamarin.UITest project to the DroneLander solution](Images/vs-add-new-project.png)
+	![Adding a Xamarin.UITest project to the solution](Images/vs-add-new-project.png)
 
-    _Adding a new Xamarin.UITest project to the DroneLander solution_
+    _Adding a Xamarin.UITest project to the solution_
 
-1. In Solution Explorer, right-click the **DroneLander.UITest** project and select **Manage NuGet Packages for Solution...**, ensure the "Installed" tab is active, select the **Xamarin.UITest** package and click **Update** to install the **latest stable version** of Xamarin.UITest.
+1. In Solution Explorer, right-click the **DroneLander.UITest** project and select **Manage NuGet Packages for Solution...**. Make sure "Installed" is selected. Then select **Xamarin.UITest** and click **Update** to install the latest stable version.
 
-	![A blank Xamarin Workbook in the Android emulator](Images/vs-update-nuget.png)
+	![Updating Xamarin.UITest](Images/vs-update-nuget.png)
 
-    _A blank Xamarin Workbook in the Android emulator_
+    _Updating Xamarin.UITest_
 
-1. Repeat this process for the **NUnitTestAdapter** package, updating the NUnitTestAdapter package to the **latest stable version**.
+1. Repeat this process for the NUnitTestAdapter package, updating it to the latest stable version.
 
-	**NOTE: DO NOT UPDATE the NUnit package. Xamarin.UITest do not work with NUnit version 3.0 or higher, and required a version of 2.6x in order to function properly.**
+	> DO NOT update the NUnit package. Xamarin.UITest requires NUnit version 2.6 and does not work with version 3.0 and higher.
 
-1. Notice the **AppInitializer.cs** and **Tests.cs** files that get created as part of the Xamarin.UITest project. These are the files you will be working in for the remainder of this exercise. The AppInitializer.cs file contains logic for configuring and activating platform-specific versions of your app, and Tests.cs will contain any actual test logic added to the project.
+1. Right-click the **DroneLander.Android** project and select **Properties** from the context menu. Select **Android Manifest** and set **Package name** to "com.traininglabs.dronelander" if it isn't set to that already. Then save the modified manifest.
 
-1. Open **AppInitializer.cs** and locate the Android-specific platform ```ConfigureApp``` logic. Code in the ```AppInitializer``` class is specific to either Android or iOS.
-	 
-	![The Android-specific platform ConfigureApp logic](Images/vs-android-specific.png)
+	![Setting the Android package name](Images/vs-android-package-name.png)
 
-    _The Android-specific platform ConfigureApp logic_
+    _Setting the Android package name_
 
-	To instruct Xamarin.UITest to run tests against a specific app you need to provide either a **file path** or a **package name** to the ConfigureApp method. You will be using the more straightforward package name method.
+1. Notice the **AppInitializer.cs** and **Tests.cs** files that were created as part of the Xamarin.UITest project. **AppInitializer.cs** contains logic for configuring and activating platform-specific versions of your app, while **Tests.cs** is where you write your tests.
 
-1. Open **Properties** > **Android Manifest** in the **DroneLander.Android** project and verify that the **Package name** is set to "com.traininglabs.dronelander". 
-
-	![Verifying the Android package name](Images/vs-android-package-name.png)
-
-    _Verifying the Android package name_
-
-	>You can technically use any name for the Android package name, however following the standard lowercase "reverse-domain" lookup method is preferred.
-
-1. Add the following single line of code directly above the call to the ```StartApp``` method to configure the location of the Android version of Drone Lander.
+	Open **AppInitializer.cs** and add the following statement directly above the call to ```StartApp``` to connect the test project to the Android version of Drone Lander:
 
 	```C#
 	.InstalledApp("com.traininglabs.dronelander")
 	```
 	 
-	![Setting the InstalledApp property to the app package name](Images/vs-add-installed-path.png)
+	![Specifying the app package name in the test project](Images/vs-add-installed-path.png)
 
-    _Setting the InstalledApp property to the app package name_
+    _Specifying the app package name in the test project_
 
-1. Ensure that the Android project is selected as the startup project by right-clicking the **DroneLander.Android** project in Solution Explorer and selecting **Set as StartUp Project**, then launch the Android version of Drone Lander in the selected Android emulator.
-
-1. Open the "Test Explorer" by using the **Test** > **Windows** > **Test Explorer** command from the Visual Studio IDE, wherein you will see a default "AppLaunches" test displayed for both Android and iOS devices under the "Not Run Tests" grouping. 
+1. Rebuild the solution. Then open Test Explorer using Visual Studio's **Test** > **Windows** > **Test Explorer** command. Confirm that two tests named "AppLaunches" are displayed. The first is for Android, and the second is for iOS. These are tests that are performed each time the app launches.
 	 
-	![The default AppLaunches tests in Test Explorer](Images/vs-test-explorer.png)
+	![AppLaunches tests in Test Explorer](Images/vs-test-explorer.png)
 
-    _The default AppLaunches tests in Test Explorer_
+    _AppLaunches tests in Test Explorer_
 
-	>If you do not see the AppLaunches test entires in Test Explorer, use the Rebuild Solution command on the **DroneLander** solution to initialize your tests.
+1. Right-click the first AppLaunches test and select **Open Test** to view the code for the test in **Test.cs**. Note the ```[Test]``` attribute decorating the ```AppLaunches``` method. This attribute marks a method as a callable entry point for an NUnit test and exposes it to the Xamarin.UITest platform for execution. Other attributes such as ```[StartUp]``` and ```[TearDown]``` are also useful when working with Xamarin.UITest. 
 
-1. Right-click the first **AppLaunches** entry and select **Open Tests** to view the C# code associated with the ```AppLaunches``` test in the Test.cs file and observe the use of use of the ```[Test]``` attribute on the **AppLaunches** method. This attribute marks a method as a callable entry point for an NUnit test and exposes it to the Xamarin.UITest platform for execution. Other attributes, such as ```[StartUp]``` and ```[TearDown]``` are also useful attributes when working with Xamarin.UITests. 
+1. When a Xamarin.UITest project is created, the default ```AppLaunches``` method contains a single call to the ```Screenshot``` method to take a screen shot of the app.
 
-1. When a Xamarin.UITest project is created, the default **AppLaunches** method contains a single call to the ```Screenshot``` method. The Screenshot method simply creates a screenshot of an app at any given point in a test script. This code was added by when you create the DroneLander.UITest project.
+	![The Android AppLaunches method](Images/vs-open-tests.png)
 
-	![The Android AppLaunches method in Test.cs](Images/vs-open-tests.png)
+    _The Android AppLaunches method_
 
-    _The Android AppLaunches method in Test.cs_
-
-	By default, a screenshot is not stored locally. To make it easier to view during testing you need to add one more parameter to the ```ConfigureApp``` method in the ```AppInitializer``` class.
-
-1. Open **AppInitializer.cs** and add the following single method directly below the **InstalledApp** method added earlier in this exercise to instruct the test to save screenshots locally:
+	By default, screen shots are not stored locally. To change that, go back to **AppInitializer.cs** and add the following statement after the call to ```InstalledApp``` that you added earlier:
 
 	```C#
 	.EnableLocalScreenshots()
 	```
 	
-	With the location of your package assigned, and instructions to save screenshots locally, you're ready to start running UI tests against the Android version of Drone Lander.
+1. Right-click the first **AppLaunches** test in Text Explorer and select **Run Selected Tests** to run the AppLaunches test for the Android version of Drone Lander. Then wait until Test Explorer indicates that the test has completed successfully.
 
-1. Once more, right-click the first **AppLaunches** entry and select **Run Selected Tests** to run the AppLaunches test for the Android version of Drone Lander.
-1. Activate the Android emulator and notice Drone Lander is automatically loaded, and then after a short delay, "Test Explorer" (in Visual Studio) displays successful run information for the AppLaunches test.
+	![A successful test](Images/vs-first-test-successful.png)
 
-	![The Android AppLaunches method in Test.cs](Images/vs-first-test-successful.png)
+    _A successful test_
 
-    _The Android AppLaunches method in Test.cs_
+1. Screen shots that are saved locally are saved in the build folder in the test project. Right-click the test project and use the  **Open Folder in File Explorer** command to open a File Explorer window. Then navigate to the "bin\Debug" subdirectory and confirm that it contains a screen shot named **screenshot-1.png**.
 
-1. By default, screenshots created during test runs are saved locally to the current build folder in the test project. To validate the completion of the test run, check the availability of a screenshot by using the **Open Folder in File Explorer** command on the **DroneLander.UITest** project, navigate into the **bin** > **Debug** folder to view **screenshot-1.png**.
+	![The screen shot created during the test run](Images/fe-screenshot.png)
 
-	![Viewing screenshot-1.png created by the AppLaunches test run](Images/fe-screenshot.png)
+    _The screen shot created during the test run_
 
-    _Viewing screenshot-1.png created by the AppLaunches test run_
-
-You now have a Xamarin.UITest project successful added to your solution, and the Android version of Drone Lander configured for running automated UI tests.
-
-In the next exercise you will be manually creating testing scripts that can run on both Android and iOS devices.
+You now have a UI test project integrated into your solution. The next step is to add test scripts to the project to do more than just snap a screen shot when the app launches.
 
 <a name="Exercise2"></a>
 ## Exercise 2: Write cross-platform UI test scripts ##
 
-Although a simple test script was generated for you when you created the DroneLander.UITest project, taking a screenshot of the app really doesn't provide much value, in and of itself. Since the Xamarin.UITest platform is based on Calabash, you can take advantage of a full set of APIs to create meaning scripts that perform automated actions and interact with your UI, just as if a real user where using your app.
+Xamarin.UITest provides a rich API for implementing sophisticated UI tests. You can simulate button clicks, insert text into entry fields, change the orientation of the device, adjust the volume on the device (even an emulator), and a whole lot more. In this exercise, you will add code to the Android AppLaunches test to perform simple actions using just a few of the APIs available in the Xamarin.UITest framework.
 
-In this exercise you will be adding code to the AppLaunches tests to perform simple actions using the powerful APIs available in the Xamarin.UITest framework.
-
-1. Open the **DroneLander** solution in Visual Studio 2017, if not already open from previous exercise.
-1. Open **Tests.cs** in the **DroneLander.UITest** project and replace the code in the **AppLaunches** method with the following code:
+1. Open **Tests.cs** in the **DroneLander.UITest** project and replace the code in the ```AppLaunches``` method with the following code:
 
 	```C#
 	app.Tap(x => x.Button("Start"));
     app.Screenshot("The app in progress.");
 	``` 
 
-	The first line of code demonstrates how simple it is to invoke a ```Tap``` event on a button, by querying the UI for a button labeled as "Start" and then performing a ```Tap``` event. Since the app will be in progress at the time a screenshot is created, we can change the step title of the screenshot to something more meaningful, such as "The app in progress".
+	The first line of code simulates a tap of the Start button by querying the UI for a button labeled "Start" and then passing it to the ```Tap``` method. The second line snaps a screen shot after the button is tapped — that is, once a descent has begun.
 
-1. Right-click the first **AppLaunches** entry and select **Run Selected Tests** to run the updated AppLaunches test for the Android version of Drone Lander.
-1. Activate the Android emulator and notice Drone Lander is automatically loaded, and then after a short delay, the Start button is automatically tapped and a simulated landing session begins.
+1. Right-click the first **AppLaunches** test in Test Explorer and select **Run Selected Tests** to run the updated test for the Android version of Drone Lander. Then switch to the Android emulator and watch as Drone Lander loads and the Start button is tapped to begin a descent.
 
-	![Testing of Drone Lander being automated by the updated AppLaunches method](Images/app-after-first-run.png)
+	![A descent initiated by a test script](Images/app-after-first-run.png)
 
-    _Testing of Drone Lander being automated by the updated AppLaunches method_
+    _A descent initiated by a test script_
 
-1. In Drone Lander, tap **Reset** to end the simulated landing session.
-1. Navigate again into the **bin** > **Debug** folder to view **screenshot-1.png** and notice the screenshot correctly captures the state of the app immediately following the start of a landing attempt.
+1. In Drone Lander, tap **Reset** to end the descent.
 
-	Xamarin.UITest scripts are also able to interact with the device itself, for example by setting device orientation, adjusting volume, or even dismissing a soft keyboard.
+1. Navigate back to the test project's "bin\Debug" folder and open **screenshot-1.png**. Confirm that it pictures the app *after* the Start button is tapped.
 
-1. To experiment with device interaction, insert the following lines of code directly below the call to **app.Screenshot**:
+1. In addition to interacting with elements in the UI, Xamarin.UITest test scripts can interact with the device itself. To demonstrate, add the following statements to the ```AppLaunches``` method in **Test.cs** in the test project, immediately after the call to ```app.Screenshot```:
 
 	```C#
     app.Flash(x => x.Text("Sign In"));
@@ -191,26 +165,12 @@ In this exercise you will be adding code to the AppLaunches tests to perform sim
     app.PressVolumeUp();
     app.PressVolumeUp();
 	```
-	This code perform the following additional sequential steps: 
-	
-	- "Flash" the Sign In button temporarily
-	- Set the device orientation to landscape
-	- Turn the volume down two levels
-	- Set the device orientation back to portrait
-	- "Flash" the Reset button temporarily
-	- Turn the volume back up two levels.
 
-	![Automation of voume adjustment in a test script](Images/app-automated-volume.png)
+1. Run the Android AppLaunches test again, and switch to the Android emulator to see the automated test in action. When you're done, click **Reset** to stop the descent.
 
-    _Automation of voume adjustment in a test script_
+	> Since these steps are automated, they happen quickly. If desired, you could insert calls to  ```Thread.Sleep``` to space them out more. 
 
-1. Right-click the first **AppLaunches** entry and select **Run Selected Tests** to run the updated AppLaunches test for the Android version of Drone Lander, then immediately switch to the Android emulator to observe the automated test in action.
-
-	>Since these steps were automated, they all move quickly. Keep in mind, since you are still working with the Xamarin platform, methods available in the .NET Framework are also available for using in a Xamarin.UITest project, such as ```Thread.Sleep```, in order to simulate delays. 
-
-In this exercise you had some practice interacting with an app via test script methods, however true, comprehensive testing often involves numerous, dependent steps. Manually creating these scripts can be time consuming and prone to errors. Wouldn't it be great if you could just "record" a full automation UI test and have it played back? With the Xamarin Test Recorder you can do just that.
-
-In the next exercise you will be using the Xamarin Test Recorder to record UI automation tests and running these tests as additional NUnit test methods.
+You can create sophisticated tests by coding them manually as you did in this exercise. However, what if you could simply "record" your UI tests by interacting with the app and then play them back? With the Xamarin Test Recorder, you can do just that.
 
 <a name="Exercise3"></a>
 ## Exercise 3: Use the Xamarin Test Recorder to record scripts ##
@@ -226,6 +186,7 @@ In this exercise, you will install the Xamarin Test Recorder and record automati
     _Downloading the Xamarin Test Recorder extension_
 
 1. Close Visual Studio 2017 to allow the Xamarin Test Recorder extension to install, and then reopen the **Drone Lander** solution after installation is complete. 
+
 1. Open **Tests.cs** in the **DroneLander.UITest** project and observe the new icons in the left margin well of the page. These icons indicate Xamarin Test Recorder actions that can be taken for both the Android and iOS projects associated as NUnit ```[TestFixtures]```. The TextFixture attribute simply indicates that a class file contains callable test methods. 
 
 	![The Xamarin Test Recorder icons in Tests.cs](Images/vs-new-icons.png)
