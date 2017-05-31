@@ -46,7 +46,7 @@ This lab includes the following exercises:
 - [Exercise 1: Add a UI test project to a Xamarin Forms solution](#Exercise1)
 - [Exercise 2: Write cross-platform UI test scripts](#Exercise2)
 - [Exercise 3: Use the Xamarin Test Recorder to record tests](#Exercise3)
-- [Exercise 4: Integrate automated UI tests with Visual Studio Mobile Center](#Exercise4)
+- [Exercise 4: Submit automated UI tests to Visual Studio Mobile Center](#Exercise4)
   
 Estimated time to complete this lab: **45** minutes.
 
@@ -260,7 +260,7 @@ Coding UI automation tests by hand is time-consuming and error-prone. The [Xamar
 
 1. Since the Test Recorder doesn't record or reproduce "delays" when recording, it's often helpful to force a delay in a script, or wait for a UI element to become available before moving to the next step. You may have noticed that the generated code immediately goes back to the previous page after navigating to the landing-activity page.
 
-	To compensate, insert the following statement after the statement that simulates a tap of the Activity button to wait for the text string "Kaboom" to appear on the landing-activity page:
+	To compensate, insert the following statement after the statement that simulates a tap of the Activity button to wait for the text string "Kaboom" to appear on the page:
 
 	```C#
 	app.WaitForElement(x => x.Text("Kaboom"));
@@ -287,13 +287,13 @@ Coding UI automation tests by hand is time-consuming and error-prone. The [Xamar
 Automating UI tests in this manner by using the Xamarin Test Recorder to record your actions and, when necessary, modifying the code that it generates reduces the amount of effort required to incorporate UI tests into the development process. The next step is to run the tests that you create on real hardware, and not just on hardware you own, but on a variety of devices. Only then can you be reasonably assured that your app is robust enough for real-world use.
 
 <a name="Exercise4"></a>
-## Exercise 4: Integrate automated UI tests with Visual Studio Mobile Center ##
+## Exercise 4: Submit automated UI tests to Visual Studio Mobile Center ##
 
 It probably isn't realistic for you to collect hundreds of devices on which to run your tests. Even if you could, the process of running them one by one would be painstaking unless that process, too, were automated.
 
 Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Studio Mobile Center can solve this problem for you by enabling you to run the automated tests that you create on hundreds of devices. In this exercise, you will add the **DroneLander.UITest** project to the GitHub repo that you created earlier and integrate the automated tests into the app lifecycle using Visual Studio Mobile Center.
 
-1. In Visual Studio 2017, open **Tests.cs** in the **DroneLander.UITest** project, and replace the code inside the **SignInAnCheckActivity** method with the following code:
+1. Open **Tests.cs** in the **DroneLander.UITest** project and replace the code in the ```SignInAndCheckActivity``` method with the following code:
 
 	```C#
 	app.Tap(x => x.Text("Start"));
@@ -302,107 +302,104 @@ Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Stu
     app.Screenshot("Drone Lander in action");
     app.Tap(x => x.Text("Reset"));
 	```
-	>Since many third-party authentication services, including Microsoft accounts, often require two-factor authentication or secondary forms of sign in validation, you are removing code related to authentication to avoid any "false failures" during test runs, as well as adding the Screenshot method to capture the state of the UI during a landing attempt.
+
+	> Since many third-party authentication services, including Microsoft accounts, often require two-factor authentication or secondary forms of validation, you are removing the code that signs in with a Microsoft account to avoid any "false failures" during test runs.
 	
-1. The SignInAnCheckActivity method now performs tasks associated with app launch, making the existing AppLaunches event no longer necessary. Still in **Tests.cs** remove the entire **AppLaunches** event, include the ```[Test]``` attribute.
+1. Delete the ```AppLaunches``` method (including the ```Test``` attribute decorating it) from **Tests.cs**. You no longer need it since the ```SignInAnCheckActivity``` method starts a descent and takes a screen shot. 
 	
-	>Although you could technically leave the default AppLaunches event in place, the new SignInAnCheckActivity method performs start up and launch validation and make the AppLaunches event redundant.
+1. Ensure that the build configuration is still set to release mode in Visual Studio. Then right-click the **DroneLander.Android** project and use the **Archive...** command to create a release version of the project package.
 
-1. Ensure you are still in **Release** mode configuration from the previous exercise, then right-click the **DroneLander.Android** project and use the **Archive...** command to create a Release version of the project package.
-1. Still in Visual Studio, add your DroneLander.UITest project to your GitHub repo by clicking the GitHub **changes indicator** at the lower-right corner of the Visual Studio IDE status bar.
+1. Add the **DroneLander.UITest** project to your GitHub repo by clicking the changes indicator in the lower-right corner of the Visual Studio status bar, entering a commit message such as "Added test project," and selecting **Commit All and Push**.
 
-	![he Visual Studio GitHub changes indicator](Images/vs-github-changes.png)
+	![Adding the test project to the repo](Images/vs-github-changes.png)
 
-    _The Visual Studio GitHub changes indicator_
+    _Adding the test project to the repo_
 
-1. Enter a commit message such as "Added a new Xamarin.UITest project." then select **Commit All and Push** from the "Commit All" selector. 
+	Recall that the Drone Lander solution is integrated with GitHub, and any new commits will automatically trigger the build and distribution process. Xamarin.UITest is designed to seamlessly integrate into this process and perform the Test portion of a Build/Test/Distribute lifecyle.
 
-	As you may recall from an earlier lab, your Drone Lander solution is integrated with GitHub, and any new commits will automatically trigger the Build and Distribute process. Xamarin.UITest is designed to seamlessly integrate into this process and function as the **Test** portion of a full Build, Test, Distribute lifecyle.
-
-1. Open [Visual Studio Mobile Center app portal](https://mobile.azure.com/apps) in your browser and click the Android version of **Drone Lander** created in an earlier lab, then select the **Test** tab. 
+1. Go to [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and select the Android version of Drone Lander. Then click **Test**. 
  
-	![Accessing the Test tab in Visual Studio Mobile Center](Images/portal-click-test.png)
+	![Configuring tests in Visual Studio Mobile Center](Images/portal-click-test.png)
 
-    _Accessing the Test tab in Visual Studio Mobile Center_
+    _Configuring tests in Visual Studio Mobile Center_
 
-	Although you may have activity from an earlier lab, the tests run during these sessions were simple "app launch" tests you designated as part of the Build and Distribute lifecycle. For real testing you will be integrating your Xamarin.UITest methods into the Build and Disribute process.
+1. Click **Test Series** in the upper-left corner of the page, and then click **Create new series**.
 
-1. Click **Test Series** in the upper-left corner of the page to create a new test series definition, then click **Create new series**.
+	![Creating a new test series](Images/portal-click-test-series.png)
 
-	![Accessing the Test tab in Visual Studio Mobile Center](Images/portal-click-test-series.png)
+    _Creating a new test series_
 
-    _Accessing the Test tab in Visual Studio Mobile Center_
+1. Enter "UI Acceptance Series" as the series name, and then click **Create**.
 
-1. Enter "UI Acceptance Series" as the "New test series" name, then click **Create**. After a short delay your new test series will be created.
+	![Naming the test series](Images/portal-create-series.png)
 
-	![Accessing the Test tab in Visual Studio Mobile Center](Images/portal-create-series.png)
+    _Naming the test series_
 
-    _Accessing the Test tab in Visual Studio Mobile Center_
+1. Close the dialog to return to the Mobile Center Test page, and then click **New Test Run**.
 
-1. Close the dialog to be returned to the Mobile Center Test page, then click **New Test Run**.
-1. On the "Select devices" step, select a single device, such as the "Google Pixel XL", then click **Select (1) device** at the bottom of the screen.
+1. Select the device you want to use for testing, and then click **Select (1) device** at the bottom of the screen.
 
-	![Selecting a target device for a new test run](Images/portal-select-device.png)
+	> You are only testing on one device to make testing as quick as possible, but if you weren't concerned about time, you could select as many devices as you want.
 
-    _Selecting a target device for a new test run_
+	![Selecting a target device](Images/portal-select-device.png)
 
-	>In real world testing you would like select a larger number of diverse devices for testing, however you should only select a single device for this step, as adding additional device requires additional processing time during acceptance test runs.
+    _Selecting a target device_
 
-1. On the "Configure" tab, select **UI Acceptance Series** as the "Test series" and **Xamarin.UITest** as the "Test framework", then click **Next**.
+1. Select **UI Acceptance Series** as the test series and **Xamarin.UITest** as the test framework, then click **Next**.
 
-	![Selecting a series and framework for testing](Images/portal-configure-tab.png)
+	![Specifying the test series and test framework](Images/portal-configure-tab.png)
 
-    _Selecting a series and framework for testing_
+    _Specifying the test series and test framework_
 
-1. Review the information on the final "Submit" step, observing the requirements to run specific command-line commands using the Mobile Center Command Line Interface (CLI) in the "Prerequities" panel. **Perform steps 1 and 2** to ensure you have both [Node.js](https://nodejs.org/en/ "Node.js") and the [Mobile Center CLI](https://docs.microsoft.com/en-us/mobile-center/cli/ "Mobile Center CLI") installed on your workstation.   
+1. Review the information presented to you. **Perform steps 1 and 2** in the "Prerequisites" section to ensure that [Node.js](https://nodejs.org/) and the [Mobile Center CLI](https://docs.microsoft.com/en-us/mobile-center/cli/) are installed.   
 
-	![The Mobile Center automated test pre-requisites steps](Images/portal-prereqs.png)
+	![Prerequisites for submitting tests](Images/portal-prereqs.png)
 
-    _The Mobile Center automated test pre-requisites steps_
+    _Prerequisites for submitting tests_
 
-1. From the "Running tests" panel copy the Mobile Center CLI command and parameters by clicking **Copy to clipboard**.
+1. Click **Copy to clipboard** in the "Running tests" section to copy the Mobile Center CLI command to the clipboard.
 
-	![Copying Mobile Center CLI command and parameters to the clipboard](Images/portal-copy-to-clipboard.png)
+	![Copying the Mobile Center CLI command to the clipboard](Images/portal-copy-to-clipboard.png)
 
-    _Copying Mobile Center CLI command and parameters to the clipboard_
+    _Copying the Mobile Center CLI command to the clipboard_
 
-	These commands need to be run from the NuGet **packages** folder located in the root of **Drone Lander solution**. You can easily determine and navigate to this location in a command prompt window by using the Solution and File Explorer.
+1. This command needs to be run from the "packages" folder located in the root of the DroneLander solution. To get the location of that folder, right-click the solution in Solution Explorer and select **Open Folder in File Explorer**.
 
-1. Open a command prompt and type in "cd " (as the change directory command), then right-click the **DroneLander** solution and use the **Open Folder in File Explorer** command to view the folder location on your file system.
-1. Drag the **packages** folder **into the command window** to insert the full path to the packages folder, then press the **enter key** on your keyboard to change the working directory to the packages folder.
-1. Paste the **contents of the clipboard** into the **command window**, being careful not to execute the command.
-1. In the script, replace **pathToFile.apk** with the following command (**including** the quotation marks.) **This will be the location of your Android archive when you build it in Release mode.**
+1. Open a Command Prompt window and type "cd " (notice the trailing space). Then drag the "packages" folder from the File Explorer window to the Command Prompt window and press **Enter** to change to the "packages" directory.
+
+1. Paste the command on the clipboard into the Command Prompt window, but don't execute the command just yet.
+
+1. Replace *pathToFile.apk* in the command you pasted in with the following path name. This is the path to the release-mode Android package that you archived:
 
 	```Text
 	"..\DroneLander\DroneLander.Android\bin\Release\com.traininglabs.dronelander.apk"
 	``` 
-1. Replace **pathToUITestBuildDir** with the following command (again including quotation marks.) **This is the location of your Xamarin.UITest build directory.**
+
+1. Replace *pathToUITestBuildDir* with the following path name. This is the Xamarin.UITest build directory:
 
 	```Text
 	"..\DroneLander.UITest\bin\Release"
 	```
-1. Press the **enter key** on your keyboard to begin execution of the Mobile Center CLI commands.
 
-	![Preparing and submitting acceptance tests via the Mobile Center CLI](Images/cli-started.png)
+1. Press **Enter** to execute the command and submit your acceptance tests.
 
-    _Preparing and submitting acceptance tests via the Mobile Center CLI_
+	![Submitting acceptance tests](Images/cli-started.png)
 
-1. Return to the **Test** tab for the Android version of Drone Lander in the Mobile Center. After a short delay, the Mobile Center Test tab will start displaying the status of your acceptance test submission and run.
+    _Submitting acceptance tests_
 
-	![Test execution status in the Mobile Center during command-line execution](Images/portal-test-started.png)
+1. Return to the Test tab for the Android version of Drone Lander in the Mobile Center and confirm that a test has been started.
 
-    _Test execution status in the Mobile Center during command-line execution_
+	![Viewing the test status](Images/portal-test-started.png)
 
-1. Since Mobile Center is running your automated UI tests on a real device, this process **could take as long as 10 to 15 minutes to complete**. When the "Status" of the automated UI test run changes to "PASSED", select the list entry to view test run details.
-1. Observe the correct timing of the screenshot (while a landing attempt is in progress) as well as the labeling of the screenshot as "Drone Lander in action."
+    _Viewing the test status_
 
-	![A successful automated UI test in Visual Studio Mobile Center](Images/portal-success.png)
+1. Since Mobile Center is running your automated UI tests on a real device, this process could take **10 to 15 minutes to complete**. Wait until the status changes to "PASSED", and then click the test to view the results.
 
-    _A successful automated UI test in Visual Studio Mobile Center_
+	![Viewing the test results](Images/portal-success.png)
 
-	For more detailed information about test runs on specific devices, you can click on Details and Logs to get complete device specifications, test log step details, and even full stack traces.
+    _Viewing the test results_
 
-That's it, you did it! In this exercise you added automated UI acceptance testing to your Build and Distribute lifecycle in Visual Studio Mobile Center, automating your entire mobile app lifecycle in a few easy steps.
+For more detailed information about test runs on specific devices, you can click **Details** and **Logs** to view device specifications, test logs, and stack traces.
 
 <a name="Summary"></a>
 ## Summary ##
