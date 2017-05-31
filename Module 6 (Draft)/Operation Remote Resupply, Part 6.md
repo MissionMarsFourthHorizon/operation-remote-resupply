@@ -45,7 +45,7 @@ This lab includes the following exercises:
 
 - [Exercise 1: Add a UI test project to a Xamarin Forms solution](#Exercise1)
 - [Exercise 2: Write cross-platform UI test scripts](#Exercise2)
-- [Exercise 3: Use the Xamarin Test Recorder to record scripts](#Exercise3)
+- [Exercise 3: Use the Xamarin Test Recorder to record tests](#Exercise3)
 - [Exercise 4: Integrate automated UI tests with Visual Studio Mobile Center](#Exercise4)
   
 Estimated time to complete this lab: **45** minutes.
@@ -132,7 +132,7 @@ You now have a UI test project integrated into your solution. The next step is t
 <a name="Exercise2"></a>
 ## Exercise 2: Write cross-platform UI test scripts ##
 
-Xamarin.UITest provides a rich API for implementing sophisticated UI tests. You can simulate button clicks, insert text into entry fields, change the orientation of the device, adjust the volume on the device (even an emulator), and a whole lot more. In this exercise, you will add code to the Android AppLaunches test to perform simple actions using just a few of the APIs available in the Xamarin.UITest framework.
+Xamarin.UITest provides a rich API for implementing sophisticated UI tests. You can simulate button clicks, insert text into entry fields, change the orientation of the device (or emulator), and a whole lot more. In this exercise, you will add code to the Android AppLaunches test to perform simple actions using just a few of the APIs available in the Xamarin.UITest framework.
 
 1. Open **Tests.cs** in the **DroneLander.UITest** project and replace the code in the ```AppLaunches``` method with the following code:
 
@@ -173,141 +173,125 @@ Xamarin.UITest provides a rich API for implementing sophisticated UI tests. You 
 You can create sophisticated tests by coding them manually as you did in this exercise. However, what if you could simply "record" your UI tests by interacting with the app and then play them back? With the Xamarin Test Recorder, you can do just that.
 
 <a name="Exercise3"></a>
-## Exercise 3: Use the Xamarin Test Recorder to record scripts ##
+## Exercise 3: Use the Xamarin Test Recorder to record tests ##
 
-Creating automated UI tests can be a huge endeavor, requiring manual interaction with a mobile app in order to capture and identify real user interaction in an app. The [Xamarin Test Recorder](https://developer.xamarin.com/guides/testcloud/testrecorder/ "Xamarin Test Recorder") is a stand alone Visual Studio 2017 extension that can "record" how a user interacts with an application, and create automated tests in C# based on those interactions.
+Coding UI automation tests by hand is time-consuming and error-prone. The [Xamarin Test Recorder](https://developer.xamarin.com/guides/testcloud/testrecorder/) is a Visual Studio 2017 extension that can record your interactions with an app and create automated tests written in C# based on those interactions. In this exercise, you will install the Xamarin Test Recorder and record UI automation tests that can be run locally or integrated with the app lifecycle using the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) or Visual Studio Mobile Center.
 
-In this exercise, you will install the Xamarin Test Recorder and record automation tests that can be run locally, or integrated with a lifecycle by submitted them to [Xamarin Test Cloud](https://www.xamarin.com/test-cloud "Xamarin Test Cloud") or Visual Studio Mobile Center.
+> The Xamarin Test Recorder is only available in Visual Studio Enterprise 2017. If you are *not* using the Enterprise edition, simply read through this exercise as well as the next one to learn about the basics of using the recorder and integrating the resultant tests into the app lifecycle.
 
-1. Install the Xamarin Test Recorder by using the **Tools** > **Extensions and Updates** command in the Visual Studio IDE to search for "xamarin test recorder" in the **Online** > **Visual Studio Marketplace**.
+1. Install the Xamarin Test Recorder by using Visual Studio's **Tools** > **Extensions and Updates** command to display the "Extensions and Updates" dialog, searching for "xamarin test recorder" in the Visual Studio Marketplace, and clicking **Download**.
 
-	![Downloading the Xamarin Test Recorder extension](Images/vs-install-recorder.png)
+	![Installing the Xamarin Test Recorder](Images/vs-install-recorder.png)
 
-    _Downloading the Xamarin Test Recorder extension_
+    _Installing the Xamarin Test Recorder_
 
-1. Close Visual Studio 2017 to allow the Xamarin Test Recorder extension to install, and then reopen the **Drone Lander** solution after installation is complete. 
+1. Close Visual Studio 2017 to allow the Xamarin Test Recorder to install, and then reopen the DroneLander solution after installation is complete. 
 
-1. Open **Tests.cs** in the **DroneLander.UITest** project and observe the new icons in the left margin well of the page. These icons indicate Xamarin Test Recorder actions that can be taken for both the Android and iOS projects associated as NUnit ```[TestFixtures]```. The TextFixture attribute simply indicates that a class file contains callable test methods. 
+1. Open **Tests.cs** in the **DroneLander.UITest** project and confirm that two record icons appear in the left margin. These icons are used to begin recording UI automation tests. The ```TextFixture``` attribute indicates that a class contains callable test methods. 
 
-	![The Xamarin Test Recorder icons in Tests.cs](Images/vs-new-icons.png)
+	![The Xamarin Test Recorder icons](Images/vs-new-icons.png)
 
-    _The Xamarin Test Recorder icons in Tests.cs_
+    _The Xamarin Test Recorder icons_
 
-	As a reminder, since Xamarin.UITest can only run tests on Android devices when using Visual Studio 2017 on Windows, you will only be recording and running tests in an Android emulator.
+1. The Xamarin Test Recorder can't use the Mono Shared Runtime that is typically used in debug builds. Therefore, change the current build configuration to release mode. Then rebuild the **DroneLander.Android** project to produce a release build.
 
-1. The Xamarin Test Recorder is unable to use the Mono Shared Runtime typically used when you are in Debug mode. The simplest way to allow recording is to change your current build configuration to Release mode, by selecting **Release** from the Visual Studio IDE build configuration selector.
+	![Changing the build configuration](Images/vs-release-mode.png)
 
-	![Changing the current build configuration to Release mode](Images/vs-release-mode.png)
+    _Changing the build configuration_
 
-    _Changing the current build configuration to Release mode_
+1. Click the record icon to the left of ```[TextFixture(Platform.Android)]``` in **Tests.cs** and select **Record New Test** > **Build DroneLander.Android project** to start a recording session.
 
-1. Right-click the **DroneLander.Android** project and select **Build** to build a release version of Drone Lander.
-1. To begin recording UI activities, still in **Test.cs**, click the recording icon to the left of ```[TextFixture(Platform.Android)]``` and then select **Record New Test** > **Build DroneLander.Android project**.
+	![Starting a recording session](Images/vs-record-new-test.png)
 
-	![Starting a new recording session for the Drone Lander Android app](Images/vs-record-new-test.png)
+    _Starting a recording session_
 
-    _Starting a new recording session for the Drone Lander Android app_
-
-	After a short delay Xamarin Test Recorder will beging connecting to the emulator, as indicated in the bottom left corner of the Visual Studio IDE status bar, and then launch the app in the emulator.
+1. Wait until the Xamarin Test Recorder begins connecting to the emulator, as pictured below. Then launch the app in the Android emulator.
 	
 	![Connecting Xamarin Test Recorder to an emulator session](Images/vs-connection-to-app.png)
 
     _Connecting Xamarin Test Recorder to an emulator session_
 
-1. **Wait for the recorder sessions status to change from "Connecting to app..." to "Connected".** (This may take up to 30 seconds, depending on the emulator you have selected.)
-1. When connection to the emulator has been made, switch to the emulator and begin recording actions with the Xamarin Test Recorder by performing the following steps, **in sequence**:
+1. **Wait for the connection status to change from "Connecting to app..." to "Connected".** This may take up to 30 seconds. Then switch to the emulator and perform the following steps in the order shown:
 
-	- Tap **Sign In**, to begin authentication
-	- Enter you Microsoft account **email address**
+	- Tap **Sign In**
+	- Enter the e-mail address for your Microsoft account
 	- Tap the **Next** button
-	- Enter you Microsoft account **password**
-	- Tap the **Sign In** button, to authenticate and return to the main screen
-	- Tap **Activity**, to view landing activity
-	- Tap the device **hardware back button**
-	- Tap **Start**, to begin a landing session
-	- Adjust the **Throttle** all the way to the right
+	- Enter the password for your Microsoft account
+	- Tap the **Sign In** button
+	- Tap **Activity** to view landing activity
+	- Tap the emulator's back button
+	- Tap **Start** to begin a descent
+	- Slide the throttle slider all the way to the right
 	- Tap **Reset** 
   
-1. Return to Visual Studio 2017 and observe a new method named "NewTest" has been created in **Tests.cs**, and populated with steps corresponding to the app UI actions you performed in the previous step.
+1. Return to Visual Studio 2017 and observe that a new method named ```NewTest``` has been created in **Tests.cs** and populated with lines of code corresponding to the actions you just performed. Click the icon to the left of the last line and select **Stop Recording**.
 
-	>Steps related to entering Microsoft account information in the WebView control may not have been captured. Capturing these steps often depends on the speed of the dialog load process and other factors unrelated to Xamarin.UITest.
+	> Steps related to signing in with your Microsoft account may not have been captured. If that's the case, don't fret; you will fix that in a moment. Capturing these actions often depends on the speed with which the dialogs load and other factors unrelated to Xamarin.UITest.
 
-	![Ending a Xamarin Test Recorder session](Images/vs-stop-recording.png)
+	![Ending the recording session](Images/vs-stop-recording.png)
 
-    _Ending a Xamarin Test Recorder session_
+    _Ending the recording session_
 
-1. In Test Explorer, right-click the **NewTest** entry for the **Android version** of the test and select **Run Selected Tests** to run the updated NewTest test in the emulator, then immediately switch to the Android emulator to observe the automated test in action.
+1. In Test Explorer, right-click the Android version of **NewTest** and select **Run Selected Tests** to run the test in the emulator. Then switch to the Android emulator and observe the automated test in action.
 
-	Notice the test doesn't quite reflect exactly what a user would do, and may even "hang" at the Microsoft account authorization step. Since the steps are sequential, and do not take into account page rendering and content availability, you need to add a few steps to provide a more realistic use case.
+	> You can easily determine whether a test method targets Android or iOS by hovering over the test in Test Explorer and inspecting the ensuing tooltip window.
 
-1. Change the name of the **NewTest** method to something more descriptive, such as "SignInAnCheckActivity".
-1. If the test code generated **does not** include steps referencing the ```WebView``` class, insert the following lines of code directly below the initial **x.Marked("Sign In")** step to automate the Microsoft account authorization process:
+1. When played back, the part of the test in which you sign in with your Microsoft account might not work, and it might even hang. This is because the recording doesn't take into account the time required for pages and dialogs to load. You can fix this by modifying the code generated by the Xamarin Test Recorder. Begin by changing the name of the ```NewTest``` method to something more descriptive such as "SignInAndCheckActivity."
+
+1. If the generated test code generated **does not** include statements referencing the ```WebView``` class, insert the following statements after the first statement in the test method to automate the sign-in process. Substitute your user name and password for YOUR_MICROSOFT_ACCOUNT_EMAIL_ADDRESS and YOUR_MICROSOFT_ACCOUNT_PASSWORD.
+
+	> In production testing scenarios, you will want to create test accounts to use in your tests and avoid using personal accounts.
 
 	```C#
 	app.WaitForElement(c => c.WebView().Css("INPUT#i0116"));
     app.EnterText(x => x.WebView().Css("INPUT#i0116"), "YOUR_MICROSOFT_ACCOUNT_EMAIL_ADDRESS");
     app.Tap(x => x.WebView().Css("INPUT#idSIButton9"));
-    app.EnterText(x => x.WebView().Css("INPUT#i0118"), "YOUR MICROSOFT_ACCOUNT_PASSWORD");
+    app.EnterText(x => x.WebView().Css("INPUT#i0118"), "YOUR_MICROSOFT_ACCOUNT_PASSWORD");
     app.Tap(x => x.WebView().Css("INPUT#idSIButton9"));
 	```
-1. If the test code generated **does** include references to the ```WebView``` class, insert the following single line of code directly below the initial **Sign In** step to wait for the authentication dialog to render, prior to automating the Microsoft account authorization process:
+
+1. If the generated test code **does** include references to the ```WebView``` class, insert the following statement after the first statement in the test method to wait for the authentication dialog to appear:
 
 	```C#
 	app.WaitForElement(c => c.WebView().Css("INPUT#i0116"));
 	```
-	The Xamarin.UITest **WaitForElement** method provides and easy mechanism for instructing your script to "wait for" a UI element to become available before proceeding to the next step. In the code above, the script will essentially wait for the authentication dialog to render before moving to the next step.
 
-	![The updated code to automate account authorization](Images/vs-add-web-view.png)
+	The ```WaitForElement``` method provides an easy-to-use mechanism for delaying until a condition involving a UI element is satisfied. In this example, it waits for the authentication dialog to render in the ```WebView``` control.
 
-    _The updated code to automate account authorization_
+1. Since the Test Recorder doesn't record or reproduce "delays" when recording, it's often helpful to force a delay in a script, or wait for a UI element to become available before moving to the next step. You may have noticed that the generated code immediately goes back to the previous page after navigating to the landing-activity page.
 
-1. In the script, replace the value of "YOUR_MICROSOFT_ACCOUNT_EMAIL_ADDRESS" with your **Microsoft account email address**, as well as the value of "YOUR MICROSOFT_ACCOUNT_PASSWORD" with your **Microsoft account password**.
-
-	>In production testing scenarios you will want to create testing accounts to use in your scripts, and avoid using personal account tied to specific users.
-	
-	Since the Test Recorder doesn't record or reproduce "delays" when recording, it's often helpful to force a delay in a script, or wait for a UI control to become available before moving to the next step. You may have noticed the recorded code immediately performs a page back action after loading landing activity. To ensure page content gets loaded before continuign to the next step, you can, again, use the ```WaitForElement``` method.
-
-1. Insert the following single line of code directly below the **x.Marked("Activity")** tap event, to instruct the script to wait for a text value of "Kaboom" to display on the landing activity page before continuing:
+	To compensate, insert the following statement after the statement that simulates a tap of the Activity button to wait for the text string "Kaboom" to appear on the landing-activity page:
 
 	```C#
 	app.WaitForElement(x => x.Text("Kaboom"));
 	```
-	Since your recording also reproduced a Tap event on the Reset button immediately following the increase in Throttle, in may be more realistic to add a delay to allow the landing to run for a period of time before resetting the landing session.
 
-1. Add the following single line of code directly below the **x.Class("FormsSeekBar")** slider change event to force a two-second delay using the standard .NET framework ```Thread.Sleep``` method:
+1. Since your recording includes a tap of the Reset button following the increase in throttle, you should introduce a delay before Reset button is tapped to allow the landing simulation to run for a period of time. To that end, add the following statement after the statement that changes the value of the Slider control:
 
 	```C#
 	 System.Threading.Thread.Sleep(2000);
 	```
 
-1. Right-click the **DroneLander.UITest** project and select **Rebuild** to rebuild the project and register the new test method with the Test Explorer.
+1. Rebuild the **DroneLander.UITest** project so the new test methods appear in Test Explorer.
 
 	![The updated test methods in Test Explorer](Images/vs-sign-in-and-check.png)
 
     _The updated test methods in Test Explorer_
 
-1. In Test Explorer, right-click the **SignInAnCheckActivity** entry for the **Android version** of the test and select **Run Selected Tests** to run the updated SignInAnCheckActivity test in the emulator, then immediately switch to the Android emulator to observe the automated test in action.
+1. Run the Android version of the test. Then switch to the Android emulator and watch the test execute. Confirm that the test executes successfully and that Text Explorer indicates that the test passed.  
 
-	>You can easily determine whether a test method targets Android or iOS by hovering over the entry in Test Explorer and viewing the tooltip referencing the platform.
+	![A successful test](Images/vs-sign-in-complete.png)
 
-1. Observe the fully automated process of authenticating a user, viewing landing activity, start an landing attempt, adjusting the throttle value, and then resetting the session. When the automated test is complete, status information will become available in the Test Explorer results pane with a status of "Test Passed".  
+    _A successful test_
 
-	![Successfully running the SignInAndCheckActivity test](Images/vs-sign-in-complete.png)
-
-    _Successfully running the SignInAndCheckActivity test_
-
-Seeing automated UI tests running live on a device or emulator is pretty amazing to watch, and you could, of course, run these tests again any number of devices, however running these tests still requires your time and effort. More importantly, you probably have a limited set of actual devices and emulators in your possession, and cannot realistically perform comprehensive testing against the hundreds or even thousands of device, screen, and form factor variations that are possible.
-
-To fully automate the UI testing required against a wide variety of scenarios, services such a Xamarin Test Cloud and Visual Studio Mobile Center provide features to automate UI acceptance testing of mobile apps across hundreds of different devices, with thousands of variations.
-
-In the final exercise you will be integrating the Xamarin.UITest automated UI acceptance tests you created in this lab into your existing Visual Studio Mobile Center Build and Distribute lifecycle configured in an earlier lab.
+Automating UI tests in this manner by using the Xamarin Test Recorder to record your actions and, when necessary, modifying the code that it generates reduces the amount of effort required to incorporate UI tests into the development process. The next step is to run the tests that you create on real hardware, and not just on hardware you own, but on a variety of devices. Only then can you be reasonably assured that your app is robust enough for real-world use.
 
 <a name="Exercise4"></a>
 ## Exercise 4: Integrate automated UI tests with Visual Studio Mobile Center ##
 
- 
+It probably isn't realistic for you to collect hundreds of devices on which to run your tests. Even if you could, the process of running them one by one would be painstaking unless that process, too, were automated.
 
-In this exercise will be adding the DroneLander.UITest project to your GitHub repo and integrating the automated project tests in the Mobile Center lifecycle to complete the full Build, Test, and Distribute process.
+Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Studio Mobile Center can solve this problem for you by enabling you to run the automated tests that you create on hundreds of devices. In this exercise, you will add the **DroneLander.UITest** project to the GitHub repo that you created earlier and integrate the automated tests into the app lifecycle using Visual Studio Mobile Center.
 
 1. In Visual Studio 2017, open **Tests.cs** in the **DroneLander.UITest** project, and replace the code inside the **SignInAnCheckActivity** method with the following code:
 
