@@ -85,7 +85,7 @@ Once these workloads and components are installed, you are ready to begin creati
 
 The first step in creating a cross-platform solution with Xamarin Forms is to provision a solution based on the Visual Studio 2017 Cross Platform App template. In this exercise, you will create a new Xamarin Forms solution using this template.
 
-1. Start Visual Studio 2017. Then use the **File** > **New** > **Project** command to create a new Cross Platform App solution named "DroneLander."
+1. Start Visual Studio 2017. Then use the **File** > **New** > **Project** command to create a new Cross Platform App (Xamarin) solution named "DroneLander."
 
     ![Creating a new Cross Platform App solution](Images/vs-new-project.png)
 
@@ -97,7 +97,7 @@ The first step in creating a cross-platform solution with Xamarin Forms is to pr
 
     _Specifying Cross Platform App preferences_
 
-1. When prompted to choose platform requirements for the Universal Windows Platform project, accept the defaults and click **OK**.
+1. When prompted to choose platform requirements for the Universal Windows Platform project, accept the defaults and click **OK**. If you are then prompted to connect to a Mac, simply close the dialog.
 
     ![Specifying UWP platform versions](Images/vs-target-platform.png)
 
@@ -114,7 +114,7 @@ The first step in creating a cross-platform solution with Xamarin Forms is to pr
 	
 	_The generated solution_
 
-1. Right-click the **DroneLander.Android** project in Solution Explorer and select **Properties** from the context menu. Then click **Android Options** and uncheck the **Use Fast Deployment (debug mode only)** box. This option, if enabled, sometimes causes problems with Android emulators in Hyper-V. 
+1. Right-click the **DroneLander.Android** project in Solution Explorer and select **Properties** from the context menu. Then click **Android Options**, uncheck the **Use Fast Deployment** box, and save your changes. This option, if enabled, sometimes causes problems with Android emulators in Hyper-V. 
 
     ![Disabling fast deployment on Android](Images/disable-fast-deployment.png)
 
@@ -137,7 +137,7 @@ The next step in building your Xamarin Forms app is to add shared and platform-s
 
     _Merging  folders_
 
-1. In the "Destination File Exists" dialog, again check **Apply to all items** and then click **Yes**. This will update your Android images and assets with appropriately branded assets for your app.
+1. In the "Destination File Exists" dialog, again check **Apply to all items** and click **Yes**. This will update your Android images and assets with appropriately branded assets for your app.
 
     ![Overwriting existing resources](Images/vs-accept-overwrite-01.png)
 
@@ -155,13 +155,19 @@ The next step in building your Xamarin Forms app is to add shared and platform-s
 
     _Overwriting existing resources_
 
-1. Open **Info.plist** in the **DroneLander.iOS** project. Scroll to the bottom of the list, right-click **Launch screen interface file base name**, and select **Delete** to delete this property from the file. Removing this property instructs iOS to use image assets rather than storyboards for launch images.
+1. Right-click **Info.plist** in the **DroneLander.iOS** project and select **Open With...** from the context menu. Then select **Generic PList Editor** and click **OK**.
+
+    ![Opening Info.plist](Images/open-plist.png)
+
+    _Opening Info.plist_
+
+1. Scroll to the bottom of the list, right-click **Launch screen interface file base name**, and select **Delete** to delete this property from the file. Removing this property instructs iOS to use image assets rather than storyboards for launch images.
  
     ![Deleting a property from Info.plist](Images/vs-info-plist.png)
 
     _Deleting a property from Info.plist_
 
-1. In Solution Explorer, right-click the "Resources" folder in the **DroneLander.UWP (Windows Universal)** project and use the **Add** > **Existing Item...** command to import the file named **drone_lander_back.jpg** from the lab's "Resources\UWP" folder.
+1. In Solution Explorer, right-click the **DroneLander.UWP** project and use the **Add** > **Existing Item...** command to import the file named **drone_lander_back.jpg** from the lab's "Resources\UWP" folder into the root of the project.
 
 1. Now right-click the "Assets" folder in the same project and use the **Add** > **Existing Item...** command to import all of the files from the lab's "Resources\UWP\Assets" folder.
 
@@ -209,7 +215,7 @@ The next step in building your Xamarin Forms app is to add shared and platform-s
 	</Package>
 	```
 
-1. Now it's time to run the app for the first time. Let's start with the Android version of the app. Ensure that the Android project is selected as the startup project by right-clicking the **DroneLander.Android** project in Solution Explorer and selecting **Set as StartUp Project**.
+1. Now it's time to run the app for the first time. Let's start with the Android version. Ensure that the Android project is selected as the startup project by right-clicking the **DroneLander.Android** project in Solution Explorer and selecting **Set as StartUp Project**.
  
 1. Click the **Run** button (the one with the green arrow) at the top of Visual Studio to launch the Android version of Drone Lander in the selected Android emulator. Note that the emulator will probably take a minute or two to start.
  
@@ -246,9 +252,9 @@ If you go to the home screen in the Android emulator or the start screen in Wind
 <a name="Exercise4"></a>
 ## Exercise 4: Add common logic to the Portable project ##
 
-A common design pattern used in Xamarin Forms solutions is the [Model-View-ViewModel](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) (MVVM) pattern, which facilitates a clean separation of the business logic from the user interface. In this exercise, you will implement a model and a view-model in C# and place them in the Portable project so that they are shared by the iOS, Android, and Windows apps. You will also import some helper classes used by the view-model and by the user interface.
+A common design pattern used in Xamarin Forms solutions is the [Model-View-ViewModel](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) (MVVM) pattern, which facilitates a clean separation of the business logic and user interface. In this exercise, you will implement a model and a view-model in C# and place them in the Portable project so that they are shared by the iOS, Android, and Windows apps. You will also import some helper classes used by the view-model and by the user interface.
 
-1. In Solution Explorer, right-click the **DroneLander (Portable)** project and use the **Add** > **New Folder** command to add a folder named "Common" to the project. Then repeat this step to add folders named "Models," and "ViewModels" to the project.
+1. In Solution Explorer, right-click the **DroneLander (Portable)** project and use the **Add** > **New Folder** command to add a folder named "Common" to the project. Then repeat this step to add folders named "Models" and "ViewModels" to the project.
 
 1. Right-click the "Common" folder that you just added and use the **Add** > **Existing Item...** command to import all of the files from the lab's "Resources\Portable\Common" folder. These files contain helper classes that implement commanding and property-binding notifications.
 
@@ -558,7 +564,7 @@ In this exercise, you will add a view to the Portable project and bind it to the
 	</Application>
 	``` 
 
-	This markup defines several styles that will be used to stylize the app's controls. It also declares an instance of ```DecimalDisplayConverter```, which will be used in **MainPage.xaml** as a value converter. Value converters are components that modify data as it is passed between data sources and data targets during data binding and are widely used in XAML UIs to control output formatting and convert data from one type to another. You imported the ```DecimalDisplayConverter``` class when you imported the files from the lab's "Resources\Portable\Common" folder in Exercise 4, Step 2. Declaring styles, converters, and other resources in **App.xaml** makes them available to all of the application's views. You can also declare resources in the XAML files for individual views, but doing so limits the availability of those resources to the views in which they are declared.
+	This markup defines several styles used to stylize the app's controls. It also declares an instance of ```DecimalDisplayConverter```, which will be used in **MainPage.xaml** as a value converter. Value converters are components that modify data as it is passed between data sources and data targets during data binding and are widely used in XAML UIs to control output formatting and convert data from one type to another. You imported the ```DecimalDisplayConverter``` class when you imported the files from the lab's "Resources\Portable\Common" folder in Exercise 4, Step 2. Declaring styles, converters, and other resources in **App.xaml** makes them available to all of the application's views. You can also declare resources in the XAML files for individual views, but doing so limits the availability of those resources to the views in which they are declared.
 
 1. Now open **App.xaml.cs** and add the following property declaration above the ```App``` constructor:
 
@@ -712,7 +718,7 @@ Have some extra time and want to try an additional challenge? Did you notice tha
 
 1. In Solution Explorer, right-click the **DroneLander.Android** project and use the **Add** > **New Item...** command to add an activity named "SplashActivity.cs."
 
-	> In Android, an *activity* is a task that you define to interact with a user. Activities usually, but not always, occupy the entire screen, and are somewhat analgous to *pages* in other platforms such as Windows.
+	> In Android, an *activity* is a task that interacts with the user. Activities usually, but not always, occupy the entire screen, and are somewhat analgous to *pages* in other platforms such as Windows.
 
     ![Adding an activity to the Android project](Images/vs-add-splash-activity.png)
 

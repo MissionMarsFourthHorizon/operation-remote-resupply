@@ -538,7 +538,7 @@ vertical-align:1px;
 <p>The first step in creating a cross-platform solution with Xamarin Forms is to provision a solution based on the Visual Studio 2017 Cross Platform App template. In this exercise, you will create a new Xamarin Forms solution using this template.</p>
 <ol>
 <li>
-<p>Start Visual Studio 2017. Then use the <strong>File</strong> &gt; <strong>New</strong> &gt; <strong>Project</strong> command to create a new Cross Platform App solution named "DroneLander."</p>
+<p>Start Visual Studio 2017. Then use the <strong>File</strong> &gt; <strong>New</strong> &gt; <strong>Project</strong> command to create a new Cross Platform App (Xamarin) solution named "DroneLander."</p>
 <p><a href="Images/vs-new-project.png" target="_blank"><img src="Images/vs-new-project.png" alt="Creating a new Cross Platform App solution" style="max-width:100%;"></a></p>
 <p><em>Creating a new Cross Platform App solution</em></p>
 </li>
@@ -548,7 +548,7 @@ vertical-align:1px;
 <p><em>Specifying Cross Platform App preferences</em></p>
 </li>
 <li>
-<p>When prompted to choose platform requirements for the Universal Windows Platform project, accept the defaults and click <strong>OK</strong>.</p>
+<p>When prompted to choose platform requirements for the Universal Windows Platform project, accept the defaults and click <strong>OK</strong>. If you are then prompted to connect to a Mac, simply close the dialog.</p>
 <p><a href="Images/vs-target-platform.png" target="_blank"><img src="Images/vs-target-platform.png" alt="Specifying UWP platform versions" style="max-width:100%;"></a></p>
 <p><em>Specifying UWP platform versions</em></p>
 </li>
@@ -564,7 +564,7 @@ vertical-align:1px;
 <p><em>The generated solution</em></p>
 </li>
 <li>
-<p>Right-click the <strong>DroneLander.Android</strong> project in Solution Explorer and select <strong>Properties</strong> from the context menu. Then click <strong>Android Options</strong> and uncheck the <strong>Use Fast Deployment (debug mode only)</strong> box. This option, if enabled, sometimes causes problems with Android emulators in Hyper-V.</p>
+<p>Right-click the <strong>DroneLander.Android</strong> project in Solution Explorer and select <strong>Properties</strong> from the context menu. Then click <strong>Android Options</strong>, uncheck the <strong>Use Fast Deployment</strong> box, and save your changes. This option, if enabled, sometimes causes problems with Android emulators in Hyper-V.</p>
 <p><a href="Images/disable-fast-deployment.png" target="_blank"><img src="Images/disable-fast-deployment.png" alt="Disabling fast deployment on Android" style="max-width:100%;"></a></p>
 <p><em>Disabling fast deployment on Android</em></p>
 </li>
@@ -586,7 +586,7 @@ vertical-align:1px;
 <p><em>Merging  folders</em></p>
 </li>
 <li>
-<p>In the "Destination File Exists" dialog, again check <strong>Apply to all items</strong> and then click <strong>Yes</strong>. This will update your Android images and assets with appropriately branded assets for your app.</p>
+<p>In the "Destination File Exists" dialog, again check <strong>Apply to all items</strong> and click <strong>Yes</strong>. This will update your Android images and assets with appropriately branded assets for your app.</p>
 <p><a href="Images/vs-accept-overwrite-01.png" target="_blank"><img src="Images/vs-accept-overwrite-01.png" alt="Overwriting existing resources" style="max-width:100%;"></a></p>
 <p><em>Overwriting existing resources</em></p>
 </li>
@@ -601,12 +601,17 @@ vertical-align:1px;
 <p><em>Overwriting existing resources</em></p>
 </li>
 <li>
-<p>Open <strong>Info.plist</strong> in the <strong>DroneLander.iOS</strong> project. Scroll to the bottom of the list, right-click <strong>Launch screen interface file base name</strong>, and select <strong>Delete</strong> to delete this property from the file. Removing this property instructs iOS to use image assets rather than storyboards for launch images.</p>
+<p>Right-click <strong>Info.plist</strong> in the <strong>DroneLander.iOS</strong> project and select <strong>Open With...</strong> from the context menu. Then select <strong>Generic PList Editor</strong> and click <strong>OK</strong>.</p>
+<p><a href="Images/open-plist.png" target="_blank"><img src="Images/open-plist.png" alt="Opening Info.plist" style="max-width:100%;"></a></p>
+<p><em>Opening Info.plist</em></p>
+</li>
+<li>
+<p>Scroll to the bottom of the list, right-click <strong>Launch screen interface file base name</strong>, and select <strong>Delete</strong> to delete this property from the file. Removing this property instructs iOS to use image assets rather than storyboards for launch images.</p>
 <p><a href="Images/vs-info-plist.png" target="_blank"><img src="Images/vs-info-plist.png" alt="Deleting a property from Info.plist" style="max-width:100%;"></a></p>
 <p><em>Deleting a property from Info.plist</em></p>
 </li>
 <li>
-<p>In Solution Explorer, right-click the "Resources" folder in the <strong>DroneLander.UWP (Windows Universal)</strong> project and use the <strong>Add</strong> &gt; <strong>Existing Item...</strong> command to import the file named <strong>drone_lander_back.jpg</strong> from the lab's "Resources\UWP" folder.</p>
+<p>In Solution Explorer, right-click the <strong>DroneLander.UWP</strong> project and use the <strong>Add</strong> &gt; <strong>Existing Item...</strong> command to import the file named <strong>drone_lander_back.jpg</strong> from the lab's "Resources\UWP" folder into the root of the project.</p>
 </li>
 <li>
 <p>Now right-click the "Assets" folder in the same project and use the <strong>Add</strong> &gt; <strong>Existing Item...</strong> command to import all of the files from the lab's "Resources\UWP\Assets" folder.</p>
@@ -651,7 +656,7 @@ vertical-align:1px;
 &lt;/<span class="pl-ent">Package</span>&gt;</pre></div>
 </li>
 <li>
-<p>Now it's time to run the app for the first time. Let's start with the Android version of the app. Ensure that the Android project is selected as the startup project by right-clicking the <strong>DroneLander.Android</strong> project in Solution Explorer and selecting <strong>Set as StartUp Project</strong>.</p>
+<p>Now it's time to run the app for the first time. Let's start with the Android version. Ensure that the Android project is selected as the startup project by right-clicking the <strong>DroneLander.Android</strong> project in Solution Explorer and selecting <strong>Set as StartUp Project</strong>.</p>
 </li>
 <li>
 <p>Click the <strong>Run</strong> button (the one with the green arrow) at the top of Visual Studio to launch the Android version of Drone Lander in the selected Android emulator. Note that the emulator will probably take a minute or two to start.</p>
@@ -686,10 +691,10 @@ vertical-align:1px;
 <p>If you go to the home screen in the Android emulator or the start screen in Windows, you should find customized icons for the apps. Customizing the branding in this way is a good first step in building a great Xamarin Forms app that lights up on various platforms.</p>
 <p><a name="Exercise4"></a></p>
 <h2>Exercise 4: Add common logic to the Portable project</h2>
-<p>A common design pattern used in Xamarin Forms solutions is the <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel">Model-View-ViewModel</a> (MVVM) pattern, which facilitates a clean separation of the business logic from the user interface. In this exercise, you will implement a model and a view-model in C# and place them in the Portable project so that they are shared by the iOS, Android, and Windows apps. You will also import some helper classes used by the view-model and by the user interface.</p>
+<p>A common design pattern used in Xamarin Forms solutions is the <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel">Model-View-ViewModel</a> (MVVM) pattern, which facilitates a clean separation of the business logic and user interface. In this exercise, you will implement a model and a view-model in C# and place them in the Portable project so that they are shared by the iOS, Android, and Windows apps. You will also import some helper classes used by the view-model and by the user interface.</p>
 <ol>
 <li>
-<p>In Solution Explorer, right-click the <strong>DroneLander (Portable)</strong> project and use the <strong>Add</strong> &gt; <strong>New Folder</strong> command to add a folder named "Common" to the project. Then repeat this step to add folders named "Models," and "ViewModels" to the project.</p>
+<p>In Solution Explorer, right-click the <strong>DroneLander (Portable)</strong> project and use the <strong>Add</strong> &gt; <strong>New Folder</strong> command to add a folder named "Common" to the project. Then repeat this step to add folders named "Models" and "ViewModels" to the project.</p>
 </li>
 <li>
 <p>Right-click the "Common" folder that you just added and use the <strong>Add</strong> &gt; <strong>Existing Item...</strong> command to import all of the files from the lab's "Resources\Portable\Common" folder. These files contain helper classes that implement commanding and property-binding notifications.</p>
@@ -994,7 +999,7 @@ vertical-align:1px;
         &lt;/<span class="pl-ent">ResourceDictionary</span>&gt;	
 	&lt;/<span class="pl-ent">Application</span>.Resources&gt;
 &lt;/<span class="pl-ent">Application</span>&gt;</pre></div>
-<p>This markup defines several styles that will be used to stylize the app's controls. It also declares an instance of <code>DecimalDisplayConverter</code>, which will be used in <strong>MainPage.xaml</strong> as a value converter. Value converters are components that modify data as it is passed between data sources and data targets during data binding and are widely used in XAML UIs to control output formatting and convert data from one type to another. You imported the <code>DecimalDisplayConverter</code> class when you imported the files from the lab's "Resources\Portable\Common" folder in Exercise 4, Step 2. Declaring styles, converters, and other resources in <strong>App.xaml</strong> makes them available to all of the application's views. You can also declare resources in the XAML files for individual views, but doing so limits the availability of those resources to the views in which they are declared.</p>
+<p>This markup defines several styles used to stylize the app's controls. It also declares an instance of <code>DecimalDisplayConverter</code>, which will be used in <strong>MainPage.xaml</strong> as a value converter. Value converters are components that modify data as it is passed between data sources and data targets during data binding and are widely used in XAML UIs to control output formatting and convert data from one type to another. You imported the <code>DecimalDisplayConverter</code> class when you imported the files from the lab's "Resources\Portable\Common" folder in Exercise 4, Step 2. Declaring styles, converters, and other resources in <strong>App.xaml</strong> makes them available to all of the application's views. You can also declare resources in the XAML files for individual views, but doing so limits the availability of those resources to the views in which they are declared.</p>
 </li>
 <li>
 <p>Now open <strong>App.xaml.cs</strong> and add the following property declaration above the <code>App</code> constructor:</p>
@@ -1131,7 +1136,7 @@ vertical-align:1px;
 <li>
 <p>In Solution Explorer, right-click the <strong>DroneLander.Android</strong> project and use the <strong>Add</strong> &gt; <strong>New Item...</strong> command to add an activity named "SplashActivity.cs."</p>
 <blockquote>
-<p>In Android, an <em>activity</em> is a task that you define to interact with a user. Activities usually, but not always, occupy the entire screen, and are somewhat analgous to <em>pages</em> in other platforms such as Windows.</p>
+<p>In Android, an <em>activity</em> is a task that interacts with the user. Activities usually, but not always, occupy the entire screen, and are somewhat analgous to <em>pages</em> in other platforms such as Windows.</p>
 </blockquote>
 <p><a href="Images/vs-add-splash-activity.png" target="_blank"><img src="Images/vs-add-splash-activity.png" alt="Adding an activity to the Android project" style="max-width:100%;"></a></p>
 <p><em>Adding an activity to the Android project</em></p>
