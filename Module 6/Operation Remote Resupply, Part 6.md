@@ -6,9 +6,9 @@
 <a name="Overview"></a>
 ## Overview ##
 
-In Part 4 of Operation Remote Resupply, you used [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") to automate the process of building and distributing apps, triggered by commits to a source-code repository. Although a simple "load test" was performed during this process, automated UI acceptance testing is not yet part of the lifecycle.
+In Part 4 of Operation Remote Resupply, you used [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") to automate the process of building and distributing apps, triggered by commits to a source-code repository. Although a simple "load test" was performed during this process, automated UI acceptance testing is not currently part of the lifecycle.
 
-In Part 6, you will build on what you did in Part 4 by using the [Xamarin.UITest](https://developer.xamarin.com/guides/testcloud/uitest/) framework and the [Xamarin Test Recorder](https://developer.xamarin.com/guides/testcloud/testrecorder/) to add automated UI tests to the Android version of the Drone Lander app. Once the tests are written, you will submit them to Visual Studio Mobile Center so they're executed automatically every time the app is built. Xamarin.UITest is based on the open-source [Calabash](http://calaba.sh/) framework and features tight integration with Xamarin.Forms, Xamarin.iOS, and Xamarin.Android projects. It exposes a rich API allowing you to simulate button clicks, gestures, and other input, implement assertions, take screen shots, and more. It can even be used with iOS and Android projects written in other languages, including Objective-C, Swift, and Java.
+In Part 6, you will build on what you did in Part 4 by using the [Xamarin.UITest](https://developer.xamarin.com/guides/testcloud/uitest/) framework and the [Xamarin Test Recorder](https://developer.xamarin.com/guides/testcloud/testrecorder/) to add automated UI tests to the Android version of the Drone Lander app. Once the tests are written, you will submit them to Visual Studio Mobile Center so they're executed automatically every time the app is built. Xamarin.UITest is based on the open-source [Calabash](http://calaba.sh/) framework and features tight integration with Xamarin.Forms, Xamarin.iOS, and Xamarin.Android projects. It exposes a rich API allowing you to simulate button clicks, gestures, and other input, include assertions in your tests, take screen shots, and more. It can even be used with iOS and Android projects written in other languages, including Objective-C, Swift, and Java.
 
 UI acceptance testing is a critical part of the development lifecycle, and is typically at the top of the testing pyramid when it comes to producing robust, bug-free apps. Let's finish up Operation Remote Resupply by adding automated UI testing to Drone Lander and put the "Test" in "Build, Test, and Distribute."
 
@@ -18,8 +18,8 @@ UI acceptance testing is a critical part of the development lifecycle, and is ty
 In this lab, you will learn how to:
 
 - Add a Xamarin UI Test project to a Xamarin Forms solution
-- Write cross-platform UI acceptance test scripts
-- Use the Xamarin Test Recorder to record scripts 
+- Write cross-platform UI acceptance tests
+- Use the Xamarin Test Recorder to record test scripts 
 - Integrate automated UI tests with Visual Studio Mobile Center
 
 <a name="Prerequisites"></a>
@@ -27,12 +27,8 @@ In this lab, you will learn how to:
 
 The following are required to complete this lab:
 
-- [Visual Studio Community 2017](https://www.visualstudio.com/vs/) or higher
+- [Visual Studio Enterprise 2017](https://www.visualstudio.com/vs/)
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
-
-If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
-
->Although Xamarin iOS projects can be be configured for, and integrated with, Xamarin.UITest, it is not possible to run actual tests against iOS apps in Visual Studio or on Windows. Running tests against iOS requires both a Mac running OS X 10.11 or higher, and Visual Studio 2017 for Mac.
 
 ---
 
@@ -50,12 +46,8 @@ Estimated time to complete this lab: **45** minutes.
 
 <a name="Exercise1"></a>
 ## Exercise 1: Add a UI test project to a Xamarin Forms solution ##
- 
-Although testing can be integrated into your development lifecycle at any time, the best time get started with testing, including UI testing, is during the development phase of a mobile app. Automated tests are typically "iterative" meaning they are often written as app features are being developed, and then adjusted and enhanced over the life of an app.
 
-A Xamarin.UITest project can easily be added to an existing solution, and then a few simple steps taken to ensure your Android and iOS project are integrated into the testing process.
-
-In this exercise you will add a Xamarin.UITest project to the **DroneLander** solution you have been developing, as well as confirming configuration and readiness for running UI tests. 
+The first step in incorporating UI tests into a Xamarin Forms app is to add a Xamarin.UITest project to the solution and update a couple of NuGet packages. In this exercise, you will add a test project to the Dronelander solution and run a simple test.
 
 1. Open the DroneLander solution in Visual Studio 2017.
 
@@ -81,9 +73,9 @@ In this exercise you will add a Xamarin.UITest project to the **DroneLander** so
 
     _Setting the Android package name_
 
-1. Notice the **AppInitializer.cs** and **Tests.cs** files that were created as part of the Xamarin.UITest project. **AppInitializer.cs** contains logic for configuring and activating platform-specific versions of your app, while **Tests.cs** is where you write your tests.
+1. Notice the **AppInitializer.cs** and **Tests.cs** files included in the Xamarin.UITest project. **AppInitializer.cs** contains logic for activating platform-specific versions of your app, while **Tests.cs** is where you write your tests.
 
-	Open **AppInitializer.cs** and add the following statement directly above the call to ```StartApp``` to connect the test project to the Android version of Drone Lander:
+	Open **AppInitializer.cs** and add the following statement directly above the call to ```StartApp``` in the Android initialization code to connect the test project to the Android version of Drone Lander:
 
 	```C#
 	.InstalledApp("com.traininglabs.dronelander")
@@ -101,7 +93,7 @@ In this exercise you will add a Xamarin.UITest project to the **DroneLander** so
 
 1. Right-click the first AppLaunches test and select **Open Test** to view the code for the test in **Test.cs**. Note the ```[Test]``` attribute decorating the ```AppLaunches``` method. This attribute marks a method as a callable entry point for an NUnit test and exposes it to the Xamarin.UITest platform for execution. Other attributes such as ```[StartUp]``` and ```[TearDown]``` are also useful when working with Xamarin.UITest. 
 
-1. When a Xamarin.UITest project is created, the default ```AppLaunches``` method contains a single call to the ```Screenshot``` method to take a screen shot of the app.
+1. When a Xamarin.UITest project is created, the default ```AppLaunches``` method contains a single call to the ```Screenshot``` method, which takes a screen shot of the app.
 
 	![The Android AppLaunches method](Images/vs-open-tests.png)
 
@@ -113,7 +105,7 @@ In this exercise you will add a Xamarin.UITest project to the **DroneLander** so
 	.EnableLocalScreenshots()
 	```
 	
-1. Right-click the first **AppLaunches** test in Text Explorer and select **Run Selected Tests** to run the AppLaunches test for the Android version of Drone Lander. Then wait until Test Explorer indicates that the test has completed successfully.
+1. Right-click the first AppLaunches test in Test Explorer and select **Run Selected Tests** to run the test for the Android version of Drone Lander. Then wait until Test Explorer indicates that the test has completed successfully.
 
 	![A successful test](Images/vs-first-test-successful.png)
 
@@ -139,7 +131,7 @@ Xamarin.UITest provides a rich API for implementing sophisticated UI tests. You 
     app.Screenshot("The app in progress.");
 	``` 
 
-	The first line of code simulates a tap of the Start button by querying the UI for a button labeled "Start" and then passing it to the ```Tap``` method. The second line snaps a screen shot after the button is tapped — that is, once a descent has begun.
+	The first line of code simulates a tap of the Start button by querying the UI for a button labeled "Start" and then passing it to the ```Tap``` method. The second line snaps a screen shot after the button is tapped — that is, once the drone has begun descending to the Mars surface.
 
 1. Right-click the first **AppLaunches** test in Test Explorer and select **Run Selected Tests** to run the updated test for the Android version of Drone Lander. Then switch to the Android emulator and watch as Drone Lander loads and the Start button is tapped to begin a descent.
 
@@ -168,14 +160,14 @@ Xamarin.UITest provides a rich API for implementing sophisticated UI tests. You 
 
 	> Since these steps are automated, they happen quickly. If desired, you could insert calls to  ```Thread.Sleep``` to space them out more. 
 
-You can create sophisticated tests by coding them manually as you did in this exercise. However, what if you could simply "record" your UI tests by interacting with the app and then play them back? With the Xamarin Test Recorder, you can do just that.
+You can create sophisticated tests by coding them manually as you did in this exercise. However, what if you could simply "record" your UI tests by interacting with the app, and then later play them back? With the Xamarin Test Recorder, you can do just that.
 
 <a name="Exercise3"></a>
 ## Exercise 3: Use the Xamarin Test Recorder to record tests ##
 
 Coding UI automation tests by hand is time-consuming and error-prone. The [Xamarin Test Recorder](https://developer.xamarin.com/guides/testcloud/testrecorder/) is a Visual Studio 2017 extension that can record your interactions with an app and create automated tests written in C# based on those interactions. In this exercise, you will install the Xamarin Test Recorder and record UI automation tests that can be run locally or integrated with the app lifecycle using the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) or Visual Studio Mobile Center.
 
-> The Xamarin Test Recorder is only available in Visual Studio Enterprise 2017. If you are *not* using the Enterprise edition, simply read through this exercise as well as the next one to learn about the basics of using the recorder and integrating the resultant tests into the app lifecycle.
+> The Xamarin Test Recorder is only available in Visual Studio Enterprise 2017. If you are *not* using the Enterprise edition, simply read through this exercise to learn about the basics of using the recorder.
 
 1. Install the Xamarin Test Recorder by using Visual Studio's **Tools** > **Extensions and Updates** command to display the "Extensions and Updates" dialog, searching for "xamarin test recorder" in the Visual Studio Marketplace, and clicking **Download**.
 
@@ -185,7 +177,7 @@ Coding UI automation tests by hand is time-consuming and error-prone. The [Xamar
 
 1. Close Visual Studio 2017 to allow the Xamarin Test Recorder to install, and then reopen the DroneLander solution after installation is complete. 
 
-1. Open **Tests.cs** in the **DroneLander.UITest** project and confirm that two record icons appear in the left margin. These icons are used to begin recording UI automation tests. The ```TextFixture``` attribute indicates that a class contains callable test methods. 
+1. Open **Tests.cs** in the **DroneLander.UITest** project and confirm that two icons appear in the left margin. These icons are used to begin recording UI automation tests. The ```[TestFixture]``` attribute indicates that a class contains callable test methods. 
 
 	![The Xamarin Test Recorder icons](Images/vs-new-icons.png)
 
@@ -197,7 +189,7 @@ Coding UI automation tests by hand is time-consuming and error-prone. The [Xamar
 
     _Changing the build configuration_
 
-1. Click the record icon to the left of ```[TextFixture(Platform.Android)]``` in **Tests.cs** and select **Record New Test** > **Build DroneLander.Android project** to start a recording session.
+1. Click the record icon to the left of ```[TestFixture(Platform.Android)]``` in **Tests.cs** and select **Record New Test** > **Build DroneLander.Android project** to start a recording session.
 
 	![Starting a recording session](Images/vs-record-new-test.png)
 
@@ -230,7 +222,7 @@ Coding UI automation tests by hand is time-consuming and error-prone. The [Xamar
 
     _Ending the recording session_
 
-1. In Test Explorer, right-click the Android version of **NewTest** and select **Run Selected Tests** to run the test in the emulator. Then switch to the Android emulator and observe the automated test in action.
+1. In Test Explorer, right-click the Android version of NewTest and select **Run Selected Tests** to run the test in the emulator. Then switch to the Android emulator and observe the automated test in action.
 
 	> You can easily determine whether a test method targets Android or iOS by hovering over the test in Test Explorer and inspecting the ensuing tooltip window.
 
@@ -256,7 +248,7 @@ Coding UI automation tests by hand is time-consuming and error-prone. The [Xamar
 
 	The ```WaitForElement``` method provides an easy-to-use mechanism for delaying until a condition involving a UI element is satisfied. In this example, it waits for the authentication dialog to render in the ```WebView``` control.
 
-1. Since the Test Recorder doesn't record or reproduce "delays" when recording, it's often helpful to force a delay in a script, or wait for a UI element to become available before moving to the next step. You may have noticed that the generated code immediately goes back to the previous page after navigating to the landing-activity page.
+1. Since the Test Recorder doesn't record the delays between actions, it's often helpful to force a delay in a script, or wait for a UI element to become available before moving to the next step. You may have noticed, for example, that the generated code immediately goes back to the previous page after navigating to the landing-activity page.
 
 	To compensate, insert the following statement after the statement that simulates a tap of the Activity button to wait for the text string "Kaboom" to appear on the page:
 
@@ -264,7 +256,7 @@ Coding UI automation tests by hand is time-consuming and error-prone. The [Xamar
 	app.WaitForElement(x => x.Text("Kaboom"));
 	```
 
-1. Since your recording includes a tap of the Reset button following the increase in throttle, you should introduce a delay before Reset button is tapped to allow the landing simulation to run for a period of time. To that end, add the following statement after the statement that changes the value of the Slider control:
+1. Since your recording includes a tap of the Reset button following the increase in throttle, you should introduce a delay before the Reset button is tapped to allow the landing simulation to run for a period of time. To that end, add the following statement after the statement that changes the value of the Slider control:
 
 	```C#
 	 System.Threading.Thread.Sleep(2000);
@@ -276,7 +268,7 @@ Coding UI automation tests by hand is time-consuming and error-prone. The [Xamar
 
     _The updated test methods in Test Explorer_
 
-1. Run the Android version of the test. Then switch to the Android emulator and watch the test execute. Confirm that the test executes successfully and that Text Explorer indicates that the test passed.  
+1. Run the Android version of the test. Then switch to the Android emulator and watch the test execute. Confirm that the test executes successfully and that Test Explorer indicates that the test passed.  
 
 	![A successful test](Images/vs-sign-in-complete.png)
 
@@ -289,7 +281,7 @@ Automating UI tests in this manner by using the Xamarin Test Recorder to record 
 
 It probably isn't realistic for you to collect hundreds of devices on which to run your tests. Even if you could, the process of running them one by one would be painstaking unless that process, too, were automated.
 
-Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Studio Mobile Center can solve this problem for you by enabling you to run the automated tests that you create on hundreds of devices. In this exercise, you will add the **DroneLander.UITest** project to the GitHub repo that you created earlier and integrate the automated tests into the app lifecycle using Visual Studio Mobile Center.
+Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Studio Mobile Center can solve this problem by enabling you to run the automated tests that you create on hundreds of devices. In this exercise, you will add the **DroneLander.UITest** project to the GitHub repo that you created earlier and integrate the automated tests into the app lifecycle using Visual Studio Mobile Center.
 
 1. Open **Tests.cs** in the **DroneLander.UITest** project and replace the code in the ```SignInAndCheckActivity``` method with the following code:
 
@@ -301,9 +293,9 @@ Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Stu
     app.Tap(x => x.Text("Reset"));
 	```
 
-	> Since many third-party authentication services, including Microsoft accounts, often require two-factor authentication or secondary forms of validation, you are removing the code that signs in with a Microsoft account to avoid any "false failures" during test runs.
+	> Since many third-party authentication services, including Microsoft's, often require two-factor authentication or secondary forms of validation, you are removing the code that signs in with a Microsoft account to avoid any "false failures" during test runs.
 	
-1. Delete the ```AppLaunches``` method (including the ```Test``` attribute decorating it) from **Tests.cs**. You no longer need it since the ```SignInAnCheckActivity``` method starts a descent and takes a screen shot. 
+1. Delete the ```AppLaunches``` method (including the ```[Test]``` attribute decorating it) from **Tests.cs**. You no longer need it since the ```SignInAndCheckActivity``` method starts a descent and takes a screen shot. 
 	
 1. Ensure that the build configuration is still set to release mode in Visual Studio. Then right-click the **DroneLander.Android** project and use the **Archive...** command to create a release version of the project package.
 
@@ -313,9 +305,9 @@ Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Stu
 
     _Adding the test project to the repo_
 
-	Recall that the Drone Lander solution is integrated with GitHub, and any new commits will automatically trigger the build and distribution process. Xamarin.UITest is designed to seamlessly integrate into this process and perform the Test portion of a Build/Test/Distribute lifecyle.
+1. Recall that the Drone Lander solution is integrated with GitHub, and any new commits will automatically trigger the build and distribution process. Xamarin.UITest is designed to seamlessly integrate into this process and perform the Test portion of a Build/Test/Distribute lifecyle.
 
-1. Go to [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and select the Android version of Drone Lander. Then click **Test**. 
+	Go to [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and select the Android version of Drone Lander. Then click **Test**. 
  
 	![Configuring tests in Visual Studio Mobile Center](Images/portal-click-test.png)
 
@@ -343,7 +335,7 @@ Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Stu
 
     _Selecting a target device_
 
-1. Select **UI Acceptance Series** as the test series and **Xamarin.UITest** as the test framework, then click **Next**.
+1. Select **UI Acceptance Series** as the test series and **Xamarin.UITest** as the test framework. Then click **Next**.
 
 	![Specifying the test series and test framework](Images/portal-configure-tab.png)
 
@@ -369,13 +361,13 @@ Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Stu
 
 1. Replace *pathToFile.apk* in the command you pasted in with the following path name. This is the path to the release-mode Android package that you archived:
 
-	```Text
+	```
 	"..\DroneLander\DroneLander.Android\bin\Release\com.traininglabs.dronelander.apk"
 	``` 
 
 1. Replace *pathToUITestBuildDir* with the following path name. This is the Xamarin.UITest build directory:
 
-	```Text
+	```
 	"..\DroneLander.UITest\bin\Release"
 	```
 
@@ -385,7 +377,7 @@ Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Stu
 
     _Submitting acceptance tests_
 
-1. Return to the Test tab for the Android version of Drone Lander in the Mobile Center and confirm that a test has been started.
+1. Return to the Test page for the Android version of Drone Lander in Mobile Center and confirm that a test has been started.
 
 	![Viewing the test status](Images/portal-test-started.png)
 
@@ -402,4 +394,4 @@ For more detailed information about test runs on specific devices, you can click
 <a name="Summary"></a>
 ## Summary ##
 
-That's it for Part 6 of Operation Remote Resupply. By combining the power of Xamarin.UITest, Test Recorder, and Visual Studio Mobile Center, your entire development lifecycle is now complete, and fully automated. The tests you created in this lab, although simple, can provide you with a solid foundation for creating more thorough, robust, and meaningful UI acceptance tests as you travel along on your mobile app development journey using the Xamarin platform and other tools in the Xamarin tool set.
+The development lifecycle is now complete and fully automated. The tests you created in this lab, although simple, can serve as a starting point for more rigorous UI acceptance tests. For more information about Xamarin.UITest as well as its features and capabilities, see https://developer.xamarin.com/guides/testcloud/uitest/intro-to-uitest/.
