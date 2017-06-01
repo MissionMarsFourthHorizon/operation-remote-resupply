@@ -8,11 +8,11 @@
 
 One of the key challenges in developing mobile applications for multiple devices and platforms is the diverse set of tools, languages, and resources required to develop and maintain features and functionality across a variety of programming languages, APIs, and user-interface paradigms. 
 
-[Xamarin](https://www.xamarin.com/) offers one solution to the problem by allowing apps to be written in C# for iOS, Android, and Windows using a common API based on Microsoft .NET. Xamarin apps are built with native user interface controls. Apps look and act the way a user expects for a given device and platform. Xamarin apps also have access to the full spectrum of functionality exposed by the underlying operating system and device and are compiled into native binaries for performance.  
+[Xamarin](https://www.xamarin.com/) offers one solution to the problem by allowing apps to be written in C# for iOS, Android, and Windows using a common API based on Microsoft .NET. Because Xamarin apps use native user interface controls, apps look and act the way a user expects for a given device and platform. Xamarin apps also have access to the full spectrum of functionality exposed by the underlying operating system and device and are compiled into native binaries for performance.  
 
 [Xamarin Forms](https://www.xamarin.com/forms) is a framework included with Xamarin that allows developers to create cross-platform user interfaces by defining those interfaces in XAML or code. Controls and UI elements created this way render native controls for the host platform, so iOS users see iOS controls and Android users see Android controls. Whereas classic Xamarin apps share code but not UI, Xamarin Forms apps share code *and* UI and are frequently able to share 95% of their source code across platforms.
 
-[Visual Studio 2017](https://www.visualstudio.com/vs/) provides seamless support for Xamarin and Xamarin Forms so you can build cutting-edge mobile apps for a variety of platforms using a single set of tools and APIs. In this lab, you will use Visual Studio 2017 and Xamarin Forms to create a drone-lander app that lets you fly simulated supply missions to Mars. In subsequent labs, you will build upon what you created here to expand the app's features and capabilities.
+[Visual Studio 2017](https://www.visualstudio.com/vs/) provides seamless support for Xamarin and Xamarin Forms so you can build cutting-edge mobile apps for a variety of platforms using a single set of tools and APIs. In Part 1 of Operation Remote Resupply, you will use Visual Studio 2017 and Xamarin Forms to create a drone-lander app that lets you fly simulated supply missions to Mars. In subsequent sessions, you will build upon what you created here to expand the app's features and capabilities.
 
 <a name="Objectives"></a>
 ### Objectives ###
@@ -32,7 +32,7 @@ The following are required to complete this lab:
 - [Visual Studio Community 2017](https://www.visualstudio.com/vs/) or higher
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
 
-You won't be building the iOS version of the app during this event because doing so would require additional setup, including a Mac configured as a build host. For more information about building Xamarim Forms iOS apps, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
+You won't be building the iOS version of the app during this event because doing so would require additional setup, including a Mac configured as a build host. However, you can build the iOS version separately if you would like. For more information about building Xamarim Forms iOS apps, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
 
 ---
 
@@ -70,7 +70,7 @@ If Visual Studio is already installed, you can determine which components and wo
 
     _Installing the mobile development workload_
 
-1. Under "Individual Components" in the Visual Studio installer, make sure **Visual Studio Emulator for Android** and **Windows 10 Mobile Emulator (Creators Update)** are checked.
+1. Under "Individual Components" in the Visual Studio installer, make sure **Visual Studio Emulator for Android** and **Windows 10 Mobile Emulator (Creators Update)** are checked. If you would prefer to use the Google Android emulator instead, you may do so if you choose.
 
 	> If you haven't installed the Windows Creators Update, select the Anniversary Edition instead. If these emulators don't appear as options in the Visual Studio installer, it could because your PC doesn't support virtualization or that virtualization hasn't been enabled. For more information, see https://msdn.microsoft.com/en-us/library/mt228280.aspx.
 
