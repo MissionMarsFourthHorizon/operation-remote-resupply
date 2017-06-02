@@ -807,47 +807,53 @@ In this exercise, you will update the Drone Lander app to allow users to authent
 
 	```C#
 	public void StartLanding()
-    {
-        Helpers.AudioHelper.ToggleEngine();
-        
-        Device.StartTimer(TimeSpan.FromMilliseconds(Common.CoreConstants.PollingIncrement), () =>
-        {
-            UpdateFlightParameters();
-
-            if (this.ActiveLandingParameters.Altitude > 0.0)
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    this.Altitude = this.ActiveLandingParameters.Altitude;
-                    this.DescentRate = this.ActiveLandingParameters.Velocity;
-                    this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
-                    this.Thrust = this.ActiveLandingParameters.Thrust;
-                });
-
-                if (this.FuelRemaining == 0.0) Helpers.AudioHelper.KillEngine();
-                return this.IsActive;
-            }
-            else
-            {
-                this.ActiveLandingParameters.Altitude = 0.0;
-                this.IsActive = false;
-
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    this.Altitude = this.ActiveLandingParameters.Altitude;
-                    this.DescentRate = this.ActiveLandingParameters.Velocity;
-                    this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
-                    this.Thrust = this.ActiveLandingParameters.Thrust;
-                });
-
-                LandingResultType landingResult = (this.ActiveLandingParameters.Velocity > -5.0) ? LandingResultType.Landed : LandingResultType.Kaboom;
-
-                if (this.IsAuthenticated) Helpers.ActivityHelper.AddActivityAsync(landingResult);
-                                 
-                MessagingCenter.Send(this.ActivityPage, "ActivityUpdate", landingResult);
-                return false;
-            }
-        });
+	{
+	    Helpers.AudioHelper.ToggleEngine();
+	
+	    Device.StartTimer(TimeSpan.FromMilliseconds(Common.CoreConstants.PollingIncrement), () =>
+	    {
+	        UpdateFlightParameters();
+	
+	        if (this.ActiveLandingParameters.Altitude > 0.0)
+	        {
+	            Device.BeginInvokeOnMainThread(() =>
+	            {
+	                this.Altitude = this.ActiveLandingParameters.Altitude;
+	                this.DescentRate = this.ActiveLandingParameters.Velocity;
+	                this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
+	                this.Thrust = this.ActiveLandingParameters.Thrust;
+	            });
+	
+	            if (this.FuelRemaining == 0.0) Helpers.AudioHelper.KillEngine();
+	            if (this.IsAuthenticated) Helpers.ActivityHelper.SendTelemetryAsync(this.UserId, this.ActiveLandingParameters.Altitude, this.ActiveLandingParameters.Velocity, this.ActiveLandingParameters.Fuel / 1000, this.ActiveLandingParameters.Thrust);
+	
+	                return this.IsActive;
+	        }
+	        else
+	        {
+	            this.ActiveLandingParameters.Altitude = 0.0;
+	            this.IsActive = false;
+	
+	            Device.BeginInvokeOnMainThread(() =>
+	            {
+	                this.Altitude = this.ActiveLandingParameters.Altitude;
+	                this.DescentRate = this.ActiveLandingParameters.Velocity;
+	                this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
+	                this.Thrust = this.ActiveLandingParameters.Thrust;
+	            });
+	
+	            LandingResultType landingResult = (this.ActiveLandingParameters.Velocity > -5.0) ? LandingResultType.Landed : LandingResultType.Kaboom;
+	
+	            if (this.IsAuthenticated)
+	            {
+	                Helpers.ActivityHelper.SendTelemetryAsync(this.UserId, this.ActiveLandingParameters.Altitude, this.ActiveLandingParameters.Velocity, this.ActiveLandingParameters.Fuel / 1000, this.ActiveLandingParameters.Thrust);
+	                Helpers.ActivityHelper.AddActivityAsync(landingResult);
+	            }
+	
+	            MessagingCenter.Send(this.ActivityPage, "ActivityUpdate", landingResult);
+	            return false;
+	        }
+	    });
 	}
 	```
 

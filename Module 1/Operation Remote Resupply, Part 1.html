@@ -916,28 +916,32 @@ vertical-align:1px;
             <span class="pl-c1">this</span>.ActiveLandingParameters.Velocity = vel2;
         }
 		
-	<span class="pl-k">public</span> <span class="pl-k">async</span> <span class="pl-k">void</span> <span class="pl-en">ShakeLandscapeAsync</span>(<span class="pl-en">ContentPage</span> <span class="pl-smi">page</span>)
-    	{
-            <span class="pl-k">for</span> (<span class="pl-k">int</span> <span class="pl-en">i</span> = <span class="pl-c1">0</span>; i &lt; <span class="pl-c1">8</span>; i++)
+        <span class="pl-k">public</span> <span class="pl-k">async</span> <span class="pl-k">void</span> <span class="pl-en">ShakeLandscapeAsync</span>(<span class="pl-en">ContentPage</span> <span class="pl-smi">page</span>)
+        {
+            <span class="pl-k">try</span>
             {
-                <span class="pl-k">await</span> Task.WhenAll(
-                        page.ScaleTo(<span class="pl-c1">1.1</span>, <span class="pl-c1">20</span>, Easing.Linear),
-                        page.TranslateTo(-<span class="pl-c1">30</span>, <span class="pl-c1">0</span>, <span class="pl-c1">20</span>, Easing.Linear)
-                    );
+                <span class="pl-k">for</span> (<span class="pl-k">int</span> <span class="pl-en">i</span> = <span class="pl-c1">0</span>; i &lt; <span class="pl-c1">8</span>; i++)
+                {
+                    <span class="pl-k">await</span> Task.WhenAll(
+                            page.ScaleTo(<span class="pl-c1">1.1</span>, <span class="pl-c1">20</span>, Easing.Linear),
+                            page.TranslateTo(-<span class="pl-c1">30</span>, <span class="pl-c1">0</span>, <span class="pl-c1">20</span>, Easing.Linear)
+                        );
 
-                <span class="pl-k">await</span> Task.WhenAll(
-                        page.TranslateTo(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">20</span>, Easing.Linear)
-                   );
+                    <span class="pl-k">await</span> Task.WhenAll(
+                            page.TranslateTo(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">20</span>, Easing.Linear)
+                       );
 
-                <span class="pl-k">await</span> Task.WhenAll(
-                        page.TranslateTo(<span class="pl-c1">0</span>, -<span class="pl-c1">30</span>, <span class="pl-c1">20</span>, Easing.Linear)
-                   );
+                    <span class="pl-k">await</span> Task.WhenAll(
+                            page.TranslateTo(<span class="pl-c1">0</span>, -<span class="pl-c1">30</span>, <span class="pl-c1">20</span>, Easing.Linear)
+                       );
 
-                <span class="pl-k">await</span> Task.WhenAll(
-                         page.ScaleTo(<span class="pl-c1">1.0</span>, <span class="pl-c1">20</span>, Easing.Linear),
-                         page.TranslateTo(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">20</span>, Easing.Linear)
-                   );
-            }	            
+                    <span class="pl-k">await</span> Task.WhenAll(
+                             page.ScaleTo(<span class="pl-c1">1.0</span>, <span class="pl-c1">20</span>, Easing.Linear),
+                             page.TranslateTo(<span class="pl-c1">0</span>, <span class="pl-c1">0</span>, <span class="pl-c1">20</span>, Easing.Linear)
+                         );
+                }
+            }
+            <span class="pl-k">catch</span> { }
         }
 
         <span class="pl-k">public</span> <span class="pl-k">async</span> <span class="pl-k">void</span> <span class="pl-en">ResetLanding</span>()

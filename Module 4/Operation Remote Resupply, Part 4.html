@@ -1199,7 +1199,7 @@ vertical-align:1px;
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">StartLanding</span>()
 {
     Helpers.AudioHelper.ToggleEngine();
-    
+
     Device.StartTimer(TimeSpan.FromMilliseconds(Common.CoreConstants.PollingIncrement), () =&gt;
     {
         UpdateFlightParameters();
@@ -1215,7 +1215,9 @@ vertical-align:1px;
             });
 
             <span class="pl-k">if</span> (<span class="pl-c1">this</span>.FuelRemaining == <span class="pl-c1">0.0</span>) Helpers.AudioHelper.KillEngine();
-            <span class="pl-k">return</span> <span class="pl-c1">this</span>.IsActive;
+            <span class="pl-k">if</span> (<span class="pl-c1">this</span>.IsAuthenticated) Helpers.ActivityHelper.SendTelemetryAsync(<span class="pl-c1">this</span>.UserId, <span class="pl-c1">this</span>.ActiveLandingParameters.Altitude, <span class="pl-c1">this</span>.ActiveLandingParameters.Velocity, <span class="pl-c1">this</span>.ActiveLandingParameters.Fuel / <span class="pl-c1">1000</span>, <span class="pl-c1">this</span>.ActiveLandingParameters.Thrust);
+
+                <span class="pl-k">return</span> <span class="pl-c1">this</span>.IsActive;
         }
         <span class="pl-k">else</span>
         {
@@ -1232,8 +1234,12 @@ vertical-align:1px;
 
             <span class="pl-en">LandingResultType</span> <span class="pl-en">landingResult</span> = (<span class="pl-c1">this</span>.ActiveLandingParameters.Velocity &gt; -<span class="pl-c1">5.0</span>) ? LandingResultType.Landed : LandingResultType.Kaboom;
 
-            <span class="pl-k">if</span> (<span class="pl-c1">this</span>.IsAuthenticated) Helpers.ActivityHelper.AddActivityAsync(landingResult);
-                             
+            <span class="pl-k">if</span> (<span class="pl-c1">this</span>.IsAuthenticated)
+            {
+                Helpers.ActivityHelper.SendTelemetryAsync(<span class="pl-c1">this</span>.UserId, <span class="pl-c1">this</span>.ActiveLandingParameters.Altitude, <span class="pl-c1">this</span>.ActiveLandingParameters.Velocity, <span class="pl-c1">this</span>.ActiveLandingParameters.Fuel / <span class="pl-c1">1000</span>, <span class="pl-c1">this</span>.ActiveLandingParameters.Thrust);
+                Helpers.ActivityHelper.AddActivityAsync(landingResult);
+            }
+
             MessagingCenter.Send(<span class="pl-c1">this</span>.ActivityPage, <span class="pl-s"><span class="pl-pds">"</span>ActivityUpdate<span class="pl-pds">"</span></span>, landingResult);
             <span class="pl-k">return</span> <span class="pl-c1">false</span>;
         }

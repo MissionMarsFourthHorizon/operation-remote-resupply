@@ -477,28 +477,32 @@ A common design pattern used in Xamarin Forms solutions is the [Model-View-ViewM
 	            this.ActiveLandingParameters.Velocity = vel2;
 	        }
 			
-		public async void ShakeLandscapeAsync(ContentPage page)
-        	{
-	            for (int i = 0; i < 8; i++)
+	        public async void ShakeLandscapeAsync(ContentPage page)
+	        {
+	            try
 	            {
-	                await Task.WhenAll(
-	                        page.ScaleTo(1.1, 20, Easing.Linear),
-	                        page.TranslateTo(-30, 0, 20, Easing.Linear)
-	                    );
+	                for (int i = 0; i < 8; i++)
+	                {
+	                    await Task.WhenAll(
+	                            page.ScaleTo(1.1, 20, Easing.Linear),
+	                            page.TranslateTo(-30, 0, 20, Easing.Linear)
+	                        );
 	
-	                await Task.WhenAll(
-	                        page.TranslateTo(0, 0, 20, Easing.Linear)
-	                   );
+	                    await Task.WhenAll(
+	                            page.TranslateTo(0, 0, 20, Easing.Linear)
+	                       );
 	
-	                await Task.WhenAll(
-	                        page.TranslateTo(0, -30, 20, Easing.Linear)
-	                   );
+	                    await Task.WhenAll(
+	                            page.TranslateTo(0, -30, 20, Easing.Linear)
+	                       );
 	
-	                await Task.WhenAll(
-	                         page.ScaleTo(1.0, 20, Easing.Linear),
-	                         page.TranslateTo(0, 0, 20, Easing.Linear)
-	                   );
-	            }	            
+	                    await Task.WhenAll(
+	                             page.ScaleTo(1.0, 20, Easing.Linear),
+	                             page.TranslateTo(0, 0, 20, Easing.Linear)
+	                         );
+	                }
+	            }
+	            catch { }
 	        }
 
 	        public async void ResetLanding()
