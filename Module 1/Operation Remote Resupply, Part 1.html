@@ -569,6 +569,22 @@ vertical-align:1px;
 <p><em>Disabling fast deployment on Android</em></p>
 </li>
 <li>
+<p>Right-click the <strong>DroneLander.UWP</strong> project and select <strong>Set as StartUp Project</strong> to make it the startup project. Then select <strong>Configuration Manager...</strong> from the <strong>Build</strong> menu. Check the <strong>Build</strong> and <strong>Deploy</strong> boxes for the UWP solution so the UWP app will be built and deployed each time you launch it. Then select <strong>Release</strong> from the <strong>Active solution configuration</strong> drop-down and check these boxes again. Dismiss the dialog by clicking the <strong>Close</strong> button.</p>
+<p><a href="Images/enable-auto-deploy.png" target="_blank"><img src="Images/enable-auto-deploy.png" alt="Enabling auto-deployment on Windows" style="max-width:100%;"></a></p>
+<p><em>Enabling auto-deployment on Windows</em></p>
+</li>
+<li>
+<p>Open the Settings app on your PC (an easy way to do it is to click the Windows button, type "Settings," and click <strong>Settings</strong>). Then click <strong>Update &amp; security</strong> followed by <strong>For developers</strong>, and select <strong>Developer mode</strong> if it isn't already selected to make sure you can launch UWP apps from Visual Studio and run them on the local machine.</p>
+<blockquote>
+<p>If you try to enable developer mode and receive an error, see <a href="https://www.kapilarya.com/developer-mode-package-failed-to-install-error-code-0x80004005-windows-10">https://www.kapilarya.com/developer-mode-package-failed-to-install-error-code-0x80004005-windows-10</a> for a potential fix.</p>
+</blockquote>
+<p><a href="Images/developer-mode.png" target="_blank"><img src="Images/developer-mode.png" alt="Enabling developer mode in Windows 10" style="max-width:100%;"></a></p>
+<p><em>Enabling developer mode in Windows 10</em></p>
+</li>
+<li>
+<p>Return to Visual Studio and right-click the <strong>DroneLander.Android</strong> project and select <strong>Set as StartUp Project</strong> to make it the startup project.</p>
+</li>
+<li>
 <p>In Solution Explorer, right-click the <strong>DroneLander</strong> solution and select <strong>Build Solution</strong> to build the solution. Confirm that the solution builds without errors.</p>
 </li>
 </ol>
@@ -669,18 +685,7 @@ vertical-align:1px;
 <p><em>Drone Lander on Android</em></p>
 </li>
 <li>
-<p>Open the Settings app on your PC (an easy way to do it is to click the Windows button, type "Settings," and click <strong>Settings</strong>). Then click <strong>Update &amp; security</strong> followed by <strong>For developers</strong>, and select <strong>Developer mode</strong> if it isn't already selected.</p>
-<blockquote>
-<p>If you try to enable developer mode and receive an error, see <a href="https://www.kapilarya.com/developer-mode-package-failed-to-install-error-code-0x80004005-windows-10">https://www.kapilarya.com/developer-mode-package-failed-to-install-error-code-0x80004005-windows-10</a> for a potential fix.</p>
-</blockquote>
-<p><a href="Images/developer-mode.png" target="_blank"><img src="Images/developer-mode.png" alt="Enabling developer mode in Windows 10" style="max-width:100%;"></a></p>
-<p><em>Enabling developer mode in Windows 10</em></p>
-</li>
-<li>
-<p>Make <strong>DroneLander.UWP</strong> the startup project by right-clicking it and selecting <strong>Set as StartUp Project</strong>. Then deploy the UWP app to your computer by right-clicking the project and selecting <strong>Deploy</strong>.</p>
-</li>
-<li>
-<p>Click the <strong>Run</strong> button at the top of Visual Studio to launch the UWP version of Drone Lander on the local machine. Once the app is running, use the <strong>Stop Debugging</strong> command to terminate it.</p>
+<p>Make <strong>DroneLander.UWP</strong> the startup project by right-clicking it and selecting <strong>Set as StartUp Project</strong>. Then click the <strong>Run</strong> button at the top of Visual Studio to launch the UWP version of Drone Lander on the local machine. Once the app is running, use the <strong>Stop Debugging</strong> command to terminate it.</p>
 <blockquote>
 <p>If you would prefer to run the UWP app in a Windows phone emulator rather than on the desktop, simply select the desired emulator from the drop-down list attached to the <strong>Run</strong> button.</p>
 </blockquote>

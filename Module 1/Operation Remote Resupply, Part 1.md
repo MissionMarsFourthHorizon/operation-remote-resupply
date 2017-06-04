@@ -120,6 +120,22 @@ The first step in creating a cross-platform solution with Xamarin Forms is to pr
 
     _Disabling fast deployment on Android_
 
+1. Right-click the **DroneLander.UWP** project and select **Set as StartUp Project** to make it the startup project. Then select **Configuration Manager...** from the **Build** menu. Check the **Build** and **Deploy** boxes for the UWP solution so the UWP app will be built and deployed each time you launch it. Then select **Release** from the **Active solution configuration** drop-down and check these boxes again. Dismiss the dialog by clicking the **Close** button.
+
+    ![Enabling auto-deployment on Windows](Images/enable-auto-deploy.png)
+
+    _Enabling auto-deployment on Windows_
+
+1. Open the Settings app on your PC (an easy way to do it is to click the Windows button, type "Settings," and click **Settings**). Then click **Update & security** followed by **For developers**, and select **Developer mode** if it isn't already selected to make sure you can launch UWP apps from Visual Studio and run them on the local machine.
+
+	> If you try to enable developer mode and receive an error, see https://www.kapilarya.com/developer-mode-package-failed-to-install-error-code-0x80004005-windows-10 for a potential fix.
+
+    ![Enabling developer mode in Windows 10](Images/developer-mode.png)
+
+    _Enabling developer mode in Windows 10_
+
+1. Return to Visual Studio and right-click the **DroneLander.Android** project and select **Set as StartUp Project** to make it the startup project.
+
 1. In Solution Explorer, right-click the **DroneLander** solution and select **Build Solution** to build the solution. Confirm that the solution builds without errors.
 
 Your Xamarin Forms solution has now been provisioned and configured, and you're ready to start adding platform-specific image and package assets to the projects.
@@ -229,17 +245,7 @@ The next step in building your Xamarin Forms app is to add shared and platform-s
 
     _Drone Lander on Android_
 
-1. Open the Settings app on your PC (an easy way to do it is to click the Windows button, type "Settings," and click **Settings**). Then click **Update & security** followed by **For developers**, and select **Developer mode** if it isn't already selected.
-
-	> If you try to enable developer mode and receive an error, see https://www.kapilarya.com/developer-mode-package-failed-to-install-error-code-0x80004005-windows-10 for a potential fix.
-
-    ![Enabling developer mode in Windows 10](Images/developer-mode.png)
-
-    _Enabling developer mode in Windows 10_
-
-1. Make **DroneLander.UWP** the startup project by right-clicking it and selecting **Set as StartUp Project**. Then deploy the UWP app to your computer by right-clicking the project and selecting **Deploy**.
-
-1. Click the **Run** button at the top of Visual Studio to launch the UWP version of Drone Lander on the local machine. Once the app is running, use the **Stop Debugging** command to terminate it.
+1. Make **DroneLander.UWP** the startup project by right-clicking it and selecting **Set as StartUp Project**. Then click the **Run** button at the top of Visual Studio to launch the UWP version of Drone Lander on the local machine. Once the app is running, use the **Stop Debugging** command to terminate it.
 
 	> If you would prefer to run the UWP app in a Windows phone emulator rather than on the desktop, simply select the desired emulator from the drop-down list attached to the **Run** button.
  
