@@ -6,7 +6,7 @@
 <a name="Overview"></a>
 ## Overview ##
 
-In the first lab, you build a Xamarin Forms Drone Lander application that achieved 100% sharing of code (C#) and UI (XAML). In the real world, it's rarely that simple. Almost every application requires some platform-specific code in order to customize the UI for individual platforms or leverage features of those platforms that aren't exposed through Xamarin. 
+In Part 1, you built a Xamarin Forms Drone Lander application that achieved 100% sharing of code (C#) and UI (XAML). In the real world, it's rarely that simple. Almost every application requires some platform-specific code in order to customize the UI for individual platforms or leverage features of those platforms that aren't exposed through Xamarin. 
 
 Xamarin Forms supports several techniques for implementing per-platform features. [Dependency services](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/dependency-service/) allow platform-specific services such as location APIs and text-to-speech APIs to be called through a common interface defined in shared code. [Custom renderers](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/custom-renderer/) allow deep customization of Xamarin Forms controls. [Effects](https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/effects/) also facilitate control customization, but without many of the complications of custom renderers.
 
@@ -29,8 +29,6 @@ The following are required to complete this lab:
 - [Visual Studio Community 2017](https://www.visualstudio.com/vs/) or higher
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
 
-You won't be building the iOS version of the app during this event because doing so would require additional setup, including a Mac configured as a build host. For more information about building Xamarim Forms iOS apps, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
-
 ---
 
 <a name="Exercises"></a>
@@ -49,11 +47,11 @@ Estimated time to complete this lab: **45** minutes.
 <a name="Exercise1"></a>
 ## Exercise 1: Add custom renderers ##
 
-One of the remarkable aspects of Xamarin Forms is that you declare controls in XAML that is shared between platforms, but at run-time, Xamarin Forms emits controls that are native to the host platform. For example, a ```Button``` control declared in XAML becomes a native ```Button``` control on Windows and Android, and a ```UIButton``` on iOS. This feat is accomplished using *renderers* that create native controls from Xamarin Forms controls.
+One of the remarkable aspects of Xamarin Forms is that you declare controls in XAML that is shared between platforms, but at run-time, Xamarin Forms emits controls that are native to the host platform. For example, a ```Button``` control declared in XAML becomes a native ```Button``` control on Windows and Android and a ```UIButton``` on iOS. This feat is accomplished using *renderers* that create native controls from Xamarin Forms controls.
 
 Each control in Xamarin Forms is accompanied by a renderer whose job is to "project" the control into the UI by instantiating a native control. You can change the look and behavior of these controls by replacing the built-in renderers with renderers of your own, known as *custom renderers*. For a great overview of how custom renderers work and how they're written, see [Supercharging Xamarin Forms with Custom Renderers](http://www.wintellect.com/devcenter/jprosise/supercharging-xamarin-forms-with-custom-renderers-part-1).
 
-In this exercise, you will use custom renderers to customize the fuel gauge and the throttle control. Such customizations are common in Xamarin Forms applications and knowing how to perform them is a crucial step in becoming a skilled Xamarin Forms developer.
+In this exercise, you will write custom renderers for all three platforms to customize the fuel gauge and the throttle control. Such customizations are common in Xamarin Forms applications and knowing how to perform them is a crucial step in becoming a skilled Xamarin Forms developer.
 
 1. In Visual Studio 2017, open the **Drone Lander** solution created in the previous lab.
 
@@ -200,7 +198,6 @@ In this exercise, you will use custom renderers to customize the fuel gauge and 
 	            CGAffineTransform transform = CGAffineTransform.MakeScale(X, Y);
 	            Control.Transform = transform;
 	        }
-	
 	    }
 	}
 	```
@@ -526,9 +523,7 @@ In this exercise, you will use custom renderers to customize the fuel gauge and 
 	</Application>
 	```
 
-1. Make **DroneLander.UWP** the startup project by right-clicking it and selecting **Set as StartUp Project**. Then deploy the UWP app to your computer by right-clicking the project and selecting **Deploy**.
-
-1. Click the **Run** button at the top of Visual Studio to launch the UWP version of Drone Lander on the local machine.
+1. Make **DroneLander.UWP** the startup project by right-clicking it and selecting **Set as StartUp Project**. Then click the **Run** button at the top of Visual Studio to launch the UWP version of Drone Lander on the local machine.
 
 	> If you would prefer to run the UWP app in a Windows phone emulator rather than on the desktop, simply select the desired emulator from the drop-down list attached to the **Run** button.
  
@@ -549,7 +544,7 @@ The app has now been updated to use custom renderers for Android, iOS and Window
 
 On iOS and Windows, you can employ custom fonts in ```Label``` controls simply by adding font files to the projects and referencing them in the controls' ```FontFamily``` properties. On Android, it's not that simple. Code is required to load the font, create a ```Typeface``` object from it, and assign it to the control's ```Typeface``` property. A custom effect is the perfect tool for accomplishing this. Effects allow you to customize controls on a per-platform basis without writing full-blown renderers. They are typically simpler than custom renderers, and they can accept parameters as well.
 
-In this exercise, you will update the ```Label``` controls that display altitude, descent rate, and thrust to use a digital font that resembles characters on an LCD display. And to ensure that it works on Android, you will write a custom effect.
+In this exercise, you will update the ```Label``` controls that display altitude, descent rate, and thrust in the Drone Lander app to use a digital font that resembles characters on an LCD display. And to ensure that it works on Android, you will write a custom effect.
 
 1. In Solution Explorer, right-click the **DroneLander (Portable)** project and use the **Add** > **New Folder** command to add a folder named "Effects" to the project.
 
@@ -730,9 +725,9 @@ The primary purpose of custom renderers and custom effects is to change the appe
 
 Xamarin lets you write native apps for iOS, Android, and Windows in C# using a common API that feels familiar to .NET developers. But not all features of these platforms are exposed through Xamarin. A classic example is location services — APIs for detecting a user's current location or tracking movement. iOS, Android, and Windows all include location APIs, but because Xamarin doesn't wrap them, an app that wants to use these APIs must call them directly.
 
-The primary mechanism that Xamarin Forms apps use to call platform-specific APIs is *dependency services*. Dependency services permit Xamarin Forms apps to define an interface in shared code and provide per-platform implementations of that interface in the platform-specific projects. Through the magic of dependency injection, a method called from shared code executes code that is specific to the host operating system. 
+The primary mechanism that Xamarin Forms apps use to call platform-specific APIs is *dependency services*. Dependency services permit you to define an interface in shared code and provide per-platform implementations of that interface in the platform-specific projects. Through the magic of dependency injection, a method called from shared code executes code that is specific to the host operating system. 
 
-In this exercise, you will write a dependency service that enables the Drone Lander app to produce sound. In [Exercise 4](#Exercise4), you will modify the app to use the dependency service to play engine noises while the lander is descending. 
+In this exercise, you will write a dependency service that enables Drone Lander to produce sound. In [Exercise 4](#Exercise4), you will modify the app to use the dependency service to play engine noises while the lander is descending. 
 
 1. Add a folder named "Services" to the **DroneLander (Portable)** project. Right-click the "Services" folder and use the **Add** > **Class** command to add a class file named "IAudioService.cs." Then replace the contents of the file with the following code:
 
@@ -1100,7 +1095,7 @@ The final piece of the puzzle is to call the ```IAudioService``` methods that yo
 	}
 	```
  
-	This will ensure that the engine audio starts playing when the **Start** button is tapped, and the engine audio stops if the lander runs out of fuel.
+	This will ensure that the engine audio starts playing when the **Start** button is tapped, and stops if the lander runs out of fuel.
 	 
 1. Still in **MainViewModel.cs**, add the following line of code to the ```ResetLanding``` method, making it the first statement in that method:
 
@@ -1132,7 +1127,7 @@ Now let's make sure that it works. Time to make a descent!
 <a name="Exercise5"></a>
 ## Exercise 5: Test the updated app ##
 
-The lander will fly no differently than before, but the UI has changed and you should hear the engine now when you use the throttle to control your descent. In this exercise, you will practice flying supply missions (remember, it gets real in Lab 4!) and ensure that all the code you added works.
+The lander will fly no differently than before, but the UI has changed and you should hear the engine now when you use the throttle to control your descent. In this exercise, you will practice flying supply missions (remember, it gets real in Part 5!) and ensure that all the code you added works.
 
 Remember, you begin a descent 5,000 meters above the Mars surface. When you click **Start**, the supply drone begins falling. (The gravity on Mars is weaker than the gravity on Earth, but there is gravity nonetheless.) The goal is still to touch down on the surface with a downward velocity of 5 meters per second or less.
 
@@ -1148,9 +1143,9 @@ Remember, you begin a descent 5,000 meters above the Mars surface. When you clic
 
     _Adjusting the drone's throttle_
  
-Continue flying the mission until you reach the surface. If you have time left over, practice landing the drone a few times to prepare yourself for Lab 4.
+Continue flying the mission until you reach the surface. If you have time left over, practice landing the drone a few times to prepare yourself for flying real missions later on.
 
 <a name="Summary"></a>
 ## Summary ##
 
-Dependency services, custom renderers, and custom effects are important tools in a Xamarin Forms developer's toolbox because virtually every real-world Xamarin Forms app requires some per-platform customizations. The Drone Lander app is now basically complete, and in Part 3 of Operation Remote Resupply, you will switch gears and learn about the great features of Visual Studio Mobile Center.
+Dependency services, custom renderers, and custom effects are important tools in a Xamarin Forms developer's toolbox because virtually every real-world Xamarin Forms app requires some per-platform customizations. When you write Xamarin Forms apps of your own, you can use the customizations you made to Drone Lander as a template for those apps, too.
