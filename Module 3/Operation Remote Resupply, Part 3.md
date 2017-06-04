@@ -6,24 +6,21 @@
 <a name="Overview"></a>
 ## Overview ##
 
-One of the key challenges to maintaining and supporting mobile apps is understanding what users encounter once an app is published. No matter how perfectly you write your code, or how thorough you are about exception handling and logging, apps sometimes misbehave or even crash. When they do, you need to know what went wrong and why. [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") lets you collect crash data — including full stack traces — from various devices so you can identify bugs and prioritize fixes.
+One of the benefits of working with Xamarin Forms is rich tooling support. Visual Studio 2017 enables developers to build Xamarin Forms apps for iOS, Android, and Windows, and test those apps on real hardware as well as in emulators. It also includes the [Xamarin Forms Previewer](https://developer.xamarin.com/guides/xamarin-forms/xaml/xaml-previewer/) for previewing XAML UIs, and the [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/) for profiling performance and memory use. 
 
-Beyond crash analytics, you may want statistics regarding how many users are launching your app, where they are located, and what languages they speak. Visual Studio Mobile Center makes it easy to collect this information and more. It even allows you to collect rich behavioral analytics and answer questions such as which features are used most often, which screens are never seen, and how users utilize in-app purchases.  
+Additional tooling is available outside of Visual Studio. In particular, [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/) enable developers to create rich, interactive workbooks that include a mix of documentation and executable code and that optionally send output to *agents* hosted in Windows consoles, WPF, or mobile emulators. Xamarin Workbooks are similar to the [Jupyter notebooks](http://jupyter.org/) that are widely used in academia and are ideal for building tutorials, presentations, and other interactive teaching materials.
 
-Visual Studio Mobile Center can also be used to automate the build, test, and distribution process. In short, it packages essential services needed by mobile developers into a single, integrated product to help you control the development lifecycle from start to finish.
-
-In this lab, you will use the Drone Lander app you built in previous labs to learn about the many features that Visual Studio Mobile Center has to offer, and why it should be part of the development process for every mobile app.
+In Part 3 of Operation Remote Resupply, you will use Xamarin Workbooks to create an interactive document that describes how to convert earth time to Mars time and that includes C# code to perform the conversion. You will also get first-hand experience using the Xamarin Previewer to preview XAML UIs and the Xamarin Profiler to analyze Xamarin Forms apps for potential trouble spots.
 
 <a name="Objectives"></a>
 ### Objectives ###
 
 In this lab, you will learn how to:
 
-- Register an app with Visual Studio Mobile Center
-- Use Visual Studio Mobile Center to automate builds
-- Use Visual Studio Mobile Center to automate distribution to testers
-- Add crash analytics to a Xamarin Forms app 
-- View crash reports in Visual Studio Mobile Center
+- Build interactive presentations in Xamarin Workbooks
+- Use the Xamarin UI Inspector to examine and modify UIs created in Xamarin Workbooks
+- Use the Xamarin Forms Previewer to preview Xamarin Forms user interfaces in Visual Studio
+- Use the Xamarin Profiler to analyze memory consumption in Xamarin Forms apps
 
 <a name="Prerequisites"></a>
 ### Prerequisites ###
@@ -32,10 +29,10 @@ The following are required to complete this lab:
 
 - [Visual Studio Community 2017](https://www.visualstudio.com/vs/) or higher
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
-- A GitHub account. If you don't have one, sign up for free at https://github.com/join.
-- [GitHub Extension for Visual Studio](https://visualstudio.github.com/)
+- [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/install/) for Windows
+- [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/#Download_and_Install) for Windows
 
-You won't be building the iOS version of the app during this event because doing so would require additional setup, including a Mac configured as a build host. For more information about building Xamarim Forms iOS apps, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
+If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
 
 ---
 
@@ -44,315 +41,457 @@ You won't be building the iOS version of the app during this event because doing
 
 This lab includes the following exercises:
 
-- [Exercise 1: Register the app with Visual Studio Mobile Center](#Exercise1)
-- [Exercise 2: Add the solution to source control](#Exercise2)
-- [Exercise 3: Enable automated builds](#Exercise3)
-- [Exercise 4: Enable automated distribution](#Exercise4)
-- [Exercise 5: Add crash analytics support to the app](#Exercise5)
-- [Exercise 6 (optional): Review launch test results](#Exercise6)
- 
+- [Exercise 1: Create a Xamarin Workbook for Android](#Exercise1)
+- [Exercise 2: Build an interactive workbook](#Exercise2)
+- [Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector](#Exercise3)
+- [Exercise 4: Use the Xamarin Forms Previewer to preview XAML UIs](#Exercise4)
+- [Exercise 5: Analyze memory usage with the Xamarin Profiler](#Exercise5)
+  
 Estimated time to complete this lab: **45** minutes.
 
 <a name="Exercise1"></a>
-## Exercise 1: Register the app with Visual Studio Mobile Center ##
+## Exercise 1: Create a Xamarin Workbook for Android ##
+
+Xamarin Workbooks are interactive documents created with the free [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/install/) app. Versions are available for the Mac and for Windows. Workbooks can be saved as .workbook files and shared with other developers. If you haven't already downloaded and installed Xamarin Workbooks, please do so now. In this exercise, you will create a Xamarin Workbook targeting Android devices and learn the basics of working with workbooks. 
+
+1. Launch Xamarin Workbooks, select **Android** as the framework, and click **Create**. 
+    
+	![Creating a workbook for Android](Images/xw-select-android.png)
+
+    _Creating a workbook for Android_
+
+1. After a short delay, a blank Xamarin Workbook will be created, and Xamarin Workbooks will launch the default Android emulator. Wait for the emulator to appear and display a blank page like the one shown below.
  
-Before you can use Visual Studio Mobile Center to automate the build and distribution process or retrieve crash analytics, you need to create a Visual Studio Mobile Center account and register the app there. In this exercise, you will create an account and register the Android version of Drone Lander.
+	![A blank Xamarin Workbook in the Android emulator](Images/app-blank-app.png)
 
-1. If you don't have a GitHub account, go to https://github.com/join and sign up for one.
+    _A blank Xamarin Workbook in the Android emulator_
 
-1. In a browser, navigate to https://mobile.azure.com/login. Once there, click **Connect with GitHub**. If you are prompted to log in, do so using your GitHub account.
- 
-    ![Connecting with a GitHub account](Images/web-select-github.png)
+1. A Xamarin Workbook is composed of *cells*. There are two types of cells: executable cells and documentation cells. Executable cells contain C# code that can be executed inside the workbook. Documentation cells contain text that can be richly formatted. You build interactive workbooks by creating sequences of executable cells and documentation cells.
 
-    _Connecting with a GitHub account_
+	Return to Xamarin Workbooks and type the following line of code into the executable cell at the top of the workbook. Then press **Shift+Enter** to insert a blank line:
 
-1. On the "Authorize application" page, click **Authorize application**. If you are asked to sign in to GitHub, do so with your GitHub user name and password.
+	```C#
+	// This is an executable cell
+	```
 
-    ![Authorizing an application](Images/web-authorize-github.png)
+1. Enter the following line of code on the second line:
 
-    _Authorizing an application_
+	```C#
+	DateTime.Now;
+	```
 
-1. If you are asked to choose a user name, enter a user name for your Visual Studio Mobile Center account (or accept the default) and click **Choose username**.  
+1. Click the **Run** button (or press **Ctrl+Enter**) to execute the code. 
 
-    ![Choosing a user name](Images/web-vsmc-username.png)
+	![Running an executable cell](Images/ex1-run-code.png)
 
-    _Choosing a user name_
+    _Running an executable cell_
 
-1. Now that you have created a Visual Studio Mobile Center account, the next step is to register the Drone Lander app that you built in Parts 1 and 2. To begin, click **Add new app**. 
+1. Confirm that the result appears underneath the code. Use the drop-down under the **Default** button to try formatting the result in various ways.
 
-    ![Adding a new app in Visual Studio Mobile Center](Images/web-click-add-new-app.png)
+	![Results of executing a cell](Images/ex1-execution-result.png)
 
-    _Adding a new app in Visual Studio Mobile Center_
+    _Results of executing a cell_
 
-1. Enter "Drone Lander" for the app name, and specify **Android** as the OS and **Xamarin** as the platform. Then click **Add new app**. 
+1. The three buttons in the lower-right corner of each cell allow you to add an executable cell, add a documentation cell, and delete the current cell, in that order. Click the third button in the cell that was added when you executed the code in the previous cell to delete it, and confirm the deletion when prompted to do so.
 
-    ![Registering the Android version of Drone Lander](Images/web-add-new-app.png)
+	![Deleting the newly added cell](Images/ex1-delete-executable-cell.png)
 
-    _Registering the Android version of Drone Lander_
+    _Deleting the newly added cell_
 
-1. Click **Xamarin.Forms** for a summary of the steps required to add the Mobile Center SDK to your app. (This is for informational purposes only at the moment. You will make these changes in a subsequent exercise.)
+1. Click the middle button in the remaining cell to add a documentation cell.
 
-    ![Viewing Xamarin.Forms integration information](Images/web-click-xamarin-forms.png)
+	![Adding a documentation cell](Images/ex1-add-documentation-cell.png)
 
-    _Viewing Xamarin.Forms integration information_
+    _Adding a documentation cell_
 
-If you would like to register the iOS of version Drone lander as well, you can do so by registering Drone Lander again, but this time specifying iOS as the operating system. You don't need to register the iOS version for this lab, but be aware that when you register a Xamarin app with Visual Studio Mobile Center, you need to register it separately for each platform that it runs on. You can also register the Windows (UWP) version if you would like, but realize that Visual Studio Mobile Center and doesn't yet support crash analytics on Windows.
+1. Type "This is a documentation cell" into the documentation cell. Then highlight "documentation cell" and click the **Italics** button that appears above it.
+
+	![Italicizing text in a documentation cell](Images/ex1-italicize-text.png)
+
+    _Italicizing text in a documentation cell_
+
+1. Confirm that "documentation cell" is italicized. Then delete the documentation cell.
+
+	![Adding a documentation cell](Images/ex1-delete-documentation-cell.png)
+
+    _Adding a documentation cell_
+
+Now that you're familiar with basic workbook concepts, including adding, deleting, and executing cells, let's build something that's relevant to Operation Remote Resupply.
 
 <a name="Exercise2"></a>
-## Exercise 2: Add the solution to source control ##
+## Exercise 2: Build an interactive workbook ##
 
-In order to take advantage of Visual Studio Mobile Center (VSMC) build integration, you must set up a remote source-code repository. VSMC supports [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org/), and [Visual Studio Team Services](https://www.visualstudio.com/team-services/) (VSTS) as repositories. You will use GitHub, which is a Git hosting service that features a browser-based user interface, bug tracking, access control, task management, and more. In this exercise, you will create a GitHub repository for your Drone Lander solution.
+In this exercise, you will create a Xamarin Workbook that describes how to convert Earth time to Mars time, and that includes code to perform the conversion.
 
-1. Type "github extension" into Visual Studio 2017's Quick Launch window. If **GitHub extension for Visual Studio** appears under "Install," click it and follow the on-screen instructions to install GitHub Extension for Visual Studio. You will probably have to close Visual Studio to install the extension.
+1. Add a documentation cell to the workbook and enter the following text:
 
-    ![Installing GitHub Extension for Visual Studio](Images/vs-install-git-hub.png)
+	```
+	What time is it on Mars?
+	```
 
-    _Installing GitHub Extension for Visual Studio_
+1. Format the text in the cell by selecting **Format** > **Heading** > **Level 1** from the overhead menu, and confirm that it assumes the format shown below.
 
-1. In Solution Explorer, right-click the **DroneLander** solution and use the **Source Control** > **Add Solution to Source Control...** command to add the solution to a local GitHub repository.
+	![The workbook heading](Images/xw-completed-format.png)
 
-1. Select the **GitHub** tab in Solution Explorer, and then click **Get Started**.
-
-    ![Starting the GitHub publishing process](Images/vs-click-get-started.png)
-
-    _Starting the GitHub publishing process_
+    _The workbook heading_
  
-1. Confirm that **GitHub** is selected and that your GitHub user name is shown, and then click **Publish**.
+1. Add another documentation cell. Then paste the following text into the cell to serve as an introduction to the workbook: 
 
-    ![Publishing to GitHub](Images/vs-github-click-publish.png)
+	```
+	Have you ever asked yourself what time it is on Mars? It's not an abstract question when you have settlers on Mars and need to communicate with them. Earth time can be converted to Mars time in a few simple steps.  
+	```
 
-    _Publishing to GitHub_
+1. Add a documentation cell to the workbook and insert the text below. Then highlight "Milliseconds Since January 1, 1970" and use the **Format** > **Heading** > **Level 2** command to format the text as a subheading.
+
+	```
+	Milliseconds Since January 1, 1970
+
+	The first step is to compute the number of milliseconds that have elapsed since January 1, 1970, in Universal Time:
+	```
+
+1. Insert a new executable cell and enter the following code:
+
+	```C#
+	DateTime value = DateTime.UtcNow;
+	DateTime earthEpochDate = new System.DateTime(1970, 1, 1);
+	double elapsedMilliseconds = (value - earthEpochDate).TotalMilliseconds;
+	```
+
+1. Click the **Run** button or press **Ctrl+Enter** to execute the code and display the number of milliseconds elapsed since January 1, 1970: 
+
+	![Computing the number of milliseconds elapsed since January 1, 1970](Images/xw-since-epoch-code.png)
+
+    _Computing the number of milliseconds elapsed since January 1, 1970_
  
-1. In Team Explorer, click **Sync**.
+1. Delete the executable cell that was added when you ran the code. Then add a documentation cell, insert the following text, and format the first line as a level-2 subheading:
 
-    ![Synchronizing repos](Images/vs-click-first-sync.png)
+	```
+	Julian Date (Universal Time)
 
-    _Synchronizing repos_ 
+	The next step is to convert milliseconds into days and add the number of days between noon on January 1, 4713 B.C. and midnight on January 1, 1970 (2,440,587.5 days) to yield a Julian date: 
+	```
 
-1. Click **Sync** one more time to synchronize incoming and outgoing commits.
+1. Insert a new executable cell and enter the statement below. Then run it to compute a Julian date.
 
-    ![Synchronizing repos](Images/vs-github-click-sync.png)
+	```C#
+	double epochJulianDate = 2440587.5 + (elapsedMilliseconds / (8.64 * Math.Pow(10, 7)));
+	```
 
-    _Synchronizing repos_
+	![Computing a Julian date](Images/xw-julian-date-universal.png)
+
+    _Computing a Julian date_
+
+1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
+
+	```
+	Julian Date (Terrestrial Time)
+
+	Now convert the Julian date in Universal Time to a Julian date in Terrestrial Time by adding the number of leap seconds since January 1, 2017:
+	```
+
+1. Insert a new executable cell and enter the statement below. The run it to convert the Julian date to Terrestrial Time:
+
+	```C#
+	double terrestrialJulianDate = epochJulianDate + (37 + 32.184) / 86400;
+	```
+
+	![Converting Universal Time to Terrestrial Time](Images/xw-julian-date-terrestrial.png)
+
+    _Converting Universal Time to Terrestrial Time_
+
+1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
+
+	```
+	Julian Date Relative to January 1, 2000
+
+	Subtract the number of days between January 1, 1970 and January 1, 2000 to convert the terrestrial Julian date computed in the previous step into one that is relative to January 1, 2000:
+	```
+
+1. Insert a new executable cell and enter the statement below. Then run it to convert the Julian date into one that is relative to January 1, 2000:
+
+	```C#
+	double martianEpochDifference = terrestrialJulianDate - 2451545.0;
+	```
+
+	![Rebasing the Julian date](Images/xw-julian-date-j2000.png)
+
+    _Rebasing the Julian date_
+
+1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
+
+	```
+	Mars Sol Date
+
+	The equivalent of the Julian date for Mars is the Mars sol date. At midnight on January 6, 2000 on earth, it was midnight at the Martian prime meridian, so our starting point for Mars sol date is ΔJ2000 - 4.5. The length of a Martian day and Earth day differ by a ratio of 1.027491252, so we divide by that. By convention, to keep the Martial sol date positive going back to midday on December 29, 1873, we add 44,796. A slight adjustment of 0.00096 is required since the midnights aren't perfectly aligned:
+	```
+
+1. Insert a new executable cell and enter the statement below. Then run it to display the Martian sol date:
+
+	```C#
+	double martianSolDate = (((martianEpochDifference - 4.5) / 1.027491252) + 44796.0 - 0.00096);
+	```
+
+	![Computing the Martial sol date](Images/xw-sol-date.png)
+
+    _Computing the Martial sol date_
+
+1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
+
+	```
+	Mars Coordinated Time
+
+	Mars Coordinated Time (MTC) is like UTC, but for Mars. Because it is just a mean time, you can  calculate it based on the Mars Sol Date like this:
+	```
+
+1. Insert a new executable cell and enter the following statement. Then run it to display the current time in Mars Coordinated Time (MTC):
+
+	```C#
+	var mct = System.TimeSpan.FromHours((martianSolDate % 1) * 24);
+	mct.ToString("hh\\:mm\\:ss");
+	```
+
+	![Computing Mars Coordinated Time](Images/xw-mtc.png)
+
+    _Computing Mars Coordinated Time_
  
-1. Confirm that the repos synced successfully.
+1. One of the cool things about Xamarin Workbooks is that you can do almost anything you would normally do in C#, including adding methods and extension methods. To demonstrate, add the following statements to the executable cell that was added when you ran the last one:
 
-    ![A successful GitHub synchronization](Images/vs-sync-success.png)
+	```C#
+	static double ToMartianSolDate(this DateTime value)
+	{
+	    DateTime earthEpochDate = new System.DateTime(1970, 1, 1);
+	    double elapsedMilliseconds = (value - earthEpochDate).TotalMilliseconds;
+	    double epochJulianDate = 2440587.5 + (elapsedMilliseconds / (8.64 * Math.Pow(10, 7)));
+	    double terrestrialJulianDate = epochJulianDate + (37 + 32.184) / 86400;
+	    double martianEpochDifference = terrestrialJulianDate - 2451545.0;
+	    double martianSolDate = (((martianEpochDifference - 4.5) / 1.027491252) + 44796.0 - 0.00096);
+	    return martianSolDate;
+	}
+	
+	static TimeSpan ToMartianTime(this DateTime value)
+	{   
+	    return System.TimeSpan.FromHours((value.ToMartianSolDate() % 1) * 24);
+	}
+	```
 
-    _A successful GitHub synchronization_
- 
-Now that Drone Lander has been added to source control and uploaded to a GitHub repository, you can configure Visual Studio Mobile Center to build it directly from there.
+	These extension methods will come in handy when you add code to interact with the Android emulator in the next exercise.
+
+Xamarin Workbooks like this one are great for teaching concepts and letting users try out code implementing those concepts. Currently, however, the Android emulator still shows a blank page. Let's modify the workbook to use the emulator to show the current time on earth and on Mars. 
 
 <a name="Exercise3"></a>
-## Exercise 3: Enable automated builds ##
+## Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector ##
 
-With Visual Studio Mobile Center's build feature, you can store your source code in a GitHub repository and create an installable app package automatically with every commit or push — a process known as *continuous integration*. Best of all, you don't need to provision any agents or external machines to build your apps. Mobile Center takes care of this and will compile your iOS, Android, and Windows apps right from the repo with no manual setup on your side. In this exercise, you will configure Visual Studio Mobile Center to build the app from the repo you established in the previous exercise.
+Xamarin Workbooks can include code that creates UIs from XAML controls and displays them in the agent accompanying the workbook — in this case, the app running in the Android emulator. Furthermore, Xamarin Workbooks features an integrated UI Inspector that is perfect for examining the controls you created and adjusting control properties to fine-tune the UI.
 
-1. Open your Visual Studio Mobile Center apps collection by navigating to [https://mobile.azure.com/apps](https://mobile.azure.com/apps). Then click **Drone Lander for Android**.
+In this exercise, you will enhance the workbook you built in Exercise 2 to show the current earth time and Mars time in the Android emulator, and learn how to use the Xamarin UI Inspector to inspect and modify control properties.
 
-    ![Opening the Android version of Drone Lander](Images/web-app-listing.png)
+1. Add an executable cell to the workbook. Then select **File** > **Add Package...** from the overhead menu and type "Xamarin.Forms" into the search box. Select the latest **Xamarin.Forms** package, and then click **Add Package** to add the package to the workbook.
 
-    _Opening the Android version of Drone Lander_
+	> One of the most powerful features of Xamarin Workbooks is that you can import NuGet packages just like you can in Visual Studio. Once a package is imported, C# code that you add to the workbook can use the types in that package.
+
+	![Adding Xamarin.Forms to a workbook](Images/xw-add-package.png)
+
+    _Adding Xamarin.Forms to a workbook_
  
-1. Click **Build** in the menu on the left.
+1. Confirm that three ```#r``` statements appear referencing the assemblies imported from the package.
 
-    ![Opening the Build menu](Images/web-click-build-tab.png)
+	![Statements referencing Xamarin Forms assemblies](Images/xw-references-added.png)
 
-    _Opening the Build menu_ 
-
-1. Click **GitHub**.
+    _Statements referencing Xamarin Forms assemblies_
  
-    ![Selecting GitHub as the service provider](Images/web-select-github-service.png)
+1. In the new executable cell that appears in the workbook, insert the following ```using``` statement and then run it:
+ 
+	```C#
+	using Xamarin.Forms;
+	```
 
-    _Selecting GitHub as the service provider_
+1. Delete the executable cell that was added when you ran the code. Add a new documentation cell and insert the following text: 
 
-1. Select **DroneLander** from the list of repos.
+	```
+	Add controls to display the current time on earth and on Mars:
+	```
 
-	![Selecting the DroneLander repo](Images/web-connected-to-github.png)
+1. Insert a new executable cell and enter the following statements:
+ 
+	```C#
+	var page = Xamarin.Forms.Application.Current.MainPage as ContentPage;
+	var layout = new StackLayout() { Margin = new Thickness(40) };
+	var earthlabel = new Label() { Text = "Earth Time:", FontSize = 32 };
+	var earthTimeLabel = new Label() { Text = DateTime.Now.ToString("hh:mm:ss tt"), FontSize = 32 };
 	
-	_Selecting the DroneLander repo_ 
-
-1. Select the **master** branch from the list of branches, and then click **Set up a branch** to configure a branch for build integration.
-
-	![Setting up a build branch](Images/web-click-setup-branch.png)
+	layout.Children.Add(earthlabel);
+	layout.Children.Add(earthTimeLabel);
 	
-	_Setting up a build branch_ 
-
-1. Change the build configuration from Debug to **Release**. Ensure that **Build on push** and **Sign builds** are enabled, and then click **Keystore file** to upload an Android keystore file. A keystore file enables signing of the Android app package (*.apk) and is required for release deployments of Android apps.
-
-	![Configuring build branch settings](Images/web-branch-setup-01.png)
+	var marslabel = new Label() { Text = "Martian Time:", FontSize = 32 };
+	var marsTimeLabel = new Label() { Text = earthEpochDate.Add(mct).ToString("hh:mm:ss tt"), FontSize = 32 };
 	
-	_Configuring build branch settings_ 
-
-1. Import the file named **DroneLanderKeystore.keystore** from this lab's "Resources\Keystore" folder
-
-	> The keystore file you're importing was created in advance specifically for this lab. In your own development projects, you will want to create your own keystores using the Android Keystore tool available in Visual Studio 2017.
-
-1. Enter the following values (without quotation marks) in the "Signing credentials" panel:
-
-	- **KEYSTORE_PASSWORD** - "DroneLander"
-	- **KEY_ALIAS** - "DroneLanderKeystore"
-	- **KEY_PASSWORD** - "DroneLander"
-
-	Enable **Run a launch test on device** and **Distribute build** and click **Finish Setup**.
-
-1. Wait until you are notified that a build has been added to the queue, and then that the build has begun.
-
-	![Notification that a build is in progress](Images/web-build-building.png)
+	layout.Children.Add(marslabel);
+	layout.Children.Add(marsTimeLabel);
 	
-	_Notification that a build is in progress_ 
+	page.Content = layout;
+	```
 
-1. Wait until the build completes. Then click the **Download** button and select **Download build** from the menu to download a signed and verified Android package.
+1. Run the code and confirm that the following page appears in the Android emulator:
 
-	![Downloading the package](Images/web-successful-build.png)
+	![Android emulator showing earth time and Mars time](Images/app-view-earth-time.png)
+
+    _Android emulator showing earth time and Mars time_
+ 
+1. Now let's use a software timer to update the times shown on the page once a second. Begin by deleting the executable cell that was added when you ran the last cell and adding a documentation cell. Insert the following text into the documentation cell: 	
 	
-	_Downloading the package_ 
+	```
+	Use a timer to refresh the display once per second:
+	```
 
-Now that Visual Studio Mobile Center is configured to build the app, a new build will be initiated each time you check in changes to the GitHub repo. Now...wouldn't it be great if each person testing the app could be notified following each successful build? Visual Studio Mobile Center can help with that, too.
+1. Insert a new executable cell and enter the following code to start a device timer and update the app's UI every second:
+
+	```C#
+	Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+	{
+	    // LOCAL EARTH TIME
+	    earthTimeLabel.Text = DateTime.Now.ToString("hh:mm:ss tt");
+	
+	    // EARTH UTC TO MARTIAN TIME
+	    marsTimeLabel.Text = earthEpochDate.Add(DateTime.UtcNow.ToMartianTime()).ToString("hh:mm:ss tt");
+	    return true;
+	});
+	```
+
+1. Run the cell and confirm that the times shown in the emulator update in real time.
+
+1. The Xamarin Workbooks app includes a UI Inspector that lets you inspect values in the UI and adjust them without making permanent changes to your code. To open the inspector, click **View Inspector** in the lower-left corner of the Xamarin Workbooks window.
+
+	![Opening the Xamarin UI Inspector](Images/xw-select-inspector.png)
+
+    _Opening the Xamarin UI Inspector_
+ 
+1. Select **Xamarin.Forms** from the drop-down list to view the Xamarin Forms control tree. 
+
+	![Viewing the Xamarin Forms controls](Images/xw-select-xf.png)
+
+    _Viewing the Xamarin Forms controls_
+ 
+1. In the UI Inspector, click the first ```Label``` control to select that control. As an alternative, you can click the **select a view** button and then click "Earth Time" in the Android emulator. 
+
+	![Selecting the "Earth Time" Label control](Images/xw-select-label.png)
+
+    _Selecting the "Earth Time" Label control_
+
+1. Locate the ```TextColor``` property in the properties panel on the right and change the **R** value to 217 and the **A** (alpha transparency) property to 100%.
+
+	![Changing the Label control's foreground color](Images/change-textcolor.png)
+
+    _Changing the Label control's foreground color_ 
+
+1. Return to the Android emulator and confirm that "Earth Time" changed to red.
+
+	![Modified Label control in the emulator](Images/app-change-label-red.png)
+
+    _Modified Label control in the emulator_ 
+
+1. Repeat this process for the remaining three ```Label``` controls to change their text color to red.
+
+1. Select the ```ContentPage``` control.
+
+	![Selecting the ContentPage](Images/xw-select-page.png)
+
+    _Selecting the ContentPage_
+
+1. Find the ```BackgroundColor``` property in the properties panel and set the **R**, **G**, and **B** values to 0 and the **A** value to 100% to change the background color to black.
+
+1. Return to the Android emulator and confirm that it now displays red text against a black background.
+
+	![The updated UI using the inspector](Images/app-color-change.png)
+
+    _The updated UI using the inspector_ 
+
+1. Click the **refresh** button in the UI Inspector to update the preview shown there. If you would like, use your mouse to change the orientation of the preview.	
+
+	![Refreshing the UI preview](Images/xw-click-refresh.png)
+
+    _Refreshing the UI preview_ 
+
+The UI Inspector is great for examining the controls that form an app's UI and tweaking those controls as needed. Not all UI properties can be manipulated directly from the inspector, but most of them can.
 
 <a name="Exercise4"></a>
-## Exercise 4: Enable automated distribution ##
+## Exercise 4: Use the Xamarin Forms Previewer to preview XAML UIs ##
 
-In this exercise, you will configure Visual Studio Mobile Center to send e-mail notifications to a group of collaborators each time a new build is created. The e-mails will include a link that each tester can use use to the download the app and install it on his or her device. 
+When you create XAML UIs in Visual Studio by typing text and angle brackets, you don't know precisely how the UI will look until you run the app. Tweaking a UI often means repeatedly making changes to the XAML and rerunning the app to gauge the effect of those changes. But there is a better way. In this exercise, you will use Visual Studio 2017's integrated Xamarin Forms Previewer to see a live preview of the XAML that you enter. You will also learn how to use the previewer to see how the app will look on screens of various sizes.  
 
-1. Return to the build created in the previous exercise and click **Distribute**.
+1. Open the DroneLander solution in Visual Studio 2017. Then open **MainPage.xaml** in the **DroneLander (Portable)** project.
 
-	![Configuring build distributions](Images/web-click-distribute.png)
-	
-	_Configuring build distributions_ 
+	![MainPage.xaml in the XAML editor](Images/vs-main-page.png)
 
-1. Select the **Collaborators** distribution group, and then click **Next**. 
+    _MainPage.xaml in the XAML editor_ 
 
-	> The Collaborators group is created automatically when you configure build services in Visual Studio Mobile Center. You can create additional groups if desired, and you can add e-mail addresses to the Collaborators groups and to groups that you create.
+1. Use Visual Studio's **View** > **Other Windows** > **Xamarin.Forms Previewer** command to open the Xamarin Forms Previewer. Then use the **Window** > **New Vertical Tab Group** command to position the preview window next to the XAML editor.
 
-	![Selecting a distribution group](Images/web-select-distribution.png)
-	
-	_Selecting a distribution group_ 
+	![Previewing XAML in the Xamarin Forms Previewer](Images/vs-side-by-side.png)
 
-1. Optionally enter a short release note such as "My first release of Drone Lander." Then click **Distribute Build**.
+    _Previewing XAML in the Xamarin Forms Previewer_ 
 
-1. Check your e-mail and confirm that you received a message notifying you of a new release.
+	Observe that the preview window shows not only the XAML elements declared in **MainPage.xaml**, but also changes made at run-time by custom renderers. Most controls render perfectly in the Xamarin Forms Previewer, but be aware that some platform-specific elements such as the custom effect used to change the font on Android will not be seen until run-time.
 
-	![Build notification from Visual Studio Mobile Center](Images/mail-new-version.png)
-	
-	_Build notification from Visual Studio Mobile Center_ 
+1. As an experiment, change the case of the "Altitude" and "Descent Rate" labels in the XAML editor, and check out the corresponding changes in the Xamarin Forms Previewer.
 
-Feel free to add more testers to the Collaborators distribution group, or to create additional groups. Remember, users can install your app on their devices by simply clicking on the link in the email.
+	![Changes displayed in the Xamarin Forms Previewer](Images/vs-change-to-upper.png)
+
+    _Changes displayed in the Xamarin Forms Previewer_ 
+
+1. The Xamarin Forms Previewer also allows you to preview the UI in different form factors and orientations. To demonstrate, click **Tablet** in the preview window, and then click the **landscape mode icon** in the upper-right corner of the window to preview **MainPage.xaml** in landscape mode on a tablet.
+
+	![Previewing the UI on a tablet in landscape mode](Images/vs-change-orientation.png)
+
+    _Previewing the UI on a tablet in landscape mode_ 
+
+1. Finish up by undoing the case changes made to the labels in Step 3.
+
+The Xamarin Forms Previewer streamlines the development process by allowing you to see UI changes as you make them, and to do so without launching the app over and over again. But there's another tool you should be familiar with if you're doing Xamarin Forms development: the Xamarin Profiler.
 
 <a name="Exercise5"></a>
-## Exercise 5: Add crash analytics support to the app ##
+## Exercise 5: Analyze memory usage with the Xamarin Profiler ##
 
-In a perfect world, apps would never crash. In the real world, they sometimes do. The Visual Studio Mobile Center SDK makes it easy to add logic to a Xamarin Forms app to generate helpful analytics when crashes occur. In this exercise, you will add code to Drone Lander to configure it so that crash information can be viewed in Visual Studio Mobile Center, and you will test your changes by temporarily modifying your code to generate an unhandled exception when the app starts up. 
+Performance is crucial to any app. If an app performs sluggishly, users are liable to abandon it in favor of competing apps. In addition, memory leaks can degrade performance and cause crashes and must be avoided at all costs. The Xamarin Profiler included in Visual Studio Enterprise 2017 provides tools for measuring performance, identifying bottlenecks, finding memory leaks, and more. In this exercise, you will use the Xamarin Profiler to analyze memory usage in Drone Lander.
 
-1. Open the **DroneLander** solution in Visual Studio 2017 if it isn't already open. In Solution Explorer, right-click the solution and select **Manage NuGet Packages for Solution...**.
+> This exercise requires Visual Studio Enterprise 2017. If you are using the Community or Professional edition of Visual Studio 2017, simply read through this exercise to learn about the some of the profiler's features and capabilities.
 
-1. Ensure that "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Analytics" into the search box. Select the **Microsoft.Azure.Mobile.Analytics** package. Then check the **Project** box to add the package to all of the projects in the solution, and click **Install**. When prompted to review changes, click **OK**. 
+1. Use the **Tools** > **Xamarin Profiler** command in Visual Studio to start the Xamarin Profiler.
 
-1. Return to the NuGet Package Manager and once more ensure that "Browse" is selected. Type "Microsoft.Azure.Mobile.Crashes" into the search box and select the **Microsoft.Azure.Mobile.Crashes** package. Then check the **Project** box to add the package to all of the projects in the solution, and click **Install**. When prompted to review changes, click **OK**.
+1. Select **Performance** as the "target" and click **Choose** to run the app and start a profiling session.
 
-1. In Solution Explorer, open **App.xaml.cs** in the **DroneLander (Portable)** project. Then add the following statements at the top of the file:
+	![Starting a profiling session](Images/xp-choose-performance.png)
 
-	```C#
-	using Microsoft.Azure.Mobile;
-	using Microsoft.Azure.Mobile.Analytics;
-	using Microsoft.Azure.Mobile.Crashes;
-	```
+    _Starting a profiling session_ 
 
-1. Add the following code to the ```OnStart``` method:
+1. In the Xamarin Profiler window, change the "Group by" filter to **Assembly** to see which assemblies consume the most memory.
 
-	```C#
-	 MobileCenter.Start($"android={Common.MobileCenterConstants.AndroidAppId};" +
-                   $"ios={Common.MobileCenterConstants.iOSAppId}",
-                   typeof(Analytics), typeof(Crashes));
+	![Viewing top memory allocations by assembly](Images/xp-filter-assemblies.png)
 
-1. Open **CoreConstants.cs** in the **DroneLander (Portable)** project's "Common" folder, and add the following class directly below the ```CoreConstants``` class:
+    _Viewing top memory allocations by assembly_ 
 
-	```C#
-	public static class MobileCenterConstants
-    {
-        public const string AndroidAppId = "MOBILE_CENTER_ANDROID_APP_ID";
-        public const string iOSAppId = "";
-    }
-	```
+1. Switch to the Android emulator and start a landing attempt. Then immediately switch back to the Xamarin Profiler and observe how the memory allocations change over time. In particular, notice the gradual increase in memory consumption for Xamarin.Forms.Core.dll. 
 
-	These constants will be used by Mobile Center to track usage and crash information when your app starts.
+	![Monitoring memory allocations in real time](Images/xp-gradual-increase.png)
 
-1. Return to [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and open the Android version of **Drone Lander**.
+    _Monitoring memory allocations in real time_ 
 
-1. Click **Manage App** in the upper-right corner of the page. 
+	Although a gradual memory increase in a specific assembly may not pose an immediate problem, over time these resources will need to be disposed of or resource constraints could lead to unexpected behavior or even crashes. The increase in memory use by Xamarin.Forms.Core.dll indicates that this portion of the app might need to be scrutinized more carefully.
 
-1. Copy the value in the **App secret** box to the clipboard.
+1. Experiment with other profile instruments. For example, click **Call Tree** and then expand individual items to get a more granular view of resource allocations.
 
-1. Return to **CoreConstants.cs** and replace MOBILE_CENTER_ANDROID_APP_ID with the value on the clipboard.
-	 
-	![Updating the Android App ID](Images/vs-updated-android-id.png)
-	
-	_Updating the Android App ID_ 
+	![Monitoring memory allocations for individual resources](Images/xp-call-tree.png)
 
-1. Now it's time generate a crash report and see how it looks in Visual Studio Mobile Center. To do that, you will temporarily comment out a line of code in the app to generate a crash. Begin by opening **MainViewModels.cs** in the **DroneLander (Portable)** project's "ViewModels" folder. Then comment out the line of code that initializes ```this.ActiveLandingParameters``` in the ```MainViewModel``` constructor.
+    _Monitoring memory allocations for individual resources_ 
 
-	![Commenting out a line of code to induce a crash](Images/vs-comment-out.png)
-	
-	_Commenting out a line of code to induce a crash_
+1. Click the **Stop Profiling** button in the Xamarin Profiler toolbar to end the profiling session.
 
-1. Launch the Android version of Drone Lander in the debugger. Confirm that the app throws an unhandled exception when it starts. 
+	![Ending a profiling session](Images/xp-stop-profiling.png)
 
-	![The unhandled exception](Images/vs-new-exception.png)
-	
-	_The unhandled exception_
+    _Ending a profiling session_ 
 
-1. Crash data is initially stored on the local device, and is typically transmitted to Visual Studio Mobile Center the next time the app loads. In Visual Studio, return to **MainViewModel.cs** and uncomment the line of code that generates the unhandled exception. Use Visual Studio's **Debug** > **Start Without Debugging** command (or simply press **CTRL+F5**) to launch the app **without** the debugger attached. This will transmit the crash information stored on the local device to VSMC.
-
-1. Since you modified the Drone Lander code, now is a good time to commit the changes and sync with GitHub. Right-click the **DroneLander** solution and use the **Commit** command to commit your changes.
-
-1. Enter a comment such as "Added Mobile Center crash and analytics support." Then select **Commit All and Push** from the **Commit All** drop-down.
-
-	![Committing updates to GitHub](Images/vs-commit-all.png)
-	
-	_Committing updates to GitHub_
-
-1. Return to the [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and open **Drone Lander**.
-
-1. Click **Crashes** and take a moment to examine the various charts displaying crash information, as well as the entry at the bottom of the page representing the crash that occurred moments ago. 
-
-	> The crash may not appear in the portal for 10 minutes or so. If it's not there, proceed to Exercise 6 and return to the crash reports later. 
-
-1. Select the crash details for **Crash Group #1** and examine the stack trace for the crash that occurred. The stack trace identifies the ```MainViewModel``` constructor as the source of the crash, and ```System.NullReferenceException``` as the type of exception.
- 
-    ![Crash reporting in Visual Studio Mobile Center](Images/portal-new-crash-report.png)
-
-    _Crash reporting in Visual Studio Mobile Center_
-
-You have seen first-hand how Visual Studio Mobile Center supports automated builds and distribution and provides rich crash analytics. But this isn't all VSMC can do. It also provides back-end services for authenticating users and supports integrated testing, data syncing, and (soon) push notifications. For more information on VSMC and its various features, see https://docs.microsoft.com/en-us/mobile-center.
-
-<a name="Exercise6"></a>
-## Exercise 6 (optional): View launch test results ##
-
-Have some extra time and want to learn about an additional feature of Visual Studio Mobile Center?  In Exercise 3, you enabled **Run a launch test on device** when you configured your build settings, but you never did anything to utilize that setting. In this exercise, you will learn what that setting does and how you can view the information that it generates.
-
-1. Return to the [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and open **Drone Lander**.
-
-1. Select **Test** from the menu on the left and confirm that a test was run when the app launched, and that the test ran successfully.
-
-    ![The launch test results](Images/web-inital-test.png)
-
-    _The launch test results_
-	
-1. Click anywhere in the test panel to view a detail of the test results. Then click **App Launches Test**.
-
-    ![Viewing the test results](Images/web-test-detail.png)
-
-    _Viewing the test results_
-	 
-1. Examine the results of the test, which includes an indicator of how much RAM the app consumed and even a screen shot of the app itself.
-
-    ![Detailed launch-test information](Images/web-launch-screenshot.png)
-
-    _Detailed launch-test information_	
-
-This merely scratches the surface of what you can do with VSMC when it comes to testing. You will learn more about integration testing in Part 6, and learn how to include comprehensive tests in the build and distribution process.
+There is much more that you can do with the Xamarin Profiler, but this is a start. Other helpful features include the Time Profiler, which measures the execution times for individual method calls, and Cycles, which tracks references to objects that are not properly disposed of.
 
 <a name="Summary"></a>
 ## Summary ##
 
-That's it for Part 3 of Operation Remote Resupply. In Part 4, you will build an Azure back-end and modify the app to use it. Along the way, you will learn how to authenticate users, employ Azure data services, and even create your own mobile APIs.
+Xamarin Workbooks, the Xamarin Forms Previewer, and the Xamarin Profiler are powerful tools in the hands of developers building Xamarin Forms apps. In the next and final lab, you will supplement what you have learned so far by learning about some of the options available to you for testing Xamarin Forms apps — specifically, Xamarin UI Tests and the Xamarin Test Cloud.

@@ -6,21 +6,23 @@
 <a name="Overview"></a>
 ## Overview ##
 
-One of the benefits of working with Xamarin Forms is rich tooling support. Visual Studio 2017 enables developers to build Xamarin Forms apps for iOS, Android, and Windows, and test those apps on real hardware as well as in emulators. It also includes the [Xamarin Forms Previewer](https://developer.xamarin.com/guides/xamarin-forms/xaml/xaml-previewer/) for previewing XAML UIs, and the [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/) for profiling performance and memory use. 
+At present, Drone Lander app is a stand-alone app that doesn't connect to the cloud. In the real world, mobile apps frequently use cloud services to store data, authenticate users, enact push notifications, and more. Building cloud services for mobile apps frequently adds significant time and cost to the development process, and requires additional skills beyond those required to build client apps.  
 
-Additional tooling is available outside of Visual Studio. In particular, [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/) enable developers to create rich, interactive workbooks that include a mix of documentation and executable code and that optionally send output to *agents* hosted in Windows consoles, WPF, or mobile emulators. Xamarin Workbooks are similar to the [Jupyter notebooks](http://jupyter.org/) that are widely used in academia and are ideal for building tutorials, presentations, and other interactive teaching materials.
+[Azure Mobile Apps](https://azure.microsoft.com/en-us/services/app-service/mobile/) is an Azure service that simplifies the process of building back-end services for mobile apps. It supports authentication, push notifications, offline data syncing, and more. It also supports [Easy Tables](https://blog.xamarin.com/getting-started-azure-mobile-apps-easy-tables/), which make it easy to store data in the cloud, and Easy APIs, which make it extraordinarily easy to implement REST endpoints for client apps to call. In short, Azure Mobile Apps offer a comprehensive, scalable, and easily manageable platform for creating the kinds of back-end services that client apps often require.
 
-In this lab, you will use Xamarin Workbooks to create an interactive document that describes how to convert earth time to Mars time and that includes C# code to perform the conversion. You will also get first-hand experience using the Xamarin Previewer to preview XAML UIs and the Xamarin Profiler to analyze Xamarin Forms apps for potential trouble spots.
+In Part 5 of Operation Remote Resupply, you will provision an Azure Mobile App in the Azure Portal and connect it to a database. Then you will use Visual Studio 2017 to implement a back-end service for the Drone Lander app and modify the app so that it uses the service to store information regarding landing attempts in the cloud and transmit real-time telemetry as you descend to the Mars surface. That telemetry will be fed to a Mission Control app shown on the big screen at the front of the room so everyone can see the supply missions that are flown. Then you will compete to be the first to land — and hopefully not the last!
 
 <a name="Objectives"></a>
 ### Objectives ###
 
 In this lab, you will learn how to:
 
-- Build interactive presentations in Xamarin Workbooks
-- Use the Xamarin UI Inspector to examine and modify UIs created in Xamarin Workbooks
-- Use the Xamarin Forms Previewer to preview Xamarin Forms user interfaces in Visual Studio
-- Use the Xamarin Profiler to analyze memory consumption in Xamarin Forms apps
+- Create an Azure Mobile App
+- Write a back-end service that stores data in the cloud
+- Write a back-end service that exposes REST APIs
+- Deploy a back-end service to an Azure Mobile app
+- Authenticate users using an Azure Mobile App
+- Call back-end services from a client app
 
 <a name="Prerequisites"></a>
 ### Prerequisites ###
@@ -29,10 +31,7 @@ The following are required to complete this lab:
 
 - [Visual Studio Community 2017](https://www.visualstudio.com/vs/) or higher
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
-- [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/install/) for Windows
-- [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/#Download_and_Install) for Windows
-
-If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
+- An Microsoft Azure subscription. If you don't have one, [sign up for a free trial](http://aka.ms/WATK-FreeTrial)
 
 ---
 
@@ -41,457 +40,1051 @@ If you wish to build and run the iOS version of the app, you also have to have a
 
 This lab includes the following exercises:
 
-- [Exercise 1: Create a Xamarin Workbook for Android](#Exercise1)
-- [Exercise 2: Build an interactive workbook](#Exercise2)
-- [Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector](#Exercise3)
-- [Exercise 4: Use the Xamarin Forms Previewer to preview XAML UIs](#Exercise4)
-- [Exercise 5: Analyze memory usage with the Xamarin Profiler](#Exercise5)
-  
+- [Exercise 1: Create an Azure Mobile App](#Exercise1)
+- [Exercise 2: Add a data connection](#Exercise2)
+- [Exercise 3: Implement and deploy a back-end service](#Exercise3)
+- [Exercise 4: Configure the service to support authentication](#Exercise4)
+- [Exercise 5: Add authentication logic to Drone Lander](#Exercise5)
+- [Exercise 6: Update Drone Lander to authenticate users and record landings](#Exercise6)
+- [Exercise 7: Update Drone Lander to send telemetry to Mission Control](#Exercise7)
+ 
 Estimated time to complete this lab: **45** minutes.
 
 <a name="Exercise1"></a>
-## Exercise 1: Create a Xamarin Workbook for Android ##
+## Exercise 1: Create an Azure Mobile App ##
 
-Xamarin Workbooks are interactive documents created with the free [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/install/) app. Versions are available for the Mac and for Windows. Workbooks can be saved as .workbook files and shared with other developers. If you haven't already downloaded and installed Xamarin Workbooks, please do so now. In this exercise, you will create a Xamarin Workbook targeting Android devices and learn the basics of working with workbooks. 
+The first step in using Azure Mobile Apps to build a back end for a Xamarin Forms app — or any client app, for that matter — is to create an Azure Mobile App. In this exercise, you will use the Azure portal to create an Azure Mobile App for Drone Lander. Under the hood, an Azure Mobile App is simply an [Azure App Service](https://azure.microsoft.com/services/app-service/) that is capable of hosting Web sites and Web services. Later, you will build a service and deploy it to the Mobile App.
 
-1. Launch Xamarin Workbooks, select **Android** as the framework, and click **Create**. 
+1. Open the [Azure Portal](https://portal.azure.com) in your browser. If asked to sign in, do so using your Microsoft account.
+
+1. Click **+ New**, followed by **Web + Mobile** and **Mobile App**.
+
+	![Creating a new Azure Mobile App](Images/new-mobile-app.png)
+
+    _Creating a new Azure Mobile App_
+
+1. Enter an app name that is unique within Azure, such as "dronelandermobile001." Under **Resource Group**, select **Create new** and enter "DroneLanderResourceGroup" as the resource-group name to create a resource group for the Mobile App. Accept the default values for all other parameters, and then click **Create**.
     
-	![Creating a workbook for Android](Images/xw-select-android.png)
+	![Creating an Azure Mobile App](Images/portal-create-new-app.png)
 
-    _Creating a workbook for Android_
+    _Creating an Azure Mobile App_
 
-1. After a short delay, a blank Xamarin Workbook will be created, and Xamarin Workbooks will launch the default Android emulator. Wait for the emulator to appear and display a blank page like the one shown below.
+1. Click **Resource groups** in the ribbon on the left side of the portal, and then click **DroneLanderResourceGroup** to open the resource group.
+
+	![Opening the resource group](Images/open-resource-group.png)
+
+    _Opening the resource group_
+
+1. Click the **Refresh** button in the resource-group blade periodically until "Deploying" changes to "Succeeded," indicating that the Mobile App has been deployed.
  
-	![A blank Xamarin Workbook in the Android emulator](Images/app-blank-app.png)
-
-    _A blank Xamarin Workbook in the Android emulator_
-
-1. A Xamarin Workbook is composed of *cells*. There are two types of cells: executable cells and documentation cells. Executable cells contain C# code that can be executed inside the workbook. Documentation cells contain text that can be richly formatted. You build interactive workbooks by creating sequences of executable cells and documentation cells.
-
-	Return to Xamarin Workbooks and type the following line of code into the executable cell at the top of the workbook. Then press **Shift+Enter** to insert a blank line:
-
-	```C#
-	// This is an executable cell
-	```
-
-1. Enter the following line of code on the second line:
-
-	```C#
-	DateTime.Now;
-	```
-
-1. Click the **Run** button (or press **Ctrl+Enter**) to execute the code. 
-
-	![Running an executable cell](Images/ex1-run-code.png)
-
-    _Running an executable cell_
-
-1. Confirm that the result appears underneath the code. Use the drop-down under the **Default** button to try formatting the result in various ways.
-
-	![Results of executing a cell](Images/ex1-execution-result.png)
-
-    _Results of executing a cell_
-
-1. The three buttons in the lower-right corner of each cell allow you to add an executable cell, add a documentation cell, and delete the current cell, in that order. Click the third button in the cell that was added when you executed the code in the previous cell to delete it, and confirm the deletion when prompted to do so.
-
-	![Deleting the newly added cell](Images/ex1-delete-executable-cell.png)
-
-    _Deleting the newly added cell_
-
-1. Click the middle button in the remaining cell to add a documentation cell.
-
-	![Adding a documentation cell](Images/ex1-add-documentation-cell.png)
-
-    _Adding a documentation cell_
-
-1. Type "This is a documentation cell" into the documentation cell. Then highlight "documentation cell" and click the **Italics** button that appears above it.
-
-	![Italicizing text in a documentation cell](Images/ex1-italicize-text.png)
-
-    _Italicizing text in a documentation cell_
-
-1. Confirm that "documentation cell" is italicized. Then delete the documentation cell.
-
-	![Adding a documentation cell](Images/ex1-delete-documentation-cell.png)
-
-    _Adding a documentation cell_
-
-Now that you're familiar with basic workbook concepts, including adding, deleting, and executing cells, let's build something that's relevant to Operation Remote Resupply.
+Once the Azure Mobile App is deployed, you're ready for the next step: creating a database in Azure and connecting the Azure Mobile App to it.
 
 <a name="Exercise2"></a>
-## Exercise 2: Build an interactive workbook ##
+## Exercise 2: Add a data connection ##
 
-In this exercise, you will create a Xamarin Workbook that describes how to convert Earth time to Mars time, and that includes code to perform the conversion.
+Every front end needs a great back end, and back ends frequently store data and provide APIs for accessing that data. Azure Mobile Apps support the concept of "Easy" tables and APIs, as well as direct data connections that store data in either SQL databases or Azure blob storage. In this exercise, you will configure the Azure Mobile App you created in Exercise 1 to store data in an Azure SQL Database. *This is the database in which information about landing attempts will be recorded*.
 
-1. Add a documentation cell to the workbook and enter the following text:
+1. In the blade for the "DroneLanderResourceGroup" resource group, click the Azure Mobile App that you deployed in Exercise 1. (It will be listed as an "App Service," which is the family of services to which Azure Mobile Apps belong.) Then scroll down in the menu on the left side of the blade and click **Data connections**.
 
-	```
-	What time is it on Mars?
-	```
+	![Viewing data connections](Images/portal-select-data-connections.png)
 
-1. Format the text in the cell by selecting **Format** > **Heading** > **Level 1** from the overhead menu, and confirm that it assumes the format shown below.
-
-	![The workbook heading](Images/xw-completed-format.png)
-
-    _The workbook heading_
+    _Viewing data connections_
  
-1. Add another documentation cell. Then paste the following text into the cell to serve as an introduction to the workbook: 
-
-	```
-	Have you ever asked yourself what time it is on Mars? It's not an abstract question when you have settlers on Mars and need to communicate with them. Earth time can be converted to Mars time in a few simple steps.  
-	```
-
-1. Add a documentation cell to the workbook and insert the text below. Then highlight "Milliseconds Since January 1, 1970" and use the **Format** > **Heading** > **Level 2** command to format the text as a subheading.
-
-	```
-	Milliseconds Since January 1, 1970
-
-	The first step is to compute the number of milliseconds that have elapsed since January 1, 1970, in Universal Time:
-	```
-
-1. Insert a new executable cell and enter the following code:
-
-	```C#
-	DateTime value = DateTime.UtcNow;
-	DateTime earthEpochDate = new System.DateTime(1970, 1, 1);
-	double elapsedMilliseconds = (value - earthEpochDate).TotalMilliseconds;
-	```
-
-1. Click the **Run** button or press **Ctrl+Enter** to execute the code and display the number of milliseconds elapsed since January 1, 1970: 
-
-	![Computing the number of milliseconds elapsed since January 1, 1970](Images/xw-since-epoch-code.png)
-
-    _Computing the number of milliseconds elapsed since January 1, 1970_
+1. Click **+ Add** to add a new data connection.
  
-1. Delete the executable cell that was added when you ran the code. Then add a documentation cell, insert the following text, and format the first line as a level-2 subheading:
+1. Ensure **SQL Database** is selected. Then click **Configure required settings**, followed by **Create a new database**.
 
-	```
-	Julian Date (Universal Time)
+	![Creating a new database](Images/portal-configure-database.png)
 
-	The next step is to convert milliseconds into days and add the number of days between noon on January 1, 4713 B.C. and midnight on January 1, 1970 (2,440,587.5 days) to yield a Julian date: 
-	```
-
-1. Insert a new executable cell and enter the statement below. Then run it to compute a Julian date.
-
-	```C#
-	double epochJulianDate = 2440587.5 + (elapsedMilliseconds / (8.64 * Math.Pow(10, 7)));
-	```
-
-	![Computing a Julian date](Images/xw-julian-date-universal.png)
-
-    _Computing a Julian date_
-
-1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
-
-	```
-	Julian Date (Terrestrial Time)
-
-	Now convert the Julian date in Universal Time to a Julian date in Terrestrial Time by adding the number of leap seconds since January 1, 2017:
-	```
-
-1. Insert a new executable cell and enter the statement below. The run it to convert the Julian date to Terrestrial Time:
-
-	```C#
-	double terrestrialJulianDate = epochJulianDate + (37 + 32.184) / 86400;
-	```
-
-	![Converting Universal Time to Terrestrial Time](Images/xw-julian-date-terrestrial.png)
-
-    _Converting Universal Time to Terrestrial Time_
-
-1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
-
-	```
-	Julian Date Relative to January 1, 2000
-
-	Subtract the number of days between January 1, 1970 and January 1, 2000 to convert the terrestrial Julian date computed in the previous step into one that is relative to January 1, 2000:
-	```
-
-1. Insert a new executable cell and enter the statement below. Then run it to convert the Julian date into one that is relative to January 1, 2000:
-
-	```C#
-	double martianEpochDifference = terrestrialJulianDate - 2451545.0;
-	```
-
-	![Rebasing the Julian date](Images/xw-julian-date-j2000.png)
-
-    _Rebasing the Julian date_
-
-1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
-
-	```
-	Mars Sol Date
-
-	The equivalent of the Julian date for Mars is the Mars sol date. At midnight on January 6, 2000 on earth, it was midnight at the Martian prime meridian, so our starting point for Mars sol date is ΔJ2000 - 4.5. The length of a Martian day and Earth day differ by a ratio of 1.027491252, so we divide by that. By convention, to keep the Martial sol date positive going back to midday on December 29, 1873, we add 44,796. A slight adjustment of 0.00096 is required since the midnights aren't perfectly aligned:
-	```
-
-1. Insert a new executable cell and enter the statement below. Then run it to display the Martian sol date:
-
-	```C#
-	double martianSolDate = (((martianEpochDifference - 4.5) / 1.027491252) + 44796.0 - 0.00096);
-	```
-
-	![Computing the Martial sol date](Images/xw-sol-date.png)
-
-    _Computing the Martial sol date_
-
-1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
-
-	```
-	Mars Coordinated Time
-
-	Mars Coordinated Time (MTC) is like UTC, but for Mars. Because it is just a mean time, you can  calculate it based on the Mars Sol Date like this:
-	```
-
-1. Insert a new executable cell and enter the following statement. Then run it to display the current time in Mars Coordinated Time (MTC):
-
-	```C#
-	var mct = System.TimeSpan.FromHours((martianSolDate % 1) * 24);
-	mct.ToString("hh\\:mm\\:ss");
-	```
-
-	![Computing Mars Coordinated Time](Images/xw-mtc.png)
-
-    _Computing Mars Coordinated Time_
+    _Creating a new database_
  
-1. One of the cool things about Xamarin Workbooks is that you can do almost anything you would normally do in C#, including adding methods and extension methods. To demonstrate, add the following statements to the executable cell that was added when you ran the last one:
+1. Enter the name of your Azure Mobile App as the database name, and then click **Target server**.
 
-	```C#
-	static double ToMartianSolDate(this DateTime value)
-	{
-	    DateTime earthEpochDate = new System.DateTime(1970, 1, 1);
-	    double elapsedMilliseconds = (value - earthEpochDate).TotalMilliseconds;
-	    double epochJulianDate = 2440587.5 + (elapsedMilliseconds / (8.64 * Math.Pow(10, 7)));
-	    double terrestrialJulianDate = epochJulianDate + (37 + 32.184) / 86400;
-	    double martianEpochDifference = terrestrialJulianDate - 2451545.0;
-	    double martianSolDate = (((martianEpochDifference - 4.5) / 1.027491252) + 44796.0 - 0.00096);
-	    return martianSolDate;
-	}
-	
-	static TimeSpan ToMartianTime(this DateTime value)
-	{   
-	    return System.TimeSpan.FromHours((value.ToMartianSolDate() % 1) * 24);
-	}
-	```
+	> Using the same name for your Mobile App and SQL database is NOT a requirement. It is simply a convenience for working this lab.
 
-	These extension methods will come in handy when you add code to interact with the Android emulator in the next exercise.
+	![Naming a database](Images/portal-click-target-server.png)
 
-Xamarin Workbooks like this one are great for teaching concepts and letting users try out code implementing those concepts. Currently, however, the Android emulator still shows a blank page. Let's modify the workbook to use the emulator to show the current time on earth and on Mars. 
+    _Naming a database_
+ 
+1. Click **Create a new server** and enter "dronelandermobile001" as the server name. Enter a user name and password of your choosing for accessing the server, and then click **Select**.
+
+1. Click the **Select** button at the bottom of the "SQL Database" blade. Then click **Connection string** in the "Add data connection" blade, **OK** at the bottom of the "Connection String" blade, and **OK** at the bottom of the "Add data connection" blade.
+
+	> Since you will use a "quickstart" project in the next exercise to implement a back-end service, it's important that you accept the default connection string name of "MS_TableConnectionString." You could change the connection-string name, but you would have to change it in the quickstart code as well.
+
+	![Adding a data connection](Images/portal-accept-connection-string.png)
+
+    _Adding a data connection_
+ 
+Provisioning the database and database server will take a few minutes, but there's no need to wait. You can move on to the next exercise and begin writing the back-end service that you will deploy to the Azure Mobile App.
 
 <a name="Exercise3"></a>
-## Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector ##
+## Exercise 3: Implement and deploy a back-end service ##
 
-Xamarin Workbooks can include code that creates UIs from XAML controls and displays them in the agent accompanying the workbook — in this case, the app running in the Android emulator. Furthermore, Xamarin Workbooks features an integrated UI Inspector that is perfect for examining the controls you created and adjusting control properties to fine-tune the UI.
+In this exercise, you will use Visual Studio to write a service and deploy it to the Azure Mobile App. The service will include two MVC controllers: one that exposes REST-callable methods for writing information about landing attempts to the database you created in the previous step (and for retrieving that information once written), and one that exposes REST-callable methods for transmitting telemetry data — altitude, descent rate, fuel remaining, thrust, and so on — to Mission Control, where it can be displayed for all to see on the big screen at the front of the room.
 
-In this exercise, you will enhance the workbook you built in Exercise 2 to show the current earth time and Mars time in the Android emulator, and learn how to use the Xamarin UI Inspector to inspect and modify control properties.
+1. In Visual Studio 2017, open the **DroneLander** solution that you built in previous labs.
 
-1. Add an executable cell to the workbook. Then select **File** > **Add Package...** from the overhead menu and type "Xamarin.Forms" into the search box. Select the latest **Xamarin.Forms** package, and then click **Add Package** to add the package to the workbook.
+1. Right-click the **DroneLander** solution and use the **Add** > **Existing Project...** command to add **DroneLander.Backend.csproj** from the lab's "Resources\Quick Start\DroneLander.Backend" folder. This is a quick-start project for creating a back-end service for Azure Mobile Apps.
 
-	> One of the most powerful features of Xamarin Workbooks is that you can import NuGet packages just like you can in Visual Studio. Once a package is imported, C# code that you add to the workbook can use the types in that package.
-
-	![Adding Xamarin.Forms to a workbook](Images/xw-add-package.png)
-
-    _Adding Xamarin.Forms to a workbook_
+	> You can click **Quickstart** in the blade for an Azure Mobile App in the Azure Portal and download quick-start projects of various types. Because these projects contain infrastructure you don't need and would have to be modified anyway, you are importing a project that has been specifically prepared for this lab.
  
-1. Confirm that three ```#r``` statements appear referencing the assemblies imported from the package.
-
-	![Statements referencing Xamarin Forms assemblies](Images/xw-references-added.png)
-
-    _Statements referencing Xamarin Forms assemblies_
- 
-1. In the new executable cell that appears in the workbook, insert the following ```using``` statement and then run it:
- 
-	```C#
-	using Xamarin.Forms;
-	```
-
-1. Delete the executable cell that was added when you ran the code. Add a new documentation cell and insert the following text: 
-
-	```
-	Add controls to display the current time on earth and on Mars:
-	```
-
-1. Insert a new executable cell and enter the following statements:
- 
-	```C#
-	var page = Xamarin.Forms.Application.Current.MainPage as ContentPage;
-	var layout = new StackLayout() { Margin = new Thickness(40) };
-	var earthlabel = new Label() { Text = "Earth Time:", FontSize = 32 };
-	var earthTimeLabel = new Label() { Text = DateTime.Now.ToString("hh:mm:ss tt"), FontSize = 32 };
-	
-	layout.Children.Add(earthlabel);
-	layout.Children.Add(earthTimeLabel);
-	
-	var marslabel = new Label() { Text = "Martian Time:", FontSize = 32 };
-	var marsTimeLabel = new Label() { Text = earthEpochDate.Add(mct).ToString("hh:mm:ss tt"), FontSize = 32 };
-	
-	layout.Children.Add(marslabel);
-	layout.Children.Add(marsTimeLabel);
-	
-	page.Content = layout;
-	```
-
-1. Run the code and confirm that the following page appears in the Android emulator:
-
-	![Android emulator showing earth time and Mars time](Images/app-view-earth-time.png)
-
-    _Android emulator showing earth time and Mars time_
- 
-1. Now let's use a software timer to update the times shown on the page once a second. Begin by deleting the executable cell that was added when you ran the last cell and adding a documentation cell. Insert the following text into the documentation cell: 	
-	
-	```
-	Use a timer to refresh the display once per second:
-	```
-
-1. Insert a new executable cell and enter the following code to start a device timer and update the app's UI every second:
+1. Add a folder named "Controllers" to the **DroneLander.Backend** project. Right-click the "Controllers" folder and use the **Add** > **Class** command to add a class file named **ActivityItemController.cs**. Then replace the contents of the file with the following code:
 
 	```C#
-	Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+	using System.Linq;
+	using System.Threading.Tasks;
+	using System.Web.Http;
+	using System.Web.Http.Controllers;
+	using System.Web.Http.OData;
+	using Microsoft.Azure.Mobile.Server;
+	using DroneLander.Service.Models;
+	using DroneLander.Service.DataObjects;
+	
+	namespace DroneLander.Service.Controllers
 	{
-	    // LOCAL EARTH TIME
-	    earthTimeLabel.Text = DateTime.Now.ToString("hh:mm:ss tt");
+	    public class ActivityItemController : TableController<ActivityItem>
+	    {
+	        protected override void Initialize(HttpControllerContext controllerContext)
+	        {
+	            base.Initialize(controllerContext);
+	            DroneLanderServiceContext context = new DroneLanderServiceContext();
+	            DomainManager = new EntityDomainManager<ActivityItem>(context, Request);
+	        }
 	
-	    // EARTH UTC TO MARTIAN TIME
-	    marsTimeLabel.Text = earthEpochDate.Add(DateTime.UtcNow.ToMartianTime()).ToString("hh:mm:ss tt");
-	    return true;
-	});
+	        // GET tables/ActivityItem
+	        public IQueryable<ActivityItem> GetAllActivityItems()
+	        {
+	            return Query();
+	        }
+	
+	        // GET tables/ActivityItem/48D68C86-6EA6-4C25-AA33-223FC9A27959
+	        public SingleResult<ActivityItem> GetActivityItem(string id)
+	        {
+	            return Lookup(id);
+	        }
+	
+	        // PATCH tables/ActivityItem/48D68C86-6EA6-4C25-AA33-223FC9A27959
+	        public Task<ActivityItem> PatchActivityItem(string id, Delta<ActivityItem> patch)
+	        {
+	            return UpdateAsync(id, patch);
+	        }
+	
+	        // POST tables/ActivityItem
+	        public async Task<IHttpActionResult> PostActivityItem(ActivityItem item)
+	        {
+	            ActivityItem current = await InsertAsync(item);
+	            return CreatedAtRoute("Tables", new { id = current.Id }, current);
+	        }
+	
+	        // DELETE tables/ActivityItem/48D68C86-6EA6-4C25-AA33-223FC9A27959
+	        public Task DeleteActivityItem(string id)
+	        {
+	            return DeleteAsync(id);
+	        }
+	    }
+	}
 	```
 
-1. Run the cell and confirm that the times shown in the emulator update in real time.
+	This controller uses the data connection you created in the previous exercise to access an "ActivityItem" table in the database. ```ActivityItemController``` derives from ```TableController```, which provides a base implementation for controllers in Azure Mobile Apps and makes it easy to perform create, read, update, and delete (CRUD) operations on data stores connected to those apps.
 
-1. The Xamarin Workbooks app includes a UI Inspector that lets you inspect values in the UI and adjust them without making permanent changes to your code. To open the inspector, click **View Inspector** in the lower-left corner of the Xamarin Workbooks window.
+1. Right-click the "Controllers" folder again and use the **Add** > **Class** command to add a class file named **TelemetryController.cs**. Then replace the contents of the file with the following code:
 
-	![Opening the Xamarin UI Inspector](Images/xw-select-inspector.png)
+	```C#
+	using System.Web.Http;
+	using System.Web.Http.Tracing;
+	using Microsoft.Azure.Mobile.Server;
+	using Microsoft.Azure.Mobile.Server.Config;
+	using System.Threading.Tasks;
+	using DroneLander.Service.DataObjects;
+	
+	namespace DroneLander.Service.Controllers
+	{    
+	    [MobileAppController]
+	    public class TelemetryController : ApiController
+	    {
+	        // GET api/telemetry
+	        public string Get()
+	        {
+	            MobileAppSettingsDictionary settings = this.Configuration.GetMobileAppSettingsProvider().GetMobileAppSettings();
+	            
+	            string host = settings.HostName ?? "localhost";
+	            string greeting = $"Hello {host}. You are currently connected to Mission Control";
+	           
+	            return greeting;
+	        }
+	
+	        // POST api/telemetry
+	        public async Task<string> Post(TelemetryItem telemetry)
+	        {
+	            await Helpers.TelemetryHelper.SendToMissionControlAsync(telemetry);
+	            return $"Telemetry for {telemetry.UserId} received by Mission Control.";
+	        }
+	    }
+	}
+	```
 
-    _Opening the Xamarin UI Inspector_
+	Note the ```[MobileAppController]``` attribute decorating the class definition. This attribute designates an ```ApiController``` as an Azure Mobile App controller, meaning it can be accessed through the Azure Mobile SDK using standard APIs. ```TelemetryController``` is responsible for sending real-time telemetry to Earth-based Mission Control to monitor the progress of landing attempts. 
  
-1. Select **Xamarin.Forms** from the drop-down list to view the Xamarin Forms control tree. 
+1. To ensure that your transmissions are properly routed to Mission Control, you need to insert a mission event name. Open **CoreConstants.cs** in the "Common" folder of the **DroneLander.Backend** project, locate the field named ```MissionEventName```, and replace "[ENTER_MISSION_EVENT_NAME]" with the value given to you at the start of the event.
 
-	![Viewing the Xamarin Forms controls](Images/xw-select-xf.png)
+	![Updating the mission event name](Images/vs-mission-name.png)
 
-    _Viewing the Xamarin Forms controls_
+    _Updating the mission event name_
+
+1. The next step is to publish the service to the cloud. Right-click the **DroneLander.Backend** project and select **Publish...** from the context menu. Then choose **Select Existing** and click **Publish**. 
+
+	![Publishing an Azure Mobile App](Images/vs-publish-to-existing.png)
+
+    _Publishing an Azure Mobile App_ 
+
+1. Select the Azure Mobile App you created in Exercise 1. Then click **OK** to begin the publishing process. 
  
-1. In the UI Inspector, click the first ```Label``` control to select that control. As an alternative, you can click the **select a view** button and then click "Earth Time" in the Android emulator. 
+1. Wait until your browser opens to the default Azure Mobile App landing page, indicating that the service was successfully deployed.
 
-	![Selecting the "Earth Time" Label control](Images/xw-select-label.png)
+	![The default Azure Mobile App landing page](Images/web-mobile-app-success.png)
 
-    _Selecting the "Earth Time" Label control_
+    _The default Azure Mobile App landing page_ 
 
-1. Locate the ```TextColor``` property in the properties panel on the right and change the **R** value to 217 and the **A** (alpha transparency) property to 100%.
-
-	![Changing the Label control's foreground color](Images/change-textcolor.png)
-
-    _Changing the Label control's foreground color_ 
-
-1. Return to the Android emulator and confirm that "Earth Time" changed to red.
-
-	![Modified Label control in the emulator](Images/app-change-label-red.png)
-
-    _Modified Label control in the emulator_ 
-
-1. Repeat this process for the remaining three ```Label``` controls to change their text color to red.
-
-1. Select the ```ContentPage``` control.
-
-	![Selecting the ContentPage](Images/xw-select-page.png)
-
-    _Selecting the ContentPage_
-
-1. Find the ```BackgroundColor``` property in the properties panel and set the **R**, **G**, and **B** values to 0 and the **A** value to 100% to change the background color to black.
-
-1. Return to the Android emulator and confirm that it now displays red text against a black background.
-
-	![The updated UI using the inspector](Images/app-color-change.png)
-
-    _The updated UI using the inspector_ 
-
-1. Click the **refresh** button in the UI Inspector to update the preview shown there. If you would like, use your mouse to change the orientation of the preview.	
-
-	![Refreshing the UI preview](Images/xw-click-refresh.png)
-
-    _Refreshing the UI preview_ 
-
-The UI Inspector is great for examining the controls that form an app's UI and tweaking those controls as needed. Not all UI properties can be manipulated directly from the inspector, but most of them can.
+The mobile back-end is now in place, and it contains methods that double as REST endpoints that can be called from the Drone Lander app to record landing attempts and transmit telemetry data. In a few minutes, you will modify the client app to call these endpoints. But first, let's talk about authentication.
 
 <a name="Exercise4"></a>
-## Exercise 4: Use the Xamarin Forms Previewer to preview XAML UIs ##
+## Exercise 4: Configure the service to support authentication ##
 
-When you create XAML UIs in Visual Studio by typing text and angle brackets, you don't know precisely how the UI will look until you run the app. Tweaking a UI often means repeatedly making changes to the XAML and rerunning the app to gauge the effect of those changes. But there is a better way. In this exercise, you will use Visual Studio 2017's integrated Xamarin Forms Previewer to see a live preview of the XAML that you enter. You will also learn how to use the previewer to see how the app will look on screens of various sizes.  
+Many mobile apps — especially enterprise apps — require users to sign in before accessing features and services. Authentication can be complicated, especially if you wish to use protocols such as [OAuth](https://en.wikipedia.org/wiki/OAuth) and support sign-ins using Microsoft accounts and social-media accounts. Azure Mobile Apps simplify the creation of apps that require authentication by providing built-in support for popular federated-identity providers, including Azure Active Directory, Facebook, Google, Microsoft, and Twitter. In this exercise, you will configure the service you deployed in the previous exercise to support authentication and modify it to ignore calls from unauthenticated users.   
+ 
+1. Navigate to the [Microsoft Application Registration portal](https://apps.dev.microsoft.com/) in your browser and sign in with your Microsoft account.
 
-1. Open the DroneLander solution in Visual Studio 2017. Then open **MainPage.xaml** in the **DroneLander (Portable)** project.
+1. Click **Add an app** at the top of the "Live SDK applications" section.
 
-	![MainPage.xaml in the XAML editor](Images/vs-main-page.png)
+	![Registering an app](Images/web-add-an-app.png)
 
-    _MainPage.xaml in the XAML editor_ 
+    _Registering an app_ 
 
-1. Use Visual Studio's **View** > **Other Windows** > **Xamarin.Forms Previewer** command to open the Xamarin Forms Previewer. Then use the **Window** > **New Vertical Tab Group** command to position the preview window next to the XAML editor.
+1. Enter "Drone Lander" as the app name and click **Create Application**.
 
-	![Previewing XAML in the Xamarin Forms Previewer](Images/vs-side-by-side.png)
+1. Scroll down and click the **Add URL** button next to "Redirect URLs." Then enter the following URL, replacing "[YOUR_MOBILE_APP_NAME]" with the name of the Azure Mobile App you created in Exercise 1. 
 
-    _Previewing XAML in the Xamarin Forms Previewer_ 
+	```
+	https://[YOUR_MOBILE_APP_NAME].azurewebsites.net/.auth/login/microsoftaccount/callback
+	```
 
-	Observe that the preview window shows not only the XAML elements declared in **MainPage.xaml**, but also changes made at run-time by custom renderers. Most controls render perfectly in the Xamarin Forms Previewer, but be aware that some platform-specific elements such as the custom effect used to change the font on Android will not be seen until run-time.
+	![Adding a redirect URL](Images/web-add-redirect.png)
 
-1. As an experiment, change the case of the "Altitude" and "Descent Rate" labels in the XAML editor, and check out the corresponding changes in the Xamarin Forms Previewer.
+    _Adding a redirect URL_ 
 
-	![Changes displayed in the Xamarin Forms Previewer](Images/vs-change-to-upper.png)
+1. Click the **Save** button at the bottom of the page. 
 
-    _Changes displayed in the Xamarin Forms Previewer_ 
+	![Saving registration changes](Images/web-save-registration-changes.png)
 
-1. The Xamarin Forms Previewer also allows you to preview the UI in different form factors and orientations. To demonstrate, click **Tablet** in the preview window, and then click the **landscape mode icon** in the upper-right corner of the window to preview **MainPage.xaml** in landscape mode on a tablet.
+    _Saving registration changes_ 
 
-	![Previewing the UI on a tablet in landscape mode](Images/vs-change-orientation.png)
+1. Scroll to the top of the page and copy the application ID and the application secret into Notepad or your favorite text editor.
 
-    _Previewing the UI on a tablet in landscape mode_ 
+	![Copying the application ID and application secret](Images/copy-application-id.png)
 
-1. Finish up by undoing the case changes made to the labels in Step 3.
+    _Copying the application ID and application secret_ 
 
-The Xamarin Forms Previewer streamlines the development process by allowing you to see UI changes as you make them, and to do so without launching the app over and over again. But there's another tool you should be familiar with if you're doing Xamarin Forms development: the Xamarin Profiler.
+1. Return to the [Azure Portal](https://portal.azure.com) and to the blade for the Azure Mobile App you created in Exercise 1. Click **Authentication / Authorization** in the menu on the left. Then turn "App Service Authentication" **On** and select **Microsoft** from the list of authentication providers.  
+
+	![Selecting the Microsoft authentication provider](Images/web-select-microsoft-authentication.png)
+
+    _Selecting the Microsoft authentication provider_ 
+
+1. Paste the application ID into the **Client Id** field and the application secret into the **Client Secret** field in the "Microsoft Account Authentication Settings" blade. Make sure the values you entered do not have any leading or trailing spaces, and then click **OK**.
+
+	![Entering client secrets](Images/web-save-authentication-settings.png)
+
+    _Entering client secrets_ 
+
+1. Click **Save** at the top of the blade to save the settings that you just entered.
+
+1. Azure Mobile App authentication can be applied at any level, from an entire service to a single method exposed by that service. You will apply it at the class level by adding special attributes to the controller classes you created in the previous exercise.
+
+	Return to the DroneLander solution in Visual Studio 2017. Open **ActivityItemController.cs** in the **DroneLander.Backend** project's "Controllers" folder and locate the ```ActivityItemController``` class near the top of the file. Then add an ```[Authorize]``` attribute to the class:
+
+	![Attributing the controller class](Images/vs-add-authorize-attribute.png)
+
+    _Attributing the controller class_ 
+
+	The presence of this attribute means that calls to any of the controller's methods from unauthenticated users will be rejected. 
+
+1. Open **TelemetryController.cs** and add an ```[Authorize]``` attribute to the ```TelemetryController``` class, directly above the ```[MobileAppController]``` attribute that is already there. Now ```TelemetryContoller``` methods will require authentication, too.
+
+1. Right-click the **DroneLander.Backend** project and use the **Publish...** command to publish your changes to Azure.
+
+With authentication support in place on the back end, the next step is to update your Xamarin Forms solution to leverage that support.
 
 <a name="Exercise5"></a>
-## Exercise 5: Analyze memory usage with the Xamarin Profiler ##
+## Exercise 5: Add authentication logic to Drone Lander ##
 
-Performance is crucial to any app. If an app performs sluggishly, users are liable to abandon it in favor of competing apps. In addition, memory leaks can degrade performance and cause crashes and must be avoided at all costs. The Xamarin Profiler included in Visual Studio Enterprise 2017 provides tools for measuring performance, identifying bottlenecks, finding memory leaks, and more. In this exercise, you will use the Xamarin Profiler to analyze memory usage in Drone Lander.
+The [Azure Mobile Client SDK](https://www.nuget.org/packages/Microsoft.Azure.Mobile.Client/) simplifies the process of adding authentication support to Xamarin Forms apps. When paired with an Azure Mobile App on the server, a single call is sufficient to sign a user in using an SDK-provided login page that is customized for individual identity providers, or to sign a user out. Moreover, you can retrieve information about authenticated users in order to customize the user experience. For more information about how the process works, see [Authentication and Authorization in Azure Mobile Apps](https://docs.microsoft.com/en-us/azure/app-service-mobile/app-service-mobile-auth).
 
-> This exercise requires Visual Studio Enterprise 2017. If you are using the Community or Professional edition of Visual Studio 2017, simply read through this exercise to learn about the some of the profiler's features and capabilities.
+In this exercise, you will add logic to the Drone Lander app to support signing users in and out. In Exercise 6, you will close the circle by modifying the app's UI to support this logic.
 
-1. Use the **Tools** > **Xamarin Profiler** command in Visual Studio to start the Xamarin Profiler.
+1. In Visual Studio, open the Nuget Package Manager by right-clicking the **DroneLander** solution and selecting **Manage NuGet Packages for Solution...**. 
 
-1. Select **Performance** as the "target" and click **Choose** to run the app and start a profiling session.
+1. Ensure "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Client" into the search box. Select the **Microsoft.Azure.Mobile.Client** package. Then check the **Project** box to add the package to all of the projects in the solution, and click **Install**. When prompted to review changes, click **OK**. 
 
-	![Starting a profiling session](Images/xp-choose-performance.png)
+1. Open **CoreConstants.cs** in the **DroneLander (Portable)** project's "Common" folder, and add the following class directly below the ```CoreConstants``` class, replacing "[YOUR_MOBILE_APP_NAME]" with the name of the Azure Mobile App created in Exercise 1.
 
-    _Starting a profiling session_ 
+	```C#
+	public static class MobileServiceConstants
+    {
+        public const string AppUrl = "https://[YOUR_MOBILE_APP_NAME].azurewebsites.net";
+    }
+	```
 
-1. In the Xamarin Profiler window, change the "Group by" filter to **Assembly** to see which assemblies consume the most memory.
+	![Updating the app URL](Images/vs-mobile-service-constants.png)
+	
+	_Updating the app URL_ 
 
-	![Viewing top memory allocations by assembly](Images/xp-filter-assemblies.png)
+1. Right-click the **DroneLander (Portable)** project and use the **Add** > **New Folder** command to add a folder named "Data" to the project. Right-click the "Data" folder and use the **Add** > **Class** command to add a class file named **TelemetryManager.cs**. Then replace the contents of the file with the following code:
 
-    _Viewing top memory allocations by assembly_ 
+	```C#
+	using System;
+	using System.Collections.Generic;
+	using System.Collections.ObjectModel;
+	using System.Diagnostics;
+	using System.Linq;
+	using System.Text;
+	using System.Threading.Tasks;
+	using Microsoft.WindowsAzure.MobileServices;
+	
+	namespace DroneLander
+	{
+	    public partial class TelemetryManager
+	    {
+	        static TelemetryManager defaultInstance = new TelemetryManager();
+	        MobileServiceClient client;
+	
+	        private TelemetryManager()
+	        {
+	            this.client = new MobileServiceClient(Common.MobileServiceConstants.AppUrl);
+	        }
+	
+	        public static TelemetryManager DefaultManager
+	        {
+	            get
+	            {
+	                return defaultInstance;
+	            }
+	            private set
+	            {
+	                defaultInstance = value;
+	            }
+	        }
+	
+	        public MobileServiceClient CurrentClient
+	        {
+	            get { return client; }
+	        }
+	    }
+	}
+	```
+ 
+	```TelemetryManager``` is a helper class for calling SDK methods from platform-specific code.
 
-1. Switch to the Android emulator and start a landing attempt. Then immediately switch back to the Xamarin Profiler and observe how the memory allocations change over time. In particular, notice the gradual increase in memory consumption for Xamarin.Forms.Core.dll. 
+1. Right-click the "Services" folder in the **DroneLander (Portable)** project and use the **Add** > **Class** command to add a class file named **IAuthenticationService.cs**. Then replace the ```IAuthenticationService``` class with the following interface definition:
 
-	![Monitoring memory allocations in real time](Images/xp-gradual-increase.png)
+	```C#
+	public interface IAuthenticationService
+    {
+        Task<bool> SignInAsync();
+        Task<bool> SignOutAsync();
+    }
+	```
+1. Still in the **DroneLander (Portable)** project, open **App.xaml.cs** and add the following statements above the ```App``` constructor:
 
-    _Monitoring memory allocations in real time_ 
+	```C#
+	public static Services.IAuthenticationService Authenticator { get; private set; }
 
-	Although a gradual memory increase in a specific assembly may not pose an immediate problem, over time these resources will need to be disposed of or resource constraints could lead to unexpected behavior or even crashes. The increase in memory use by Xamarin.Forms.Core.dll indicates that this portion of the app might need to be scrutinized more carefully.
+    public static void InitializeAuthentication(Services.IAuthenticationService authenticator)
+    {
+        Authenticator = authenticator;
+    }
+	```
 
-1. Experiment with other profile instruments. For example, click **Call Tree** and then expand individual items to get a more granular view of resource allocations.
+1.  Open **MainActivity.cs** in the **DroneLander.Android** project and add the following ```using``` statements to the top of the file:
 
-	![Monitoring memory allocations for individual resources](Images/xp-call-tree.png)
+	```C#
+	using Microsoft.WindowsAzure.MobileServices;
+	using System.Threading.Tasks;
+	using DroneLander.Services;
+	```
 
-    _Monitoring memory allocations for individual resources_ 
+1. Still in **MainActivity.cs**, update the ```MainActivity``` class to implement the ```IAuthenticationService``` interface by adding the following code (including the leading comma) to the end of the class definition:
 
-1. Click the **Stop Profiling** button in the Xamarin Profiler toolbar to end the profiling session.
+	```C#
+	, IAuthenticationService
+	```
 
-	![Ending a profiling session](Images/xp-stop-profiling.png)
+1. Replace the ```OnCreate``` method with the following implementation:
 
-    _Ending a profiling session_ 
+	```C#
+	protected override void OnCreate(Bundle bundle)
+    {
+        TabLayoutResource = Resource.Layout.Tabbar;
+        ToolbarResource = Resource.Layout.Toolbar;
 
-There is much more that you can do with the Xamarin Profiler, but this is a start. Other helpful features include the Time Profiler, which measures the execution times for individual method calls, and Cycles, which tracks references to objects that are not properly disposed of.
+        base.OnCreate(bundle);
+
+        App.InitializeAuthentication((IAuthenticationService)this);
+
+        global::Xamarin.Forms.Forms.Init(this, bundle);
+        LoadApplication(new App());
+    }
+	```
+
+1. Add the following statements to support signing in and out of the mobile service on Android:
+
+	```C#
+    MobileServiceUser user = null;
+
+    public async Task<bool> SignInAsync()
+    {
+        bool isSuccessful = false;
+
+        try
+        {
+            user = await TelemetryManager.DefaultManager.CurrentClient.LoginAsync(this, MobileServiceAuthenticationProvider.MicrosoftAccount);
+            isSuccessful = user != null;
+        }
+        catch { }
+
+        return isSuccessful;
+    }
+
+    public async Task<bool> SignOutAsync()
+    {
+        bool isSuccessful = false;
+
+        try
+        {
+            await TelemetryManager.DefaultManager.CurrentClient.LogoutAsync();
+            isSuccessful = true;
+        }
+        catch { }
+
+        return isSuccessful;
+    }
+	```
+
+1. Now let's add support for signing in and out to the iOS version of DroneLander. Open **AppDelegate.cs** in the **DroneLander.iOS** project and add the following ```using``` statements to the top of the file:
+
+	```C#
+	using Microsoft.WindowsAzure.MobileServices; 
+	using System.Threading.Tasks;
+	using DroneLander.Services;
+	```
+
+1. Still in **AppDelegate.cs**, update the ```AppDelegate``` class to implement the ```IAuthenticationService``` interface by adding the following code (including the leading comma) to the end of the class definition:
+
+	```C#
+	, IAuthenticationService
+	```
+
+1. Replace the ```FinishedLaunching``` method with the following implementation:
+
+	```C#
+	public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+    {
+        App.InitializeAuthentication((IAuthenticationService)this);
+
+        global::Xamarin.Forms.Forms.Init();
+        LoadApplication(new App());
+
+        return base.FinishedLaunching(app, options);
+    }
+	```
+
+1. Add the following statements to support signing in and out of the mobile service on iOS:
+
+	```C#
+    MobileServiceUser user = null;
+
+    public async Task<bool> SignInAsync()
+    {
+        bool successful = false;
+
+        try
+        {
+            user = await TelemetryManager.DefaultManager.CurrentClient.LoginAsync(UIApplication.SharedApplication.KeyWindow.RootViewController, MobileServiceAuthenticationProvider.MicrosoftAccount);
+
+            successful = user != null;
+        }
+        catch { }
+
+        return successful;
+    }
+
+    public async Task<bool> SignOutAsync()
+    {
+        bool isSuccessful = false;
+
+        try
+        {
+            await TelemetryManager.DefaultManager.CurrentClient.LogoutAsync();
+            isSuccessful = true;
+        }
+        catch { }
+
+        return isSuccessful;
+    }
+	```
+
+1. Finally, you need to add support for signing in and out to the Windows version of the app. Open **MainPage.xaml.cs** in the **DroneLander.UWP** project and add the following ```using``` statements to the top of the file:
+
+	```C#
+	using Microsoft.WindowsAzure.MobileServices; 
+	using System.Threading.Tasks;
+	using DroneLander.Services;
+	``` 
+
+1. Still in **MainPage.xaml.cs**, update the ```MainPage``` class to implement the ```IAuthenticationService``` interface by adding the following code (including the leading colon) to the end of the class definition:
+
+	```C#
+	: IAuthenticationService
+	```
+
+1. Replace the ```MainPage``` constructor with the following implementation:
+
+	```C#
+	public MainPage()
+    {
+        this.InitializeComponent();
+        DroneLander.App.InitializeAuthentication((IAuthenticationService)this);
+        LoadApplication(new DroneLander.App());
+    }
+	```
+
+1. Add the following statements to support signing in and out of the mobile service on Windows:
+
+	```C#
+    MobileServiceUser user = null;
+
+    public async Task<bool> SignInAsync()
+    {
+        bool successful = false;
+
+        try
+        {
+            user = await TelemetryManager.DefaultManager.CurrentClient.LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount);
+            successful = user != null;
+        }
+        catch { }
+
+        return successful;
+    }
+
+    public async Task<bool> SignOutAsync()
+    {
+        bool isSuccessful = false;
+
+        try
+        {
+            await TelemetryManager.DefaultManager.CurrentClient.LogoutAsync();
+            isSuccessful = true;
+        }
+        catch { }
+
+        return isSuccessful;
+    }
+	```
+
+That may seem like a lot of code, but notice that the platform-specific code that calls the Azure Mobile Client SDK is virtually identical in every project. You can now call methods from shared code to sign users in and out of the mobile service. All that's missing is a UI for signing in and out.
+
+<a name="Exercise6"></a>
+## Exercise 6: Update Drone Lander to authenticate users and record landings ##
+
+In this exercise, you will update the Drone Lander app to allow users to authenticate using their Microsoft accounts, and to record the results of each landing attempted by authenticated users in the mobile service's database. You will also add a page to the app that shows a summary of landing attempts.
+
+1. Right-click the "Data" folder in the **DroneLander (Portable)** project and add a new class file named **ActivityItem.cs**. Then replace the contents of the file with the following code:
+
+	```C#
+	using System;
+	
+	namespace DroneLander
+	{   
+	    public class ActivityItem
+	    {
+	        public string Id { get; set; }	
+	        public string Status { get; set; }	
+	        public string Description { get; set; }	
+	        public DateTime ActivityDate { get; set; }
+	    }
+	}
+	```
+
+	The ```ActivityItem``` class encapsulates the results of a landing attempt, indicating whether it succeeded or failed. Each time an authenticated user flies a supply mission and reaches the Mars surface, an ```ActivityItem``` entry will be written to the database on the back end. 
+
+1. Open **TelemetryManager.cs** and replace the ```TelemetryManager``` constructor with the following code:
+
+	```C#
+	IMobileServiceTable<ActivityItem> activitiesTable;
+        
+    private TelemetryManager()
+    {
+        this.client = new MobileServiceClient(Common.MobileServiceConstants.AppUrl);
+        this.activitiesTable = client.GetTable<ActivityItem>();
+    }
+	``` 
+
+1. Add the following methods to the ```TelemetryManager``` class for adding new activities and getting a list activities from the back-end service:
+
+	```C#
+	public async Task AddActivityAsync(ActivityItem item)
+    {
+        try
+        {
+            await activitiesTable.InsertAsync(item);
+        }
+        catch { }
+    }
+
+    public async Task<List<ActivityItem>> GetAllActivityAync()
+    {
+        List<ActivityItem> activity = new List<ActivityItem>();
+
+        try
+        {
+            IEnumerable<ActivityItem> items = await activitiesTable.ToEnumerableAsync();
+            activity = new List<ActivityItem>(items.OrderByDescending(o => o.ActivityDate));
+        }
+        catch { }
+
+        return activity;
+    }
+	```
+
+1. Add a class file named **ActivityHelper.cs** to the "Helpers" folder and replace its contents with the following code:
+
+	```C#
+	using Newtonsoft.Json.Linq;
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Text;
+	using System.Threading.Tasks;
+	
+	namespace DroneLander.Helpers
+	{
+	    public static class ActivityHelper
+	    {
+	        public static async void AddActivityAsync(LandingResultType landingResult)
+	        {
+	            try
+	            {
+	                await TelemetryManager.DefaultManager.AddActivityAsync(new ActivityItem()
+	                {
+	                    ActivityDate = DateTime.Now.ToUniversalTime(),
+	                    Status = landingResult.ToString(),
+	                    Description = (landingResult == LandingResultType.Landed) ? "The Eagle has landed!" : "That's going to leave a mark!"
+	                });
+	            }
+	            catch {}	            
+	        }
+	    }
+	}
+	```
+
+1. Open **MainViewModel.cs** in the **DroneLander (Portable)** project's "ViewModels" folder and add the following ```using``` statement to the top of the file:
+
+	```C#
+	using System.Collections.ObjectModel;
+	```
+
+1. Now add the following properties and method to the ```MainViewModel``` class:
+
+	```C#
+    private bool _isAuthenticated;
+    public bool IsAuthenticated
+    {
+        get { return this._isAuthenticated; }
+        set { this.SetProperty(ref this._isAuthenticated, value); }
+    }
+
+    private string _userId;
+    public string UserId
+    {
+        get { return this._userId; }
+        set { this.SetProperty(ref this._userId, value); }
+    }
+
+    private bool _isBusy;
+    public bool IsBusy
+    {
+        get { return this._isBusy; }
+        set { this.SetProperty(ref this._isBusy, value); }
+    }
+
+    private string _signInLabel;
+    public string SignInLabel
+    {
+        get { return this._signInLabel; }
+        set { this.SetProperty(ref this._signInLabel, value); }
+    }
+
+    private ObservableCollection<ActivityItem> _currentActivity;
+    public ObservableCollection<ActivityItem> CurrentActivity
+    {
+        get { return this._currentActivity; }
+        set { this.SetProperty(ref this._currentActivity, value); }
+    }
+
+    public async void LoadActivityAsync()
+    {
+        this.IsBusy = true;
+        this.CurrentActivity.Clear();
+
+        var activities = await TelemetryManager.DefaultManager.GetAllActivityAync();
+
+        foreach(var activity in activities)
+        {
+            this.CurrentActivity.Add(activity);
+        }
+        
+        this.IsBusy = false;
+    }
+	```
+
+1. Scroll down to the ```AttemptLandingCommand``` property and add the following property directly above it:
+
+	```C#
+	public System.Windows.Input.ICommand SignInCommand
+    {
+        get
+        {
+            return new RelayCommand(async () =>
+            {
+                this.CurrentActivity.Clear();
+
+                if (this.IsAuthenticated)
+                {
+                    this.IsAuthenticated = !(await App.Authenticator.SignOutAsync());
+                }
+                else
+                {
+                    this.IsAuthenticated = await App.Authenticator.SignInAsync();
+                    if (this.IsAuthenticated) this.UserId = TelemetryManager.DefaultManager.CurrentClient.CurrentUser.UserId.Split(':').LastOrDefault();
+                }
+
+                this.SignInLabel = (this.IsAuthenticated) ? "Sign Out" : "Sign In";
+                var activityToolbarItem = this.ActivityPage.ToolbarItems.Where(w => w.AutomationId.Equals("ActivityLabel")).FirstOrDefault();
+
+                if (this.IsAuthenticated)
+                {
+                    if (activityToolbarItem == null)
+                    {
+                        activityToolbarItem = new ToolbarItem()
+                        {
+                            Text = "Activity",
+                            AutomationId = "ActivityLabel",
+                        };
+
+                        activityToolbarItem.Clicked += (s, e) =>
+                        {
+                            this.ActivityPage.Navigation.PushModalAsync(new ViewActivityPage(), true);                                
+                        };
+
+                        this.ActivityPage.ToolbarItems.Insert(0, activityToolbarItem);
+                    }
+                }
+                else
+                {
+                    if (activityToolbarItem != null) this.ActivityPage.ToolbarItems.Remove(activityToolbarItem);
+                }
+            });
+        }
+    }
+	```
+
+	This is the view-model property that will be be bound to a ```Command``` property in the view to enable users to sign in and out.
+
+1. Replace the ```StartLanding``` method with the following implementation, which transmits results to the service at the conclusion of each descent — *but only if the user has signed in*:
+
+	```C#
+	public void StartLanding()
+	{
+	    Helpers.AudioHelper.ToggleEngine();
+	
+	    Device.StartTimer(TimeSpan.FromMilliseconds(Common.CoreConstants.PollingIncrement), () =>
+	    {
+	        UpdateFlightParameters();
+	
+	        if (this.ActiveLandingParameters.Altitude > 0.0)
+	        {
+	            Device.BeginInvokeOnMainThread(() =>
+	            {
+	                this.Altitude = this.ActiveLandingParameters.Altitude;
+	                this.DescentRate = this.ActiveLandingParameters.Velocity;
+	                this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
+	                this.Thrust = this.ActiveLandingParameters.Thrust;
+	            });
+	
+	            if (this.FuelRemaining == 0.0) Helpers.AudioHelper.KillEngine();
+	            if (this.IsAuthenticated) Helpers.ActivityHelper.SendTelemetryAsync(this.UserId, this.ActiveLandingParameters.Altitude, this.ActiveLandingParameters.Velocity, this.ActiveLandingParameters.Fuel / 1000, this.ActiveLandingParameters.Thrust);
+	
+	                return this.IsActive;
+	        }
+	        else
+	        {
+	            this.ActiveLandingParameters.Altitude = 0.0;
+	            this.IsActive = false;
+	
+	            Device.BeginInvokeOnMainThread(() =>
+	            {
+	                this.Altitude = this.ActiveLandingParameters.Altitude;
+	                this.DescentRate = this.ActiveLandingParameters.Velocity;
+	                this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
+	                this.Thrust = this.ActiveLandingParameters.Thrust;
+	            });
+	
+	            LandingResultType landingResult = (this.ActiveLandingParameters.Velocity > -5.0) ? LandingResultType.Landed : LandingResultType.Kaboom;
+	
+	            if (this.IsAuthenticated)
+	            {
+	                Helpers.ActivityHelper.SendTelemetryAsync(this.UserId, this.ActiveLandingParameters.Altitude, this.ActiveLandingParameters.Velocity, this.ActiveLandingParameters.Fuel / 1000, this.ActiveLandingParameters.Thrust);
+	                Helpers.ActivityHelper.AddActivityAsync(landingResult);
+	            }
+	
+	            MessagingCenter.Send(this.ActivityPage, "ActivityUpdate", landingResult);
+	            return false;
+	        }
+	    });
+	}
+	```
+
+1. Add the following statements to the ```MainViewModel``` constructor to assign default values to ```SignInLabel``` and ```CurrentActivity```:
+
+	```C#
+	this.CurrentActivity = new ObservableCollection<ActivityItem>();
+    this.SignInLabel = "Sign In";
+	```
+
+	![Updating the MainViewModel constructor](Images/vs-add-sign-in-label.png)
+	
+	_Updating the MainViewModel constructor_ 
+
+1. Right-click the **DroneLander (Portable)** project and use the **Add New Item...** command to add a new **Forms Blank Content Page Xaml** page named **ViewActivityPage.xaml** to the project. This page will show a summary of recent landings.
+
+	![Adding a page to the app](Images/vs-add-new-page.png)
+	
+	_Adding a page to the app_ 
+
+1. Replace the contents of **ViewActivityPage.xaml** with the following XAML:
+
+	```Xaml
+	<?xml version="1.0" encoding="utf-8" ?>
+	<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+	             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	             BackgroundImage="drone_lander_back.jpg"
+	             x:Class="DroneLander.ViewActivityPage">
+	    <Grid Margin="40">
+	
+	        <StackLayout>
+	            <Label FontAttributes="Bold" Style="{DynamicResource TitleStyle}" Text="Recent Activity"/>
+	            <Label Style="{DynamicResource SubtitleStyle}" Text="The following is a list of your most recent landing attempts:"/>
+	            <ListView HasUnevenRows="True" SeparatorVisibility="None" BindingContext="{Binding}" ItemsSource="{Binding CurrentActivity}">
+	                <ListView.ItemTemplate>
+	                    <DataTemplate>
+	                        <ViewCell>
+	                            <ViewCell.View>
+	                                <StackLayout VerticalOptions="Start" Margin="0,0,0,10" Orientation="Vertical">
+	                                    <Label FontAttributes="Bold" Style="{DynamicResource SubtitleStyle}" Text="{Binding Status}" />
+	                                    <Label Style="{DynamicResource BodyStyle}" Text="{Binding Description}" />
+	                                    <Label Opacity="0.7" Margin="0,-5,0,5" Style="{DynamicResource CaptionStyle}" Text="{Binding ActivityDate, StringFormat='{0:dddd hh:mm tt}'}" />
+	                                </StackLayout>
+	                            </ViewCell.View>
+	                        </ViewCell>
+	                    </DataTemplate>
+	                </ListView.ItemTemplate>
+	            </ListView>
+	        </StackLayout>
+	
+	        <ActivityIndicator Color="#D90000" WidthRequest="100" HeightRequest="100" VerticalOptions="Center" HorizontalOptions="Center" IsRunning="{Binding IsBusy}" IsEnabled="{Binding IsBusy}"/>
+	
+	    </Grid>
+	
+	</ContentPage>
+	```
+
+1. Open **ViewActivityPage.xaml.cs** and add the following method to the ```ViewActivityPage``` class to retrieve landing data from the service each time the page loads:
+
+	```C#
+	protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        this.BindingContext = App.ViewModel;
+        App.ViewModel.LoadActivityAsync();
+    }
+	```
+1. Finally, open **MainPage.xaml** and add the following XAML directly above the opening ```<Grid>``` tag to provide a "Sign In" toolbar item:  
+
+	```
+	<ContentPage.ToolbarItems>       
+       <ToolbarItem AutomationId="SignInLabel" Text="{Binding SignInLabel}" Command="{Binding SignInCommand}"/>
+    </ContentPage.ToolbarItems>
+	```
+
+	![Adding a "Sign in" toolbar item](Images/vs-add-sign-in-item.png)
+
+    _Adding a "Sign in" toolbar item_
+
+1. Launch the Android version of the app. Click **Sign In** and sign in using your Microsoft account. If prompted to allow Drone Lander to access your profile and contact list, click **Yes**. Note that your *profile and contact information is not used in any way*.
+
+	![Signing in](Images/app-click-sign-in.png)
+
+    _Signing in_
+
+1. Confirm that following a successful sign in, an **Activity** item appears in the toolbar. Then attempt a landing or two (or three) and click **Activity**.
+
+	![Viewing recent landing activity](Images/app-click-new-menu.png)
+
+    _Viewing recent landing activity_
+
+1. Confirm that a summary of recent landing attempts appears:
+
+	![Recent landing attempts](Images/app-current-activity.png)
+
+    _Recent landing attempts_
+
+You can still fly supply missions even if you aren't signed in. However, data is only transmitted to Azure if you *are* signed in. That's important, because you configured the back-end service to require authenticated calls.
+
+<a name="Exercise7"></a>
+## Exercise 7: Update Drone Lander to send telemetry to Mission Control ##
+
+Now comes the fun part: modifying the Drone Lander app to transmit telemetry data — altitude, descent rate, fuel remaining, and thrust — to Mission Control in real time. In this exercise, you will modify the app to do just that, and then compete with other teams to be the first to fly a successful supply mission to Mars.
+
+1. Open **CoreConstants.cs** in the **DroneLander (Portable)** project's "Common" folder, and add the following class:
+
+	```C#
+	public static class TelemetryConstants
+    {
+        public const string DisplayName = "";
+        public const string Tagline = "";
+    }
+	```
+
+1. Enter a string, such as your first name or a nickname, for the value of ```DisplayName```. If you were assigned a team name for this session, enter the team name instead. This is the name that will appear on the big screen (the Mission Control screen at the front of the room) each time you fly a supply mission.
+
+1. Enter a string for ```TagLine``` as well. This value will appear on the big screen when you successfully land a supply mission. Keep it clean (please!), but feel free to talk a little smack to the other teams when you nail a landing.
+
+1. Right-click the "Data" folder in the **DroneLander (Portable)** project and add a new class file named **TelemetryItem.cs**. Then replace its contents with the following code:
+
+	```C#
+	using System;
+	
+	namespace DroneLander
+	{
+	    public class TelemetryItem
+	    {
+	        public string UserId { get; set; }
+	        public string DisplayName { get; set; }
+	        public string Tagline { get; set; }
+	        public double Altitude { get; set; }
+	        public double DescentRate { get; set; }
+	        public double Fuel { get; set; }
+	        public double Thrust { get; set; }
+	    }
+	}
+	``` 
+
+	This class encapsulates the telemetry data transmitted to Mission Control on each timer tick as a drone makes its descent.
+
+1. Open **ActivityHelper.cs** in the **DroneLander (Portable)** project's "Helpers" folder, and add the following method to the ```ActivityHelper``` class:
+
+	```C#
+	public static async void SendTelemetryAsync(string userId, double altitude, double descentRate, double fuelRemaining, double thrust)
+    {
+        TelemetryItem telemetry = new TelemetryItem()
+        {
+            Altitude = altitude,
+            DescentRate = descentRate,
+            Fuel = fuelRemaining,
+            Thrust = thrust,
+            Tagline = Common.TelemetryConstants.Tagline,
+            DisplayName = Common.TelemetryConstants.DisplayName,
+            UserId = userId,
+        };
+
+        try
+        {
+            await TelemetryManager.DefaultManager.CurrentClient.InvokeApiAsync("telemetry", JToken.FromObject(telemetry));
+        }
+        catch { }
+    }
+	```
+
+	Notice the call to ```InvokeApiAsync```. This method, which comes from the Azure Mobile Client SDK, places a REST call to the ```Post``` method of the ```TelemetryController``` that you implemented in [Exercise 3](#Exercise3) (see below). The body of the request contains a JSON-encoded ```TelemetryItem``` object with current status of your drone.
+
+	![The TelemetryController class in the Azure Mobile App](Images/vs-post-in-controller.png)
+
+    _The TelemetryController class in the Azure Mobile App_
+
+1. Open **MainViewModel.cs** in the **DroneLander (Portable)** project's "ViewModels" folder and replace the ```StartLanding``` method with the following implementation. The revised ```StartLanding``` method transmits telemetry on each timer tick by calling the ```SendTelemetryAsync``` method added in the previous step.
+
+	```C#
+	public void StartLanding()
+    {
+        Helpers.AudioHelper.ToggleEngine();
+        
+        Device.StartTimer(TimeSpan.FromMilliseconds(Common.CoreConstants.PollingIncrement), () =>
+        {
+            UpdateFlightParameters();
+
+            if (this.ActiveLandingParameters.Altitude > 0.0)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.Altitude = this.ActiveLandingParameters.Altitude;
+                    this.DescentRate = this.ActiveLandingParameters.Velocity;
+                    this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
+                    this.Thrust = this.ActiveLandingParameters.Thrust;
+                });
+
+                if (this.FuelRemaining == 0.0) Helpers.AudioHelper.KillEngine();
+                if (this.IsAuthenticated) Helpers.ActivityHelper.SendTelemetryAsync(this.UserId, this.Altitude, this.DescentRate, this.FuelRemaining, this.Thrust);
+
+                return this.IsActive;
+            }
+            else
+            {
+                this.ActiveLandingParameters.Altitude = 0.0;
+                this.IsActive = false;
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.Altitude = this.ActiveLandingParameters.Altitude;
+                    this.DescentRate = this.ActiveLandingParameters.Velocity;
+                    this.FuelRemaining = this.ActiveLandingParameters.Fuel / 1000;
+                    this.Thrust = this.ActiveLandingParameters.Thrust;
+                });
+
+                LandingResultType landingResult = (this.ActiveLandingParameters.Velocity > -5.0) ? LandingResultType.Landed : LandingResultType.Kaboom;
+
+                if (this.IsAuthenticated)
+                {
+                    Helpers.ActivityHelper.SendTelemetryAsync(this.UserId, this.Altitude, this.DescentRate, this.FuelRemaining, this.Thrust);
+                    Helpers.ActivityHelper.AddActivityAsync(landingResult);
+                }
+                                    
+                MessagingCenter.Send(this.ActivityPage, "ActivityUpdate", landingResult);
+                return false;
+            }
+        });
+    }
+	```
+
+1. Launch the Android or Windows version of the app. Then sign in and attempt a landing. As you descend, watch the big screen at the front of the room and confirm that your "mission" shows up there and that it is updated in real time.
+
+	![Mission status shown by Mission Control](Images/app-mission-control.png)
+
+    _Mission status shown by Mission Control_
+
+If you don't land successfully the first time, try again and keep trying until you do. Keep an eye on the Mission Control screen at the front of the room to see how other pilots are doing. More importantly, don't be the last to land! The astronauts are counting on you!
 
 <a name="Summary"></a>
 ## Summary ##
 
-Xamarin Workbooks, the Xamarin Forms Previewer, and the Xamarin Profiler are powerful tools in the hands of developers building Xamarin Forms apps. In the next and final lab, you will supplement what you have learned so far by learning about some of the options available to you for testing Xamarin Forms apps — specifically, Xamarin UI Tests and the Xamarin Test Cloud.
+That's it for Part 5 of Operation Remote Resupply. In Part 6, you will supplement what you have learned so far by learning about some of the options available to you for testing Xamarin Forms apps — specifically, Xamarin UI Tests and the Xamarin Test Cloud.
