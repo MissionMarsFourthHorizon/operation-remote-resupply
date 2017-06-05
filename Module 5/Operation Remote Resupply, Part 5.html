@@ -473,7 +473,7 @@ vertical-align:1px;
 <hr>
 <p><a name="Overview"></a></p>
 <h2>Overview</h2>
-<p>At present, Drone Lander app is a stand-alone app that doesn't connect to the cloud. In the real world, mobile apps frequently use cloud services to store data, authenticate users, enact push notifications, and more. Building cloud services for mobile apps frequently adds significant time and cost to the development process, and requires additional skills beyond those required to build client apps.</p>
+<p>At present, Drone Lander is a stand-alone app that doesn't connect to the cloud. In the real world, mobile apps frequently use cloud services to store data, authenticate users, enact push notifications, and more. Building cloud services for mobile apps frequently adds significant time and cost to the development process, and requires additional skills beyond those required to build client apps.</p>
 <p><a href="https://azure.microsoft.com/en-us/services/app-service/mobile/">Azure Mobile Apps</a> is an Azure service that simplifies the process of building back-end services for mobile apps. It supports authentication, push notifications, offline data syncing, and more. It also supports <a href="https://blog.xamarin.com/getting-started-azure-mobile-apps-easy-tables/">Easy Tables</a>, which make it easy to store data in the cloud, and Easy APIs, which make it extraordinarily easy to implement REST endpoints for client apps to call. In short, Azure Mobile Apps offer a comprehensive, scalable, and easily manageable platform for creating the kinds of back-end services that client apps often require.</p>
 <p>In Part 5 of Operation Remote Resupply, you will provision an Azure Mobile App in the Azure Portal and connect it to a database. Then you will use Visual Studio 2017 to implement a back-end service for the Drone Lander app and modify the app so that it uses the service to store information regarding landing attempts in the cloud and transmit real-time telemetry as you descend to the Mars surface. That telemetry will be fed to a Mission Control app shown on the big screen at the front of the room so everyone can see the supply missions that are flown. Then you will compete to be the first to land — and hopefully not the last!</p>
 <p><a name="Objectives"></a></p>
@@ -493,7 +493,7 @@ vertical-align:1px;
 <ul>
 <li><a href="https://www.visualstudio.com/vs/">Visual Studio Community 2017</a> or higher</li>
 <li>A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see <a href="https://msdn.microsoft.com/en-us/library/mt228280.aspx">https://msdn.microsoft.com/en-us/library/mt228280.aspx</a>.</li>
-<li>An Microsoft Azure subscription. If you don't have one, <a href="http://aka.ms/WATK-FreeTrial">sign up for a free trial</a></li>
+<li>A Microsoft Azure subscription. If you don't have one, <a href="http://aka.ms/WATK-FreeTrial">sign up for a free trial</a></li>
 </ul>
 <hr>
 <p><a name="Exercises"></a></p>
@@ -538,7 +538,7 @@ vertical-align:1px;
 <p>Once the Azure Mobile App is deployed, you're ready for the next step: creating a database in Azure and connecting the Azure Mobile App to it.</p>
 <p><a name="Exercise2"></a></p>
 <h2>Exercise 2: Add a data connection</h2>
-<p>Every front end needs a great back end, and back ends frequently store data and provide APIs for accessing that data. Azure Mobile Apps support the concept of "Easy" tables and APIs, as well as direct data connections that store data in either SQL databases or Azure blob storage. In this exercise, you will configure the Azure Mobile App you created in Exercise 1 to store data in an Azure SQL Database. <em>This is the database in which information about landing attempts will be recorded</em>.</p>
+<p>Every front end needs a great back end, and back ends frequently store data and provide APIs for accessing that data. Azure Mobile Apps support the concept of "Easy" tables and APIs, as well as direct data connections that store data in SQL databases or Azure blob storage. In this exercise, you will configure the Azure Mobile App you created in Exercise 1 to store data in an Azure SQL Database. <em>This is the database in which information about landing attempts will be recorded</em>.</p>
 <ol>
 <li>
 <p>In the blade for the "DroneLanderResourceGroup" resource group, click the Azure Mobile App that you deployed in Exercise 1. (It will be listed as an "App Service," which is the family of services to which Azure Mobile Apps belong.) Then scroll down in the menu on the left side of the blade and click <strong>Data connections</strong>.</p>
@@ -562,7 +562,9 @@ vertical-align:1px;
 <p><em>Naming a database</em></p>
 </li>
 <li>
-<p>Click <strong>Create a new server</strong> and enter "dronelandermobile001" as the server name. Enter a user name and password of your choosing for accessing the server, and then click <strong>Select</strong>.</p>
+<p>Click <strong>Create a new server</strong> and enter the name of your Azure Mobile App as the server name. Enter a user name and password of your choosing for accessing the server. Select a location (preferably the same location to which you deployed the Azure Mobile App in Exercise 1, although that is not a requirement), and then click <strong>Select</strong>.</p>
+<p><a href="Images/new-server.png" target="_blank"><img src="Images/new-server.png" alt="Creating a database server" style="max-width:100%;"></a></p>
+<p><em>Creating a database server</em></p>
 </li>
 <li>
 <p>Click the <strong>Select</strong> button at the bottom of the "SQL Database" blade. Then click <strong>Connection string</strong> in the "Add data connection" blade, <strong>OK</strong> at the bottom of the "Connection String" blade, and <strong>OK</strong> at the bottom of the "Add data connection" blade.</p>
@@ -576,7 +578,7 @@ vertical-align:1px;
 <p>Provisioning the database and database server will take a few minutes, but there's no need to wait. You can move on to the next exercise and begin writing the back-end service that you will deploy to the Azure Mobile App.</p>
 <p><a name="Exercise3"></a></p>
 <h2>Exercise 3: Implement and deploy a back-end service</h2>
-<p>In this exercise, you will use Visual Studio to write a service and deploy it to the Azure Mobile App. The service will include two MVC controllers: one that exposes REST-callable methods for writing information about landing attempts to the database you created in the previous step (and for retrieving that information once written), and one that exposes REST-callable methods for transmitting telemetry data — altitude, descent rate, fuel remaining, thrust, and so on — to Mission Control, where it can be displayed for all to see on the big screen at the front of the room.</p>
+<p>In this exercise, you will use Visual Studio to write a service and deploy it to the Azure Mobile App. The service will include two MVC controllers: one that exposes REST-callable methods for writing information about landing attempts to the database you created in the previous exercise (and for retrieving that information once written), and one that exposes REST-callable methods for transmitting telemetry data — altitude, descent rate, fuel remaining, thrust, and so on — to Mission Control, where it can be displayed for all to see on the big screen at the front of the room.</p>
 <ol>
 <li>
 <p>In Visual Studio 2017, open the <strong>DroneLander</strong> solution that you built in previous labs.</p>
@@ -588,7 +590,7 @@ vertical-align:1px;
 </blockquote>
 </li>
 <li>
-<p>Add a folder named "Controllers" to the <strong>DroneLander.Backend</strong> project. Right-click the "Controllers" folder and use the <strong>Add</strong> &gt; <strong>Class</strong> command to add a class file named <strong>ActivityItemController.cs</strong>. Then replace the contents of the file with the following code:</p>
+<p>Add a folder named "Controllers" to the <strong>DroneLander.Backend</strong> project. Right-click the "Controllers" folder and use the <strong>Add</strong> &gt; <strong>Class...</strong> command to add a class file named "ActivityItemController.cs." Then replace the contents of the file with the following code:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System.Linq</span>;
 <span class="pl-k">using</span> <span class="pl-en">System.Threading.Tasks</span>;
 <span class="pl-k">using</span> <span class="pl-en">System.Web.Http</span>;
@@ -644,7 +646,7 @@ vertical-align:1px;
 <p>This controller uses the data connection you created in the previous exercise to access an "ActivityItem" table in the database. <code>ActivityItemController</code> derives from <code>TableController</code>, which provides a base implementation for controllers in Azure Mobile Apps and makes it easy to perform create, read, update, and delete (CRUD) operations on data stores connected to those apps.</p>
 </li>
 <li>
-<p>Right-click the "Controllers" folder again and use the <strong>Add</strong> &gt; <strong>Class</strong> command to add a class file named <strong>TelemetryController.cs</strong>. Then replace the contents of the file with the following code:</p>
+<p>Right-click the "Controllers" folder again and use the <strong>Add</strong> &gt; <strong>Class...</strong> command to add a class file named "TelemetryController.cs." Then replace the contents of the file with the following code:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System.Web.Http</span>;
 <span class="pl-k">using</span> <span class="pl-en">System.Web.Http.Tracing</span>;
 <span class="pl-k">using</span> <span class="pl-en">Microsoft.Azure.Mobile.Server</span>;
@@ -676,15 +678,15 @@ vertical-align:1px;
         }
     }
 }</pre></div>
-<p>Note the <code>[MobileAppController]</code> attribute decorating the class definition. This attribute designates an <code>ApiController</code> as an Azure Mobile App controller, meaning it can be accessed through the Azure Mobile SDK using standard APIs. <code>TelemetryController</code> is responsible for sending real-time telemetry to Earth-based Mission Control to monitor the progress of landing attempts.</p>
+<p>Note the <code>[MobileAppController]</code> attribute decorating the class definition. This attribute designates an <code>ApiController</code> as an Azure Mobile App controller, meaning it can be accessed through the Azure Mobile SDK using standard APIs. <code>TelemetryController</code> is responsible for sending real-time telemetry to Mission Control to monitor the progress of landing attempts.</p>
 </li>
 <li>
-<p>To ensure that your transmissions are properly routed to Mission Control, you need to insert a mission event name. Open <strong>CoreConstants.cs</strong> in the "Common" folder of the <strong>DroneLander.Backend</strong> project, locate the field named <code>MissionEventName</code>, and replace "[ENTER_MISSION_EVENT_NAME]" with the value given to you at the start of the event.</p>
+<p>To ensure that transmissions are properly routed to Mission Control, you need to insert a mission event name. Open <strong>CoreConstants.cs</strong> in the "Common" folder of the <strong>DroneLander.Backend</strong> project, locate the field named <code>MissionEventName</code>, and replace "[ENTER_MISSION_EVENT_NAME]" with the value given to you at the start of the event.</p>
 <p><a href="Images/vs-mission-name.png" target="_blank"><img src="Images/vs-mission-name.png" alt="Updating the mission event name" style="max-width:100%;"></a></p>
 <p><em>Updating the mission event name</em></p>
 </li>
 <li>
-<p>The next step is to publish the service to the cloud. Right-click the <strong>DroneLander.Backend</strong> project and select <strong>Publish...</strong> from the context menu. Then choose <strong>Select Existing</strong> and click <strong>Publish</strong>.</p>
+<p>The next step is to publish the service to the cloud. Right-click the <strong>DroneLander.Backend</strong> project and select <strong>Publish...</strong> from the context menu. Then select <strong>Microsoft Azure App Service</strong> and  <strong>Select Existing</strong>, and click <strong>Publish</strong>.</p>
 <p><a href="Images/vs-publish-to-existing.png" target="_blank"><img src="Images/vs-publish-to-existing.png" alt="Publishing an Azure Mobile App" style="max-width:100%;"></a></p>
 <p><em>Publishing an Azure Mobile App</em></p>
 </li>
@@ -711,7 +713,7 @@ vertical-align:1px;
 <p><em>Registering an app</em></p>
 </li>
 <li>
-<p>Enter "Drone Lander" as the app name and click <strong>Create Application</strong>.</p>
+<p>Enter "Drone Lander" as the app name and click <strong>Create application</strong>.</p>
 </li>
 <li>
 <p>Scroll down and click the <strong>Add URL</strong> button next to "Redirect URLs." Then enter the following URL, replacing "[YOUR_MOBILE_APP_NAME]" with the name of the Azure Mobile App you created in Exercise 1.</p>
@@ -767,7 +769,7 @@ vertical-align:1px;
 <p>In Visual Studio, open the Nuget Package Manager by right-clicking the <strong>DroneLander</strong> solution and selecting <strong>Manage NuGet Packages for Solution...</strong>.</p>
 </li>
 <li>
-<p>Ensure "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Client" into the search box. Select the <strong>Microsoft.Azure.Mobile.Client</strong> package. Then check the <strong>Project</strong> box to add the package to all of the projects in the solution, and click <strong>Install</strong>. When prompted to review changes, click <strong>OK</strong>.</p>
+<p>Ensure "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Client" into the search box. Select the <strong>Microsoft.Azure.Mobile.Client</strong> package. Then check the <strong>Project</strong> box to add the package to all of the projects in the solution, and click <strong>Install</strong>. Accept any changes and licenses presented to you.</p>
 </li>
 <li>
 <p>Open <strong>CoreConstants.cs</strong> in the <strong>DroneLander (Portable)</strong> project's "Common" folder, and add the following class directly below the <code>CoreConstants</code> class, replacing "[YOUR_MOBILE_APP_NAME]" with the name of the Azure Mobile App created in Exercise 1.</p>
@@ -779,7 +781,7 @@ vertical-align:1px;
 <p><em>Updating the app URL</em></p>
 </li>
 <li>
-<p>Right-click the <strong>DroneLander (Portable)</strong> project and use the <strong>Add</strong> &gt; <strong>New Folder</strong> command to add a folder named "Data" to the project. Right-click the "Data" folder and use the <strong>Add</strong> &gt; <strong>Class</strong> command to add a class file named <strong>TelemetryManager.cs</strong>. Then replace the contents of the file with the following code:</p>
+<p>Right-click the <strong>DroneLander (Portable)</strong> project and use the <strong>Add</strong> &gt; <strong>New Folder</strong> command to add a folder named "Data" to the project. Right-click the "Data" folder and use the <strong>Add</strong> &gt; <strong>Class...</strong> command to add a class file named "TelemetryManager.cs." Then replace the contents of the file with the following code:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System</span>;
 <span class="pl-k">using</span> <span class="pl-en">System.Collections.Generic</span>;
 <span class="pl-k">using</span> <span class="pl-en">System.Collections.ObjectModel</span>;
@@ -822,7 +824,7 @@ vertical-align:1px;
 <p><code>TelemetryManager</code> is a helper class for calling SDK methods from platform-specific code.</p>
 </li>
 <li>
-<p>Right-click the "Services" folder in the <strong>DroneLander (Portable)</strong> project and use the <strong>Add</strong> &gt; <strong>Class</strong> command to add a class file named <strong>IAuthenticationService.cs</strong>. Then replace the <code>IAuthenticationService</code> class with the following interface definition:</p>
+<p>Right-click the "Services" folder in the <strong>DroneLander (Portable)</strong> project and use the <strong>Add</strong> &gt; <strong>Class...</strong> command to add a class file named "IAuthenticationService.cs." Then replace the <code>IAuthenticationService</code> class with the following interface definition:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">interface</span> <span class="pl-en">IAuthenticationService</span>
 {
     <span class="pl-en">Task</span>&lt;<span class="pl-k">bool</span>&gt; <span class="pl-en">SignInAsync</span>();
@@ -864,7 +866,7 @@ vertical-align:1px;
 }</pre></div>
 </li>
 <li>
-<p>Add the following statements to support signing in and out of the mobile service on Android:</p>
+<p>Add the following statements to the <code>MainActivity</code> class to support signing in and out of the mobile service on Android:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-en">MobileServiceUser</span> <span class="pl-en">user</span> = <span class="pl-c1">null</span>;
 
 <span class="pl-k">public</span> <span class="pl-k">async</span> <span class="pl-en">Task</span>&lt;<span class="pl-k">bool</span>&gt; <span class="pl-en">SignInAsync</span>()
@@ -918,7 +920,7 @@ vertical-align:1px;
 }</pre></div>
 </li>
 <li>
-<p>Add the following statements to support signing in and out of the mobile service on iOS:</p>
+<p>Add the following statements to the <code>AppDelegate</code> class to support signing in and out of the mobile service on iOS:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-en">MobileServiceUser</span> <span class="pl-en">user</span> = <span class="pl-c1">null</span>;
 
 <span class="pl-k">public</span> <span class="pl-k">async</span> <span class="pl-en">Task</span>&lt;<span class="pl-k">bool</span>&gt; <span class="pl-en">SignInAsync</span>()
@@ -970,7 +972,7 @@ vertical-align:1px;
 }</pre></div>
 </li>
 <li>
-<p>Add the following statements to support signing in and out of the mobile service on Windows:</p>
+<p>Add the following statements to the <code>MainPage</code> class to support signing in and out of the mobile service on Windows:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-en">MobileServiceUser</span> <span class="pl-en">user</span> = <span class="pl-c1">null</span>;
 
 <span class="pl-k">public</span> <span class="pl-k">async</span> <span class="pl-en">Task</span>&lt;<span class="pl-k">bool</span>&gt; <span class="pl-en">SignInAsync</span>()
@@ -1008,7 +1010,7 @@ vertical-align:1px;
 <p>In this exercise, you will update the Drone Lander app to allow users to authenticate using their Microsoft accounts, and to record the results of each landing attempted by authenticated users in the mobile service's database. You will also add a page to the app that shows a summary of landing attempts.</p>
 <ol>
 <li>
-<p>Right-click the "Data" folder in the <strong>DroneLander (Portable)</strong> project and add a new class file named <strong>ActivityItem.cs</strong>. Then replace the contents of the file with the following code:</p>
+<p>Right-click the "Data" folder in the <strong>DroneLander (Portable)</strong> project and add a new class file named "ActivityItem.cs." Then replace the contents of the file with the following code:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System</span>;
 
 <span class="pl-k">namespace</span> <span class="pl-en">DroneLander</span>
@@ -1059,7 +1061,7 @@ vertical-align:1px;
 }</pre></div>
 </li>
 <li>
-<p>Add a class file named <strong>ActivityHelper.cs</strong> to the "Helpers" folder and replace its contents with the following code:</p>
+<p>Add a class file named "ActivityHelper.cs" to the "Helpers" folder and replace its contents with the following code:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">Newtonsoft.Json.Linq</span>;
 <span class="pl-k">using</span> <span class="pl-en">System</span>;
 <span class="pl-k">using</span> <span class="pl-en">System.Collections.Generic</span>;
@@ -1214,9 +1216,8 @@ vertical-align:1px;
             });
 
             <span class="pl-k">if</span> (<span class="pl-c1">this</span>.FuelRemaining == <span class="pl-c1">0.0</span>) Helpers.AudioHelper.KillEngine();
-            <span class="pl-k">if</span> (<span class="pl-c1">this</span>.IsAuthenticated) Helpers.ActivityHelper.SendTelemetryAsync(<span class="pl-c1">this</span>.UserId, <span class="pl-c1">this</span>.ActiveLandingParameters.Altitude, <span class="pl-c1">this</span>.ActiveLandingParameters.Velocity, <span class="pl-c1">this</span>.ActiveLandingParameters.Fuel / <span class="pl-c1">1000</span>, <span class="pl-c1">this</span>.ActiveLandingParameters.Thrust);
 
-                <span class="pl-k">return</span> <span class="pl-c1">this</span>.IsActive;
+            <span class="pl-k">return</span> <span class="pl-c1">this</span>.IsActive;
         }
         <span class="pl-k">else</span>
         {
@@ -1235,7 +1236,6 @@ vertical-align:1px;
 
             <span class="pl-k">if</span> (<span class="pl-c1">this</span>.IsAuthenticated)
             {
-                Helpers.ActivityHelper.SendTelemetryAsync(<span class="pl-c1">this</span>.UserId, <span class="pl-c1">this</span>.ActiveLandingParameters.Altitude, <span class="pl-c1">this</span>.ActiveLandingParameters.Velocity, <span class="pl-c1">this</span>.ActiveLandingParameters.Fuel / <span class="pl-c1">1000</span>, <span class="pl-c1">this</span>.ActiveLandingParameters.Thrust);
                 Helpers.ActivityHelper.AddActivityAsync(landingResult);
             }
 
@@ -1253,7 +1253,7 @@ vertical-align:1px;
 <p><em>Updating the MainViewModel constructor</em></p>
 </li>
 <li>
-<p>Right-click the <strong>DroneLander (Portable)</strong> project and use the <strong>Add New Item...</strong> command to add a new <strong>Forms Blank Content Page Xaml</strong> page named <strong>ViewActivityPage.xaml</strong> to the project. This page will show a summary of recent landings.</p>
+<p>Right-click the <strong>DroneLander (Portable)</strong> project and use the <strong>Add</strong> &gt; <strong>New Item...</strong> command to add a new <strong>Content Page</strong> named "ViewActivityPage.xaml" to the project. This page will show a summary of recent landings.</p>
 <p><a href="Images/vs-add-new-page.png" target="_blank"><img src="Images/vs-add-new-page.png" alt="Adding a page to the app" style="max-width:100%;"></a></p>
 <p><em>Adding a page to the app</em></p>
 </li>
@@ -1265,7 +1265,6 @@ vertical-align:1px;
              <span class="pl-e">BackgroundImage</span>=<span class="pl-s"><span class="pl-pds">"</span>drone_lander_back.jpg<span class="pl-pds">"</span></span>
              <span class="pl-e">x</span><span class="pl-e">:</span><span class="pl-e">Class</span>=<span class="pl-s"><span class="pl-pds">"</span>DroneLander.ViewActivityPage<span class="pl-pds">"</span></span>&gt;
     &lt;<span class="pl-ent">Grid</span> <span class="pl-e">Margin</span>=<span class="pl-s"><span class="pl-pds">"</span>40<span class="pl-pds">"</span></span>&gt;
-
         &lt;<span class="pl-ent">StackLayout</span>&gt;
             &lt;<span class="pl-ent">Label</span> <span class="pl-e">FontAttributes</span>=<span class="pl-s"><span class="pl-pds">"</span>Bold<span class="pl-pds">"</span></span> <span class="pl-e">Style</span>=<span class="pl-s"><span class="pl-pds">"</span>{DynamicResource TitleStyle}<span class="pl-pds">"</span></span> <span class="pl-e">Text</span>=<span class="pl-s"><span class="pl-pds">"</span>Recent Activity<span class="pl-pds">"</span></span>/&gt;
             &lt;<span class="pl-ent">Label</span> <span class="pl-e">Style</span>=<span class="pl-s"><span class="pl-pds">"</span>{DynamicResource SubtitleStyle}<span class="pl-pds">"</span></span> <span class="pl-e">Text</span>=<span class="pl-s"><span class="pl-pds">"</span>The following is a list of your most recent landing attempts:<span class="pl-pds">"</span></span>/&gt;
@@ -1287,9 +1286,7 @@ vertical-align:1px;
         &lt;/<span class="pl-ent">StackLayout</span>&gt;
 
         &lt;<span class="pl-ent">ActivityIndicator</span> <span class="pl-e">Color</span>=<span class="pl-s"><span class="pl-pds">"</span>#D90000<span class="pl-pds">"</span></span> <span class="pl-e">WidthRequest</span>=<span class="pl-s"><span class="pl-pds">"</span>100<span class="pl-pds">"</span></span> <span class="pl-e">HeightRequest</span>=<span class="pl-s"><span class="pl-pds">"</span>100<span class="pl-pds">"</span></span> <span class="pl-e">VerticalOptions</span>=<span class="pl-s"><span class="pl-pds">"</span>Center<span class="pl-pds">"</span></span> <span class="pl-e">HorizontalOptions</span>=<span class="pl-s"><span class="pl-pds">"</span>Center<span class="pl-pds">"</span></span> <span class="pl-e">IsRunning</span>=<span class="pl-s"><span class="pl-pds">"</span>{Binding IsBusy}<span class="pl-pds">"</span></span> <span class="pl-e">IsEnabled</span>=<span class="pl-s"><span class="pl-pds">"</span>{Binding IsBusy}<span class="pl-pds">"</span></span>/&gt;
-
     &lt;/<span class="pl-ent">Grid</span>&gt;
-
 &lt;/<span class="pl-ent">ContentPage</span>&gt;</pre></div>
 </li>
 <li>
@@ -1302,13 +1299,13 @@ vertical-align:1px;
 }</pre></div>
 </li>
 <li>
-<p>Finally, open <strong>MainPage.xaml</strong> and add the following XAML directly above the opening <code>&lt;Grid&gt;</code> tag to provide a "Sign In" toolbar item:</p>
+<p>Finally, open <strong>MainPage.xaml</strong> and add the following XAML directly above the opening <code>&lt;Grid&gt;</code> tag to provide a toolbar item for signing in and out:</p>
 <pre><code>&lt;ContentPage.ToolbarItems&gt;       
    &lt;ToolbarItem AutomationId="SignInLabel" Text="{Binding SignInLabel}" Command="{Binding SignInCommand}"/&gt;
 &lt;/ContentPage.ToolbarItems&gt;
 </code></pre>
-<p><a href="Images/vs-add-sign-in-item.png" target="_blank"><img src="Images/vs-add-sign-in-item.png" alt="Adding a &quot;Sign in&quot; toolbar item" style="max-width:100%;"></a></p>
-<p><em>Adding a "Sign in" toolbar item</em></p>
+<p><a href="Images/vs-add-sign-in-item.png" target="_blank"><img src="Images/vs-add-sign-in-item.png" alt="Adding a toolbar item for signing in and out" style="max-width:100%;"></a></p>
+<p><em>Adding a toolbar item for signing in and out</em></p>
 </li>
 <li>
 <p>Launch the Android version of the app. Click <strong>Sign In</strong> and sign in using your Microsoft account. If prompted to allow Drone Lander to access your profile and contact list, click <strong>Yes</strong>. Note that your <em>profile and contact information is not used in any way</em>.</p>
@@ -1332,7 +1329,7 @@ vertical-align:1px;
 <p>Now comes the fun part: modifying the Drone Lander app to transmit telemetry data — altitude, descent rate, fuel remaining, and thrust — to Mission Control in real time. In this exercise, you will modify the app to do just that, and then compete with other teams to be the first to fly a successful supply mission to Mars.</p>
 <ol>
 <li>
-<p>Open <strong>CoreConstants.cs</strong> in the <strong>DroneLander (Portable)</strong> project's "Common" folder, and add the following class:</p>
+<p>Open <strong>CoreConstants.cs</strong> in the <strong>DroneLander (Portable)</strong> project's "Common" folder and add the following class:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">TelemetryConstants</span>
 {
     <span class="pl-k">public const </span><span class="pl-k">string</span> <span class="pl-en">DisplayName</span> = <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
@@ -1346,7 +1343,7 @@ vertical-align:1px;
 <p>Enter a string for <code>TagLine</code> as well. This value will appear on the big screen when you successfully land a supply mission. Keep it clean (please!), but feel free to talk a little smack to the other teams when you nail a landing.</p>
 </li>
 <li>
-<p>Right-click the "Data" folder in the <strong>DroneLander (Portable)</strong> project and add a new class file named <strong>TelemetryItem.cs</strong>. Then replace its contents with the following code:</p>
+<p>Right-click the "Data" folder in the <strong>DroneLander (Portable)</strong> project and add a new class file named "TelemetryItem.cs." Then replace its contents with the following code:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System</span>;
 
 <span class="pl-k">namespace</span> <span class="pl-en">DroneLander</span>
@@ -1390,7 +1387,7 @@ vertical-align:1px;
 <p><em>The TelemetryController class in the Azure Mobile App</em></p>
 </li>
 <li>
-<p>Open <strong>MainViewModel.cs</strong> in the <strong>DroneLander (Portable)</strong> project's "ViewModels" folder and replace the <code>StartLanding</code> method with the following implementation. The revised <code>StartLanding</code> method transmits telemetry on each timer tick by calling the <code>SendTelemetryAsync</code> method added in the previous step.</p>
+<p>Open <strong>MainViewModel.cs</strong> in the <strong>DroneLander (Portable)</strong> project's "ViewModels" folder and replace the <code>StartLanding</code> method with the following implementation. The revised <code>StartLanding</code> method transmits telemetry on each timer tick by calling the <code>SendTelemetryAsync</code> method added in the previous step, but only if the user is signed in.</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">StartLanding</span>()
 {
     Helpers.AudioHelper.ToggleEngine();
@@ -1442,7 +1439,7 @@ vertical-align:1px;
 }</pre></div>
 </li>
 <li>
-<p>Launch the Android or Windows version of the app. Then sign in and attempt a landing. As you descend, watch the big screen at the front of the room and confirm that your "mission" shows up there and that it is updated in real time.</p>
+<p>Launch the Android or Windows version of the app. Then <strong>sign in</strong> (remember, telemetry data is only transmitted if you are signed in) and attempt a landing. As you descend, watch the big screen at the front of the room and confirm that your "mission" shows up there and that it is updated in real time.</p>
 <p><a href="Images/app-mission-control.png" target="_blank"><img src="Images/app-mission-control.png" alt="Mission status shown by Mission Control" style="max-width:100%;"></a></p>
 <p><em>Mission status shown by Mission Control</em></p>
 </li>
@@ -1450,7 +1447,7 @@ vertical-align:1px;
 <p>If you don't land successfully the first time, try again and keep trying until you do. Keep an eye on the Mission Control screen at the front of the room to see how other pilots are doing. More importantly, don't be the last to land! The astronauts are counting on you!</p>
 <p><a name="Summary"></a></p>
 <h2>Summary</h2>
-<p>That's it for Part 5 of Operation Remote Resupply. In Part 6, you will supplement what you have learned so far by learning about some of the options available to you for testing Xamarin Forms apps — specifically, Xamarin UI Tests and the Xamarin Test Cloud.</p>
+<p>That's it for Part 5 of Operation Remote Resupply. In Part 6, you will learn how to use the Xamarin UI Test framework to automate UI testing for Xamarin Forms apps.</p>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
