@@ -506,7 +506,6 @@ vertical-align:1px;
 <li><a href="#Exercise3">Exercise 3: Enable automated builds</a></li>
 <li><a href="#Exercise4">Exercise 4: Enable automated distribution</a></li>
 <li><a href="#Exercise5">Exercise 5: Add crash analytics support to the app</a></li>
-<li><a href="#Exercise6">Exercise 6 (optional): Review launch test results</a></li>
 </ul>
 <p>Estimated time to complete this lab: <strong>45</strong> minutes.</p>
 <p><a name="Exercise1"></a></p>
@@ -522,7 +521,7 @@ vertical-align:1px;
 <p><em>Connecting with a GitHub account</em></p>
 </li>
 <li>
-<p>On the "Authorize application" page, click <strong>Authorize application</strong>. If you are asked to sign in to GitHub, do so with your GitHub user name and password.</p>
+<p>If you already have a Visual Studio Mobile Center account, go to Step 5. Otherwise, on the "Authorize application" page, click <strong>Authorize application</strong>. If you are asked to sign in to GitHub, sign in with your GitHub user name and password.</p>
 <p><a href="Images/web-authorize-github.png" target="_blank"><img src="Images/web-authorize-github.png" alt="Authorizing an application" style="max-width:100%;"></a></p>
 <p><em>Authorizing an application</em></p>
 </li>
@@ -532,7 +531,7 @@ vertical-align:1px;
 <p><em>Choosing a user name</em></p>
 </li>
 <li>
-<p>Now that you have created a Visual Studio Mobile Center account, the next step is to register the Drone Lander app that you built in Parts 1 and 2. To begin, click <strong>Add new app</strong>.</p>
+<p>Now that you have a Visual Studio Mobile Center account, the next step is to register the Drone Lander app that you built for Operation Remote Resupply. To begin, click <strong>Add new app</strong>.</p>
 <p><a href="Images/web-click-add-new-app.png" target="_blank"><img src="Images/web-click-add-new-app.png" alt="Adding a new app in Visual Studio Mobile Center" style="max-width:100%;"></a></p>
 <p><em>Adding a new app in Visual Studio Mobile Center</em></p>
 </li>
@@ -547,31 +546,36 @@ vertical-align:1px;
 <p><em>Viewing Xamarin.Forms integration information</em></p>
 </li>
 </ol>
-<p>If you would like to register the iOS of version Drone lander as well, you can do so by registering Drone Lander again, but this time specifying iOS as the operating system. You don't need to register the iOS version for this lab, but be aware that when you register a Xamarin app with Visual Studio Mobile Center, you need to register it separately for each platform that it runs on. You can also register the Windows (UWP) version if you would like, but realize that Visual Studio Mobile Center and doesn't yet support crash analytics on Windows.</p>
+<p>If you would like to register the iOS of version Drone lander as well, you can do so by registering Drone Lander again, but this time specifying iOS as the operating system. You don't need to register the iOS version for this lab, but be aware that when you register a Xamarin app with Visual Studio Mobile Center, you need to register it separately for each platform that it runs on. You may also register the Windows (UWP) version if you would like, but be aware that Visual Studio Mobile Center doesn't yet support crash analytics on Windows.</p>
 <p><a name="Exercise2"></a></p>
 <h2>Exercise 2: Add the solution to source control</h2>
 <p>In order to take advantage of Visual Studio Mobile Center (VSMC) build integration, you must set up a remote source-code repository. VSMC supports <a href="https://github.com/">GitHub</a>, <a href="https://bitbucket.org/">Bitbucket</a>, and <a href="https://www.visualstudio.com/team-services/">Visual Studio Team Services</a> (VSTS) as repositories. You will use GitHub, which is a Git hosting service that features a browser-based user interface, bug tracking, access control, task management, and more. In this exercise, you will create a GitHub repository for your Drone Lander solution.</p>
 <ol>
 <li>
-<p>Type "github extension" into Visual Studio 2017's Quick Launch window. If <strong>GitHub extension for Visual Studio</strong> appears under "Install," click it and follow the on-screen instructions to install GitHub Extension for Visual Studio. You will probably have to close Visual Studio to install the extension.</p>
-<p><a href="Images/vs-install-git-hub.png" target="_blank"><img src="Images/vs-install-git-hub.png" alt="Installing GitHub Extension for Visual Studio" style="max-width:100%;"></a></p>
-<p><em>Installing GitHub Extension for Visual Studio</em></p>
+<p>Start Visual Studio 2017 and type "github extension" into the Quick Launch window. If <strong>GitHub extension for Visual Studio</strong> appears under "Install," click it and follow the on-screen instructions to install the GitHub Extension for Visual Studio. You will probably have to close Visual Studio to install the extension.</p>
+<p><a href="Images/vs-install-git-hub.png" target="_blank"><img src="Images/vs-install-git-hub.png" alt="Installing the GitHub Extension for Visual Studio" style="max-width:100%;"></a></p>
+<p><em>Installing the GitHub Extension for Visual Studio</em></p>
 </li>
 <li>
-<p>In Solution Explorer, right-click the <strong>DroneLander</strong> solution and use the <strong>Source Control</strong> &gt; <strong>Add Solution to Source Control...</strong> command to add the solution to a local GitHub repository.</p>
+<p>Open the <strong>DroneLander</strong> solution in Visual Studio. In Solution Explorer, right-click the solution and use the <strong>Add Solution to Source Control...</strong> command to add the solution to a local GitHub repository.</p>
 </li>
 <li>
-<p>Select the <strong>GitHub</strong> tab in Solution Explorer, and then click <strong>Get Started</strong>.</p>
+<p>Use the <strong>View</strong> &gt; <strong>Other Windows</strong> &gt; <strong>GitHub</strong> command to open a GitHub window in Visual Studio. Then click <strong>Get Started</strong>.</p>
 <p><a href="Images/vs-click-get-started.png" target="_blank"><img src="Images/vs-click-get-started.png" alt="Starting the GitHub publishing process" style="max-width:100%;"></a></p>
 <p><em>Starting the GitHub publishing process</em></p>
 </li>
 <li>
-<p>Confirm that <strong>GitHub</strong> is selected and that your GitHub user name is shown, and then click <strong>Publish</strong>.</p>
+<p>If you see a <strong>Sign In</strong> link under "Publish to GitHub," click the link and sign in to GitHub.</p>
+<p><a href="Images/sign-in-to-github.png" target="_blank"><img src="Images/sign-in-to-github.png" alt="Signing in to GitHub" style="max-width:100%;"></a></p>
+<p><em>Signing in to GitHub</em></p>
+</li>
+<li>
+<p>Click the <strong>Publish</strong> button under "Publish to GitHub."</p>
 <p><a href="Images/vs-github-click-publish.png" target="_blank"><img src="Images/vs-github-click-publish.png" alt="Publishing to GitHub" style="max-width:100%;"></a></p>
 <p><em>Publishing to GitHub</em></p>
 </li>
 <li>
-<p>In Team Explorer, click <strong>Sync</strong>.</p>
+<p>Click <strong>Sync</strong>.</p>
 <p><a href="Images/vs-click-first-sync.png" target="_blank"><img src="Images/vs-click-first-sync.png" alt="Synchronizing repos" style="max-width:100%;"></a></p>
 <p><em>Synchronizing repos</em></p>
 </li>
@@ -612,38 +616,41 @@ vertical-align:1px;
 <p><em>Selecting the DroneLander repo</em></p>
 </li>
 <li>
-<p>Select the <strong>master</strong> branch from the list of branches, and then click <strong>Set up a branch</strong> to configure a branch for build integration.</p>
+<p>Select the <strong>master</strong> branch from the list of branches, and then click <strong>Set up branch</strong> to configure that branch for build integration.</p>
 <p><a href="Images/web-click-setup-branch.png" target="_blank"><img src="Images/web-click-setup-branch.png" alt="Setting up a build branch" style="max-width:100%;"></a></p>
 <p><em>Setting up a build branch</em></p>
 </li>
 <li>
-<p>Change the build configuration from Debug to <strong>Release</strong>. Ensure that <strong>Build on push</strong> and <strong>Sign builds</strong> are enabled, and then click <strong>Keystore file</strong> to upload an Android keystore file. A keystore file enables signing of the Android app package (*.apk) and is required for release deployments of Android apps.</p>
-<p><a href="Images/web-branch-setup-01.png" target="_blank"><img src="Images/web-branch-setup-01.png" alt="Configuring build branch settings" style="max-width:100%;"></a></p>
-<p><em>Configuring build branch settings</em></p>
+<p>Change the build configuration from Debug to <strong>Release</strong>. Also ensure that <strong>Build this branch on every push</strong> is selected.</p>
+<p><a href="Images/web-branch-setup-01.png" target="_blank"><img src="Images/web-branch-setup-01.png" alt="Configuring build settings" style="max-width:100%;"></a></p>
+<p><em>Configuring build settings</em></p>
 </li>
 <li>
-<p>Import the file named <strong>DroneLanderKeystore.keystore</strong> from this lab's "Resources\Keystore" folder</p>
-<blockquote>
-<p>The keystore file you're importing was created in advance specifically for this lab. In your own development projects, you will want to create your own keystores using the Android Keystore tool available in Visual Studio 2017.</p>
-</blockquote>
-</li>
-<li>
-<p>Enter the following values (without quotation marks) in the "Signing credentials" panel:</p>
+<p>Toggle <strong>Sign builds</strong> from off to on. Click <strong>Keystore file</strong> and upload the keystore file named <strong>DroneLanderKeystore.keystore</strong> from this lab's "Resources\Keystore" folder. A keystore file enables signing of the Android app package (*.apk) and is required for release deployments of Android apps. Then enter the following values (without quotation marks) under "Signing credentials:"</p>
 <ul>
 <li><strong>KEYSTORE_PASSWORD</strong> - "DroneLander"</li>
 <li><strong>KEY_ALIAS</strong> - "DroneLanderKeystore"</li>
 <li><strong>KEY_PASSWORD</strong> - "DroneLander"</li>
 </ul>
-<p>Enable <strong>Run a launch test on device</strong> and <strong>Distribute build</strong> and click <strong>Finish Setup</strong>.</p>
+<blockquote>
+<p>The keystore file you're importing was created in advance specifically for this lab. In your own development projects, you will want to create your own keystores using the Android Keystore tool available in Visual Studio 2017.</p>
+</blockquote>
+<p><a href="Images/web-branch-setup-02.png" target="_blank"><img src="Images/web-branch-setup-02.png" alt="Enabling signed builds" style="max-width:100%;"></a></p>
+<p><em>Enabling signed builds</em></p>
 </li>
 <li>
-<p>Wait until you are notified that a build has been added to the queue, and then that the build has begun.</p>
-<p><a href="Images/web-build-building.png" target="_blank"><img src="Images/web-build-building.png" alt="Notification that a build is in progress" style="max-width:100%;"></a></p>
-<p><em>Notification that a build is in progress</em></p>
+<p>Toggle <strong>Distribute builds</strong> from off to on and click the <strong>Save</strong> button..</p>
+<p><a href="Images/web-branch-setup-03.png" target="_blank"><img src="Images/web-branch-setup-03.png" alt="Enabling build distribution" style="max-width:100%;"></a></p>
+<p><em>Enabling build distribution</em></p>
 </li>
 <li>
-<p>Wait until the build completes. Then click the <strong>Download</strong> button and select <strong>Download build</strong> from the menu to download a signed and verified Android package.</p>
-<p><a href="Images/web-successful-build.png" target="_blank"><img src="Images/web-successful-build.png" alt="Downloading the package" style="max-width:100%;"></a></p>
+<p>Wait until you are notified that a build has been added to the queue, and that the build has begun. When the build completes, click it.</p>
+<p><a href="Images/web-build-build-complete.png" target="_blank"><img src="Images/web-build-build-complete.png" alt="Opening a completed build" style="max-width:100%;"></a></p>
+<p><em>Opening a completed build</em></p>
+</li>
+<li>
+<p>Click the <strong>Download</strong> button and select <strong>Download build</strong> from the menu to download a signed and verified Android package.</p>
+<p><a href="Images/web-click-download.png" target="_blank"><img src="Images/web-click-download.png" alt="Downloading the package" style="max-width:100%;"></a></p>
 <p><em>Downloading the package</em></p>
 </li>
 </ol>
@@ -674,19 +681,19 @@ vertical-align:1px;
 <p><em>Build notification from Visual Studio Mobile Center</em></p>
 </li>
 </ol>
-<p>Feel free to add more testers to the Collaborators distribution group, or to create additional groups. Remember, users can install your app on their devices by simply clicking on the link in the email.</p>
+<p>Feel free to add more testers to the Collaborators distribution group, or to create additional groups. Remember, users can install your app on their devices by simply clicking the link in the email.</p>
 <p><a name="Exercise5"></a></p>
 <h2>Exercise 5: Add crash analytics support to the app</h2>
-<p>In a perfect world, apps would never crash. In the real world, they sometimes do. The Visual Studio Mobile Center SDK makes it easy to add logic to a Xamarin Forms app to generate helpful analytics when crashes occur. In this exercise, you will add code to Drone Lander to configure it so that crash information can be viewed in Visual Studio Mobile Center, and you will test your changes by temporarily modifying your code to generate an unhandled exception when the app starts up.</p>
+<p>In a perfect world, apps would never crash. In the real world, they sometimes do. The Visual Studio Mobile Center SDK makes it easy to add logic to a Xamarin Forms app to generate helpful analytics when crashes occur. In this exercise, you will add code to Drone Lander to configure it so that crash information can be viewed in Visual Studio Mobile Center, and you will test your changes by temporarily modifying Drone Lander to generate an unhandled exception when it starts up.</p>
 <ol>
 <li>
 <p>Open the <strong>DroneLander</strong> solution in Visual Studio 2017 if it isn't already open. In Solution Explorer, right-click the solution and select <strong>Manage NuGet Packages for Solution...</strong>.</p>
 </li>
 <li>
-<p>Ensure that "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Analytics" into the search box. Select the <strong>Microsoft.Azure.Mobile.Analytics</strong> package. Then check the <strong>Project</strong> box to add the package to all of the projects in the solution, and click <strong>Install</strong>. When prompted to review changes, click <strong>OK</strong>.</p>
+<p>Ensure that "Browse" is selected in the NuGet Package Manager, and type "Microsoft.Azure.Mobile.Analytics" into the search box. Select the <strong>Microsoft.Azure.Mobile.Analytics</strong> package. Then check the <strong>Project</strong> box to add the package to all of the projects in the solution, and click <strong>Install</strong>. If you are prompted to review changes and accept licenses, do so.</p>
 </li>
 <li>
-<p>Return to the NuGet Package Manager and once more ensure that "Browse" is selected. Type "Microsoft.Azure.Mobile.Crashes" into the search box and select the <strong>Microsoft.Azure.Mobile.Crashes</strong> package. Then check the <strong>Project</strong> box to add the package to all of the projects in the solution, and click <strong>Install</strong>. When prompted to review changes, click <strong>OK</strong>.</p>
+<p>Return to the NuGet Package Manager and once more ensure that "Browse" is selected. Type "Microsoft.Azure.Mobile.Crashes" into the search box and select the <strong>Microsoft.Azure.Mobile.Crashes</strong> package. Then check the <strong>Project</strong> box to add the package to all of the projects in the solution, and click <strong>Install</strong>. Once more, accept any changes you are asked to review.</p>
 </li>
 <li>
 <p>In Solution Explorer, open <strong>App.xaml.cs</strong> in the <strong>DroneLander (Portable)</strong> project. Then add the following statements at the top of the file:</p>
@@ -738,10 +745,7 @@ vertical-align:1px;
 <p>Crash data is initially stored on the local device, and is typically transmitted to Visual Studio Mobile Center the next time the app loads. In Visual Studio, return to <strong>MainViewModel.cs</strong> and uncomment the line of code that generates the unhandled exception. Use Visual Studio's <strong>Debug</strong> &gt; <strong>Start Without Debugging</strong> command (or simply press <strong>CTRL+F5</strong>) to launch the app <strong>without</strong> the debugger attached. This will transmit the crash information stored on the local device to VSMC.</p>
 </li>
 <li>
-<p>Since you modified the Drone Lander code, now is a good time to commit the changes and sync with GitHub. Right-click the <strong>DroneLander</strong> solution and use the <strong>Commit</strong> command to commit your changes.</p>
-</li>
-<li>
-<p>Enter a comment such as "Added Mobile Center crash and analytics support." Then select <strong>Commit All and Push</strong> from the <strong>Commit All</strong> drop-down.</p>
+<p>Since you modified the Drone Lander code, now is a good time to commit the changes and sync with GitHub. Right-click the <strong>DroneLander</strong> solution and selecting <strong>Commit...</strong>. Enter a comment such as "Added Mobile Center crash and analytics support." Then select <strong>Commit All and Push</strong> from the <strong>Commit All</strong> drop-down.</p>
 <p><a href="Images/vs-commit-all.png" target="_blank"><img src="Images/vs-commit-all.png" alt="Committing updates to GitHub" style="max-width:100%;"></a></p>
 <p><em>Committing updates to GitHub</em></p>
 </li>
@@ -749,7 +753,7 @@ vertical-align:1px;
 <p>Return to the <a href="https://mobile.azure.com/apps">Visual Studio Mobile Center</a> in your browser and open <strong>Drone Lander</strong>.</p>
 </li>
 <li>
-<p>Click <strong>Crashes</strong> and take a moment to examine the various charts displaying crash information, as well as the entry at the bottom of the page representing the crash that occurred moments ago.</p>
+<p>Click <strong>Crashes</strong> in the menu on the left and take a moment to examine the various charts displaying crash information, as well as the entry at the bottom of the page representing the crash that occurred moments ago.</p>
 <blockquote>
 <p>The crash may not appear in the portal for 10 minutes or so. If it's not there, proceed to Exercise 6 and return to the crash reports later.</p>
 </blockquote>
@@ -761,33 +765,9 @@ vertical-align:1px;
 </li>
 </ol>
 <p>You have seen first-hand how Visual Studio Mobile Center supports automated builds and distribution and provides rich crash analytics. But this isn't all VSMC can do. It also provides back-end services for authenticating users and supports integrated testing, data syncing, and (soon) push notifications. For more information on VSMC and its various features, see <a href="https://docs.microsoft.com/en-us/mobile-center">https://docs.microsoft.com/en-us/mobile-center</a>.</p>
-<p><a name="Exercise6"></a></p>
-<h2>Exercise 6 (optional): View launch test results</h2>
-<p>Have some extra time and want to learn about an additional feature of Visual Studio Mobile Center?  In Exercise 3, you enabled <strong>Run a launch test on device</strong> when you configured your build settings, but you never did anything to utilize that setting. In this exercise, you will learn what that setting does and how you can view the information that it generates.</p>
-<ol>
-<li>
-<p>Return to the <a href="https://mobile.azure.com/apps">Visual Studio Mobile Center</a> in your browser and open <strong>Drone Lander</strong>.</p>
-</li>
-<li>
-<p>Select <strong>Test</strong> from the menu on the left and confirm that a test was run when the app launched, and that the test ran successfully.</p>
-<p><a href="Images/web-inital-test.png" target="_blank"><img src="Images/web-inital-test.png" alt="The launch test results" style="max-width:100%;"></a></p>
-<p><em>The launch test results</em></p>
-</li>
-<li>
-<p>Click anywhere in the test panel to view a detail of the test results. Then click <strong>App Launches Test</strong>.</p>
-<p><a href="Images/web-test-detail.png" target="_blank"><img src="Images/web-test-detail.png" alt="Viewing the test results" style="max-width:100%;"></a></p>
-<p><em>Viewing the test results</em></p>
-</li>
-<li>
-<p>Examine the results of the test, which includes an indicator of how much RAM the app consumed and even a screen shot of the app itself.</p>
-<p><a href="Images/web-launch-screenshot.png" target="_blank"><img src="Images/web-launch-screenshot.png" alt="Detailed launch-test information" style="max-width:100%;"></a></p>
-<p><em>Detailed launch-test information</em></p>
-</li>
-</ol>
-<p>This merely scratches the surface of what you can do with VSMC when it comes to testing. You will learn more about integration testing in Part 6, and learn how to include comprehensive tests in the build and distribution process.</p>
 <p><a name="Summary"></a></p>
 <h2>Summary</h2>
-<p>That's it for Part 4 of Operation Remote Resupply. In Part 5, you will build an Azure back-end and modify the app to use it. Along the way, you will learn how to authenticate users, employ Azure data services, and even create your own mobile APIs.</p>
+<p>That's it for Part 4 of Operation Remote Resupply. In Part 5, you will build an Azure back-end and modify the app to use it. Along the way, you will learn how to authenticate users, employ Azure data services, and even create your own mobile APIs. Then you will fly <em>real</em> supply missions and compete with others in the room to resupply Mars bases. Get ready, because this event is about to start rocking!</p>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
