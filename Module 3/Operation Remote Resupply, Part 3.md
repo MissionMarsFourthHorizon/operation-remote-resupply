@@ -32,8 +32,6 @@ The following are required to complete this lab:
 - [Xamarin Workbooks](https://developer.xamarin.com/guides/cross-platform/workbooks/install/) for Windows
 - [Xamarin Profiler](https://developer.xamarin.com/guides/cross-platform/profiler/#Download_and_Install) for Windows
 
-If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see https://developer.xamarin.com/guides/ios/getting_started/installation/windows/.
-
 ---
 
 <a name="Exercises"></a>
@@ -112,9 +110,9 @@ Xamarin Workbooks are interactive documents created with the free [Xamarin Workb
 
 1. Confirm that "documentation cell" is italicized. Then delete the documentation cell.
 
-	![Adding a documentation cell](Images/ex1-delete-documentation-cell.png)
+	![Documentation cell with italicized text](Images/ex1-delete-documentation-cell.png)
 
-    _Adding a documentation cell_
+    _Documentation cell with italicized text_
 
 Now that you're familiar with basic workbook concepts, including adding, deleting, and executing cells, let's build something that's relevant to Operation Remote Resupply.
 
@@ -231,9 +229,9 @@ In this exercise, you will create a Xamarin Workbook that describes how to conve
 	double martianSolDate = (((martianEpochDifference - 4.5) / 1.027491252) + 44796.0 - 0.00096);
 	```
 
-	![Computing the Martial sol date](Images/xw-sol-date.png)
+	![Computing the Martian sol date](Images/xw-sol-date.png)
 
-    _Computing the Martial sol date_
+    _Computing the Martian sol date_
 
 1. Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:
 
@@ -276,18 +274,18 @@ In this exercise, you will create a Xamarin Workbook that describes how to conve
 
 	These extension methods will come in handy when you add code to interact with the Android emulator in the next exercise.
 
-Xamarin Workbooks like this one are great for teaching concepts and letting users try out code implementing those concepts. Currently, however, the Android emulator still shows a blank page. Let's modify the workbook to use the emulator to show the current time on earth and on Mars. 
+Xamarin Workbooks like this one are great for teaching concepts and letting users try out code implementing those concepts. Currently, however, the Android emulator shows a blank page. Let's modify the workbook to use the emulator to show the current time on earth and on Mars. 
 
 <a name="Exercise3"></a>
 ## Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector ##
 
-Xamarin Workbooks can include code that creates UIs from XAML controls and displays them in the agent accompanying the workbook — in this case, the app running in the Android emulator. Furthermore, Xamarin Workbooks features an integrated UI Inspector that is perfect for examining the controls you created and adjusting control properties to fine-tune the UI.
+Xamarin Workbooks can include code that creates UIs from XAML controls and displays them in the agent connected to the workbook — in this case, the app running in the Android emulator. Furthermore, Xamarin Workbooks features an integrated UI Inspector that lets you examine the controls you created and adjust control properties to fine-tune the UI.
 
 In this exercise, you will enhance the workbook you built in Exercise 2 to show the current earth time and Mars time in the Android emulator, and learn how to use the Xamarin UI Inspector to inspect and modify control properties.
 
 1. Add an executable cell to the workbook. Then select **File** > **Add Package...** from the overhead menu and type "Xamarin.Forms" into the search box. Select the latest **Xamarin.Forms** package, and then click **Add Package** to add the package to the workbook.
 
-	> One of the most powerful features of Xamarin Workbooks is that you can import NuGet packages just like you can in Visual Studio. Once a package is imported, C# code that you add to the workbook can use the types in that package.
+	> You can import NuGet packages into Xamarin Workbooks just like you can import them into Visual Studio. Once a package is imported, C# code that you add to the workbook can use the types in that package.
 
 	![Adding Xamarin.Forms to a workbook](Images/xw-add-package.png)
 
@@ -367,9 +365,9 @@ In this exercise, you will enhance the workbook you built in Exercise 2 to show 
  
 1. Select **Xamarin.Forms** from the drop-down list to view the Xamarin Forms control tree. 
 
-	![Viewing the Xamarin Forms controls](Images/xw-select-xf.png)
+	![Viewing Xamarin Forms controls](Images/xw-select-xf.png)
 
-    _Viewing the Xamarin Forms controls_
+    _Viewing Xamarin Forms controls_
  
 1. In the UI Inspector, click the first ```Label``` control to select that control. As an alternative, you can click the **select a view** button and then click "Earth Time" in the Android emulator. 
 
@@ -401,9 +399,9 @@ In this exercise, you will enhance the workbook you built in Exercise 2 to show 
 
 1. Return to the Android emulator and confirm that it now displays red text against a black background.
 
-	![The updated UI using the inspector](Images/app-color-change.png)
+	![The updated UI](Images/app-color-change.png)
 
-    _The updated UI using the inspector_ 
+    _The updated UI_ 
 
 1. Click the **refresh** button in the UI Inspector to update the preview shown there. If you would like, use your mouse to change the orientation of the preview.	
 
@@ -494,4 +492,4 @@ There is much more that you can do with the Xamarin Profiler, but this is a star
 <a name="Summary"></a>
 ## Summary ##
 
-Xamarin Workbooks, the Xamarin Forms Previewer, and the Xamarin Profiler are powerful tools in the hands of developers building Xamarin Forms apps. In the next and final lab, you will supplement what you have learned so far by learning about some of the options available to you for testing Xamarin Forms apps — specifically, Xamarin UI Tests and the Xamarin Test Cloud.
+Xamarin Workbooks, the Xamarin Forms Previewer, and the Xamarin Profiler are powerful tools in the hands of developers building Xamarin Forms apps. In Part 4 of Operation Remote Resupply, you will learn about another tool that's useful when writing mobile apps: the Visual Studio Mobile Center.

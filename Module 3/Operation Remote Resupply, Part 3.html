@@ -475,7 +475,7 @@ vertical-align:1px;
 <h2>Overview</h2>
 <p>One of the benefits of working with Xamarin Forms is rich tooling support. Visual Studio 2017 enables developers to build Xamarin Forms apps for iOS, Android, and Windows, and test those apps on real hardware as well as in emulators. It also includes the <a href="https://developer.xamarin.com/guides/xamarin-forms/xaml/xaml-previewer/">Xamarin Forms Previewer</a> for previewing XAML UIs, and the <a href="https://developer.xamarin.com/guides/cross-platform/profiler/">Xamarin Profiler</a> for profiling performance and memory use.</p>
 <p>Additional tooling is available outside of Visual Studio. In particular, <a href="https://developer.xamarin.com/guides/cross-platform/workbooks/">Xamarin Workbooks</a> enable developers to create rich, interactive workbooks that include a mix of documentation and executable code and that optionally send output to <em>agents</em> hosted in Windows consoles, WPF, or mobile emulators. Xamarin Workbooks are similar to the <a href="http://jupyter.org/">Jupyter notebooks</a> that are widely used in academia and are ideal for building tutorials, presentations, and other interactive teaching materials.</p>
-<p>In this lab, you will use Xamarin Workbooks to create an interactive document that describes how to convert earth time to Mars time and that includes C# code to perform the conversion. You will also get first-hand experience using the Xamarin Previewer to preview XAML UIs and the Xamarin Profiler to analyze Xamarin Forms apps for potential trouble spots.</p>
+<p>In Part 3 of Operation Remote Resupply, you will use Xamarin Workbooks to create an interactive document that describes how to convert earth time to Mars time and that includes C# code to perform the conversion. You will also get first-hand experience using the Xamarin Previewer to preview XAML UIs and the Xamarin Profiler to analyze Xamarin Forms apps for potential trouble spots.</p>
 <p><a name="Objectives"></a></p>
 <h3>Objectives</h3>
 <p>In this lab, you will learn how to:</p>
@@ -494,7 +494,6 @@ vertical-align:1px;
 <li><a href="https://developer.xamarin.com/guides/cross-platform/workbooks/install/">Xamarin Workbooks</a> for Windows</li>
 <li><a href="https://developer.xamarin.com/guides/cross-platform/profiler/#Download_and_Install">Xamarin Profiler</a> for Windows</li>
 </ul>
-<p>If you wish to build and run the iOS version of the app, you also have to have a Mac running OS X 10.11 or higher, and both the Mac and the PC running Visual Studio 2017 require further configuration. For details, see <a href="https://developer.xamarin.com/guides/ios/getting_started/installation/windows/">https://developer.xamarin.com/guides/ios/getting_started/installation/windows/</a>.</p>
 <hr>
 <p><a name="Exercises"></a></p>
 <h2>Exercises</h2>
@@ -557,8 +556,8 @@ vertical-align:1px;
 </li>
 <li>
 <p>Confirm that "documentation cell" is italicized. Then delete the documentation cell.</p>
-<p><a href="Images/ex1-delete-documentation-cell.png" target="_blank"><img src="Images/ex1-delete-documentation-cell.png" alt="Adding a documentation cell" style="max-width:100%;"></a></p>
-<p><em>Adding a documentation cell</em></p>
+<p><a href="Images/ex1-delete-documentation-cell.png" target="_blank"><img src="Images/ex1-delete-documentation-cell.png" alt="Documentation cell with italicized text" style="max-width:100%;"></a></p>
+<p><em>Documentation cell with italicized text</em></p>
 </li>
 </ol>
 <p>Now that you're familiar with basic workbook concepts, including adding, deleting, and executing cells, let's build something that's relevant to Operation Remote Resupply.</p>
@@ -648,8 +647,8 @@ The equivalent of the Julian date for Mars is the Mars sol date. At midnight on 
 <li>
 <p>Insert a new executable cell and enter the statement below. Then run it to display the Martian sol date:</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">double</span> <span class="pl-en">martianSolDate</span> = (((<span class="pl-en">martianEpochDifference</span> - 4.5) / 1.027491252) + 44796.0 - 0.00096);</pre></div>
-<p><a href="Images/xw-sol-date.png" target="_blank"><img src="Images/xw-sol-date.png" alt="Computing the Martial sol date" style="max-width:100%;"></a></p>
-<p><em>Computing the Martial sol date</em></p>
+<p><a href="Images/xw-sol-date.png" target="_blank"><img src="Images/xw-sol-date.png" alt="Computing the Martian sol date" style="max-width:100%;"></a></p>
+<p><em>Computing the Martian sol date</em></p>
 </li>
 <li>
 <p>Delete the executable cell that was added when you ran the code, and add a new documentation cell. Insert the following text, and then format the first line as a level-2 subheading:</p>
@@ -685,16 +684,16 @@ Mars Coordinated Time (MTC) is like UTC, but for Mars. Because it is just a mean
 <p>These extension methods will come in handy when you add code to interact with the Android emulator in the next exercise.</p>
 </li>
 </ol>
-<p>Xamarin Workbooks like this one are great for teaching concepts and letting users try out code implementing those concepts. Currently, however, the Android emulator still shows a blank page. Let's modify the workbook to use the emulator to show the current time on earth and on Mars.</p>
+<p>Xamarin Workbooks like this one are great for teaching concepts and letting users try out code implementing those concepts. Currently, however, the Android emulator shows a blank page. Let's modify the workbook to use the emulator to show the current time on earth and on Mars.</p>
 <p><a name="Exercise3"></a></p>
 <h2>Exercise 3: Build a UI for the workbook and use the Xamarin UI Inspector</h2>
-<p>Xamarin Workbooks can include code that creates UIs from XAML controls and displays them in the agent accompanying the workbook — in this case, the app running in the Android emulator. Furthermore, Xamarin Workbooks features an integrated UI Inspector that is perfect for examining the controls you created and adjusting control properties to fine-tune the UI.</p>
+<p>Xamarin Workbooks can include code that creates UIs from XAML controls and displays them in the agent connected to the workbook — in this case, the app running in the Android emulator. Furthermore, Xamarin Workbooks features an integrated UI Inspector that lets you examine the controls you created and adjust control properties to fine-tune the UI.</p>
 <p>In this exercise, you will enhance the workbook you built in Exercise 2 to show the current earth time and Mars time in the Android emulator, and learn how to use the Xamarin UI Inspector to inspect and modify control properties.</p>
 <ol>
 <li>
 <p>Add an executable cell to the workbook. Then select <strong>File</strong> &gt; <strong>Add Package...</strong> from the overhead menu and type "Xamarin.Forms" into the search box. Select the latest <strong>Xamarin.Forms</strong> package, and then click <strong>Add Package</strong> to add the package to the workbook.</p>
 <blockquote>
-<p>One of the most powerful features of Xamarin Workbooks is that you can import NuGet packages just like you can in Visual Studio. Once a package is imported, C# code that you add to the workbook can use the types in that package.</p>
+<p>You can import NuGet packages into Xamarin Workbooks just like you can import them into Visual Studio. Once a package is imported, C# code that you add to the workbook can use the types in that package.</p>
 </blockquote>
 <p><a href="Images/xw-add-package.png" target="_blank"><img src="Images/xw-add-package.png" alt="Adding Xamarin.Forms to a workbook" style="max-width:100%;"></a></p>
 <p><em>Adding Xamarin.Forms to a workbook</em></p>
@@ -763,8 +762,8 @@ Mars Coordinated Time (MTC) is like UTC, but for Mars. Because it is just a mean
 </li>
 <li>
 <p>Select <strong>Xamarin.Forms</strong> from the drop-down list to view the Xamarin Forms control tree.</p>
-<p><a href="Images/xw-select-xf.png" target="_blank"><img src="Images/xw-select-xf.png" alt="Viewing the Xamarin Forms controls" style="max-width:100%;"></a></p>
-<p><em>Viewing the Xamarin Forms controls</em></p>
+<p><a href="Images/xw-select-xf.png" target="_blank"><img src="Images/xw-select-xf.png" alt="Viewing Xamarin Forms controls" style="max-width:100%;"></a></p>
+<p><em>Viewing Xamarin Forms controls</em></p>
 </li>
 <li>
 <p>In the UI Inspector, click the first <code>Label</code> control to select that control. As an alternative, you can click the <strong>select a view</strong> button and then click "Earth Time" in the Android emulator.</p>
@@ -794,8 +793,8 @@ Mars Coordinated Time (MTC) is like UTC, but for Mars. Because it is just a mean
 </li>
 <li>
 <p>Return to the Android emulator and confirm that it now displays red text against a black background.</p>
-<p><a href="Images/app-color-change.png" target="_blank"><img src="Images/app-color-change.png" alt="The updated UI using the inspector" style="max-width:100%;"></a></p>
-<p><em>The updated UI using the inspector</em></p>
+<p><a href="Images/app-color-change.png" target="_blank"><img src="Images/app-color-change.png" alt="The updated UI" style="max-width:100%;"></a></p>
+<p><em>The updated UI</em></p>
 </li>
 <li>
 <p>Click the <strong>refresh</strong> button in the UI Inspector to update the preview shown there. If you would like, use your mouse to change the orientation of the preview.</p>
@@ -874,7 +873,7 @@ Mars Coordinated Time (MTC) is like UTC, but for Mars. Because it is just a mean
 <p>There is much more that you can do with the Xamarin Profiler, but this is a start. Other helpful features include the Time Profiler, which measures the execution times for individual method calls, and Cycles, which tracks references to objects that are not properly disposed of.</p>
 <p><a name="Summary"></a></p>
 <h2>Summary</h2>
-<p>Xamarin Workbooks, the Xamarin Forms Previewer, and the Xamarin Profiler are powerful tools in the hands of developers building Xamarin Forms apps. In the next and final lab, you will supplement what you have learned so far by learning about some of the options available to you for testing Xamarin Forms apps — specifically, Xamarin UI Tests and the Xamarin Test Cloud.</p>
+<p>Xamarin Workbooks, the Xamarin Forms Previewer, and the Xamarin Profiler are powerful tools in the hands of developers building Xamarin Forms apps. In Part 4 of Operation Remote Resupply, you will learn about another tool that's useful when writing mobile apps: the Visual Studio Mobile Center.</p>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
