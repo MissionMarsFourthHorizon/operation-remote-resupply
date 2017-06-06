@@ -6,7 +6,7 @@
 <a name="Overview"></a>
 ## Overview ##
 
-In Part 4 of Operation Remote Resupply, you used [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") to automate the process of building and distributing apps, triggered by commits to a source-code repository. Although a simple "load test" was performed during this process, automated UI acceptance testing is not currently part of the lifecycle.
+In Part 4 of Operation Remote Resupply, you used [Visual Studio Mobile Center](https://www.visualstudio.com/vs/mobile-center/ "Visual Studio Mobile Center") to automate the process of building and distributing apps, triggered by commits to GitHub. Although a simple "load test" was performed during this process, automated UI acceptance testing is not currently part of the lifecycle.
 
 In Part 6, you will build on what you did in Part 4 by using the [Xamarin.UITest](https://developer.xamarin.com/guides/testcloud/uitest/) framework and the [Xamarin Test Recorder](https://developer.xamarin.com/guides/testcloud/testrecorder/) to add automated UI tests to the Android version of the Drone Lander app. Once the tests are written, you will submit them to Visual Studio Mobile Center so they're executed automatically every time the app is built. Xamarin.UITest is based on the open-source [Calabash](http://calaba.sh/) framework and features tight integration with Xamarin.Forms, Xamarin.iOS, and Xamarin.Android projects. It exposes a rich API allowing you to simulate button clicks, gestures, and other input, include assertions in your tests, take screen shots, and more. It can even be used with iOS and Android projects written in other languages, including Objective-C, Swift, and Java.
 
@@ -27,7 +27,7 @@ In this lab, you will learn how to:
 
 The following are required to complete this lab:
 
-- [Visual Studio Enterprise 2017](https://www.visualstudio.com/vs/)
+- [Visual Studio Community 2017](https://www.visualstudio.com/vs/)
 - A computer running Windows 10 that supports hardware emulation using Hyper-V. For more information, and for a list of requirements, see https://msdn.microsoft.com/en-us/library/mt228280.aspx. 
 
 ---
@@ -47,9 +47,9 @@ Estimated time to complete this lab: **45** minutes.
 <a name="Exercise1"></a>
 ## Exercise 1: Add a UI test project to a Xamarin Forms solution ##
 
-The first step in incorporating UI tests into a Xamarin Forms app is to add a Xamarin.UITest project to the solution and update a couple of NuGet packages. In this exercise, you will add a test project to the Dronelander solution and run a simple test.
+The first step in incorporating UI tests into a Xamarin Forms app is to add a Xamarin.UITest project to the solution and update a couple of NuGet packages. In this exercise, you will add a test project to the **DroneLander** solution and run a simple test.
 
-1. Open the DroneLander solution in Visual Studio 2017.
+1. Open the **DroneLander** solution in Visual Studio 2017.
 
 1. In Solution Explorer, right-click the solution and use the **Add** > **New Project** command to add a **UI Test App (Xamarin.UITest | Cross-Platform)** project named "DroneLander.UITest" to the solution. 
  
@@ -57,7 +57,7 @@ The first step in incorporating UI tests into a Xamarin Forms app is to add a Xa
 
     _Adding a Xamarin.UITest project to the solution_
 
-1. In Solution Explorer, right-click the **DroneLander.UITest** project and select **Manage NuGet Packages for Solution...**. Make sure "Installed" is selected. Then select **Xamarin.UITest** and click **Update** to install the latest stable version.
+1. In Solution Explorer, right-click the **DroneLander.UITest** project and select **Manage NuGet Packages...**. Make sure "Installed" is selected. Then select **Xamarin.UITest** and click **Update** to install the latest stable version.
 
 	![Updating Xamarin.UITest](Images/vs-update-nuget.png)
 
@@ -91,7 +91,7 @@ The first step in incorporating UI tests into a Xamarin Forms app is to add a Xa
 
     _AppLaunches tests in Test Explorer_
 
-1. Right-click the first AppLaunches test and select **Open Test** to view the code for the test in **Test.cs**. Note the ```[Test]``` attribute decorating the ```AppLaunches``` method. This attribute marks a method as a callable entry point for an NUnit test and exposes it to the Xamarin.UITest platform for execution. Other attributes such as ```[StartUp]``` and ```[TearDown]``` are also useful when working with Xamarin.UITest. 
+1. Right-click the first AppLaunches test and select **Open Test** to view the code for the test in **Tests.cs**. Note the ```[Test]``` attribute decorating the ```AppLaunches``` method. This attribute marks a method as a callable entry point for an NUnit test and exposes it to the Xamarin.UITest platform for execution. Other attributes such as ```[StartUp]``` and ```[TearDown]``` are also useful when working with Xamarin.UITest. 
 
 1. When a Xamarin.UITest project is created, the default ```AppLaunches``` method contains a single call to the ```Screenshot``` method, which takes a screen shot of the app.
 
@@ -122,7 +122,7 @@ You now have a UI test project integrated into your solution. The next step is t
 <a name="Exercise2"></a>
 ## Exercise 2: Write cross-platform UI test scripts ##
 
-Xamarin.UITest provides a rich API for implementing sophisticated UI tests. You can simulate button clicks, insert text into entry fields, change the orientation of the device (or emulator), and a whole lot more. In this exercise, you will add code to the Android AppLaunches test to perform simple actions using just a few of the APIs available in the Xamarin.UITest framework.
+Xamarin.UITest provides a rich API for implementing sophisticated UI tests. You can simulate button clicks, insert text into entry fields, change the orientation of the device (or emulator), and more. In this exercise, you will add code to the Android AppLaunches test to perform simple actions using just a few of the APIs available in the Xamarin.UITest framework.
 
 1. Open **Tests.cs** in the **DroneLander.UITest** project and replace the code in the ```AppLaunches``` method with the following code:
 
@@ -167,15 +167,15 @@ You can create sophisticated tests by coding them manually as you did in this ex
 
 Coding UI automation tests by hand is time-consuming and error-prone. The [Xamarin Test Recorder](https://developer.xamarin.com/guides/testcloud/testrecorder/) is a Visual Studio 2017 extension that can record your interactions with an app and create automated tests written in C# based on those interactions. In this exercise, you will install the Xamarin Test Recorder and record UI automation tests that can be run locally or integrated with the app lifecycle using the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) or Visual Studio Mobile Center.
 
-> The Xamarin Test Recorder is only available in Visual Studio Enterprise 2017. If you are *not* using the Enterprise edition, simply read through this exercise to learn about the basics of using the recorder.
+> The Xamarin Test Recorder is only available in Visual Studio Enterprise 2017. If you are *not* using the Enterprise edition, simply read through this exercise to learn how to use the recorder.
 
-1. Install the Xamarin Test Recorder by using Visual Studio's **Tools** > **Extensions and Updates** command to display the "Extensions and Updates" dialog, searching for "xamarin test recorder" in the Visual Studio Marketplace, and clicking **Download**.
+1. Install the Xamarin Test Recorder by using Visual Studio's **Tools** > **Extensions and Updates...** command to display the "Extensions and Updates" dialog, searching for "xamarin test recorder" in the Visual Studio Marketplace, and clicking **Download**.
 
 	![Installing the Xamarin Test Recorder](Images/vs-install-recorder.png)
 
     _Installing the Xamarin Test Recorder_
 
-1. Close Visual Studio 2017 to allow the Xamarin Test Recorder to install, and then reopen the DroneLander solution after installation is complete. 
+1. Close Visual Studio 2017 to allow the Xamarin Test Recorder to install, and then reopen the **DroneLander** solution after installation is complete. 
 
 1. Open **Tests.cs** in the **DroneLander.UITest** project and confirm that two icons appear in the left margin. These icons are used to begin recording UI automation tests. The ```[TestFixture]``` attribute indicates that a class contains callable test methods. 
 
@@ -305,7 +305,7 @@ Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Stu
 
     _Adding the test project to the repo_
 
-1. Recall that the Drone Lander solution is integrated with GitHub, and any new commits will automatically trigger the build and distribution process. Xamarin.UITest is designed to seamlessly integrate into this process and perform the Test portion of a Build/Test/Distribute lifecyle.
+1. Recall that any new commits to the GitHub repo will automatically trigger the build and distribution process. Xamarin.UITest is designed to seamlessly integrate into this process and perform the Test portion of a Build/Test/Distribute lifecyle.
 
 	Go to [Visual Studio Mobile Center](https://mobile.azure.com/apps) in your browser and select the Android version of Drone Lander. Then click **Test**. 
  
@@ -313,7 +313,7 @@ Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Stu
 
     _Configuring tests in Visual Studio Mobile Center_
 
-1. Click **Test Series** in the upper-left corner of the page, and then click **Create new series**.
+1. Click **Try Automated UI Testing**. Then click **Test series** in the upper-right corner of the page, and click **Create new series**.
 
 	![Creating a new test series](Images/portal-click-test-series.png)
 
@@ -325,7 +325,7 @@ Both the [Xamarin Test Cloud](https://www.xamarin.com/test-cloud) and Visual Stu
 
     _Naming the test series_
 
-1. Close the dialog to return to the Mobile Center Test page, and then click **New Test Run**.
+1. Close the "Test Series" dialog to return to the Mobile Center Test page, and then click **New test run**.
 
 1. Select the device you want to use for testing, and then click **Select (1) device** at the bottom of the screen.
 
