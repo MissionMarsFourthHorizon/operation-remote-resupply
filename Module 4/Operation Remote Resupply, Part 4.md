@@ -98,7 +98,7 @@ If you would like to register the iOS of version Drone lander as well, you can d
 <a name="Exercise2"></a>
 ## Exercise 2: Add the solution to source control ##
 
-In order to take advantage of Visual Studio Mobile Center (VSMC) build integration, you must set up a remote source-code repository. VSMC supports [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org/), and [Visual Studio Team Services](https://www.visualstudio.com/team-services/) (VSTS) as repositories. You will use GitHub, which is a Git hosting service that features a browser-based user interface, bug tracking, access control, task management, and more. In this exercise, you will create a GitHub repository for your Drone Lander solution.
+In order to take advantage of Visual Studio Mobile Center (VSMC) build integration, you must set up a remote source-code repository. VSMC supports [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org/), and [Visual Studio Team Services](https://www.visualstudio.com/team-services/) (VSTS) as repositories. You will use GitHub, which is a Git hosting service that features a browser-based user interface, bug tracking, access control, task management, and more. In this exercise, you will create a GitHub repository for your **DroneLander** solution.
 
 1. Start Visual Studio 2017 and type "github extension" into the Quick Launch window. If **GitHub extension for Visual Studio** appears under "Install," click it and follow the on-screen instructions to install the GitHub Extension for Visual Studio. You will probably have to close Visual Studio to install the extension.
 
